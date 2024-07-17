@@ -10,6 +10,9 @@ import {
 } from 'three';
 
 export class BlinkingBoxes {
+  seed = Math.random();
+  isVisible = false;
+
   constructor({ container, boxSize, gap, rows, cols }) {
     this.container = container;
     this.boxSize = boxSize;
@@ -20,7 +23,6 @@ export class BlinkingBoxes {
       w: this.cols * (this.boxSize + this.gap) - this.gap,
       h: this.rows * (this.boxSize + this.gap) - this.gap,
     };
-    this.isVisible = false;
     this.init();
   }
 
@@ -48,6 +50,7 @@ export class BlinkingBoxes {
         uGap: { value: this.gap },
         uCols: { value: this.cols },
         uColor: { value: new Color("rgb(178, 169, 184)") },
+        uSeed: { value: this.seed },
         uCanvasSize: {
           value: new Vector2(this.canvasSize.w, this.canvasSize.h),
         },
@@ -63,12 +66,13 @@ export class BlinkingBoxes {
         uniform float uTime;
         uniform float uGap;
         uniform float uCols;
+        uniform float uSeed;
         uniform vec3 uColor;
         uniform vec2 uCanvasSize;
         varying vec2 vUv;
 
         float random(vec2 st) {
-          return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+          return fract(sin(dot(st.xy + uSeed, vec2(12.9898, 78.233))) * 43758.5453123);
         }
       
         void main() {
