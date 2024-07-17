@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (allBoxes.length) {
     allBoxes.forEach((box) => {
-      const { boxSize, gap, rows, cols } = box.dataset;
+      const { size, gap, rows, cols } = box.dataset;
 
       new BlinkingBoxes({
         container: box,
-        boxSize: +boxSize || 4,
+        boxSize: +size || 4,
         gap: +gap || 2,
         rows: +rows || 24,
         cols: +cols || 8,
@@ -22,13 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (allDots.length) {
     allDots.forEach((dot) => {
+      const { size, gap, rows, cols } = dot.dataset;
+
       new BlinkingDots({
         wrap: dot,
-        // container: box,
-        // boxSize: +boxSize,
-        // gap: +gap,
-        // rows: +rows,
-        // cols: +cols,
+        cols: +cols || 2,
+        rows: +rows || 10,
+        size: +size || 2.5,
+        gap: +gap || 5,
       });
     });
   }

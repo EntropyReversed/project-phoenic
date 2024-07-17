@@ -1,14 +1,20 @@
 import gsap from 'gsap';
 
-const omitIndexes = {
-  "2x10": [0, 3, 5, 6, 9, 10, 12, 18]
-}
 
 export class BlinkingDots {
-  constructor({ wrap }) {
+  svgNS = "http://www.w3.org/2000/svg";
+  timeline = gsap.timeline();
+  omitIndexes = {
+    "2x10": [0, 3, 5, 6, 9, 10, 12, 18],
+  };
+  probability = 0.4;
+
+  constructor({ wrap, cols, rows, size, gap }) {
     this.wrap = wrap;
-    this.dots = this.wrap.querySelectorAll('circle');
-    this.timeline = gsap.timeline();
+    this.cols = cols;
+    this.rows = rows;
+    this.size = size;
+    this.gap = gap;
     this.init();
   }
 
@@ -16,7 +22,7 @@ export class BlinkingDots {
     const options = {
       root: null,
       rootMargin: '0px',
-      threshold: 1
+      threshold: 1,
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -41,7 +47,7 @@ export class BlinkingDots {
       yoyo: !once,
       repeat: once ? 0 : -1,
       stagger: {
-        each: Math.random(),
+        from: "random",
         amount: 1,
       },
     });
@@ -56,49 +62,48 @@ export class BlinkingDots {
     });
   };
 
-  createSVG(cols, rows) {
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    const radius = 12.5;
-    const gap = 10;
-    const width = (cols - 1) * gap + 2 * radius;
-    const height = (rows - 1) * gap + 2 * radius;
-
-    svg.setAttribute("class", "blinking-dots");
-    svg.setAttribute("width", width);
-    svg.setAttribute("height", height);
-    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-    svg.setAttribute("fill", "none");
-    svg.setAttribute("xmlns", svgNS);
-
-    const key = `${cols}x${rows}`;
-    const omitSet = new Set(omitIndexes[key] || []);
-
+  createSVG() {
+    this.svg = document.createElementNS(this.svgNS, "svg");
+    const diameter = 2 * this.size;
+    const spacing = diameter + this.gap;
+    const width = this.cols * (this.gap + diameter) - this.gap;
+    const height = this.rows * (this.gap + diameter) - this.gap;
+  
+    this.svg.setAttribute("width", width);
+    this.svg.setAttribute("height", height);
+    this.svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    this.svg.setAttribute("fill", "none");
+    this.svg.setAttribute("xmlns", this.svgNS);
+  
+    const key = `${this.cols}x${this.rows}`;
+    const omitSet = new Set(this.omitIndexes[key] || []);
+  
     let index = 0;
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        if (!omitSet.has(index) && (omitSet.size > 0 || Math.random() > 0.2)) {
-          const circle = document.createElementNS(svgNS, "circle");
-          const cx = radius + col * gap;
-          const cy = radius + row * gap;
-
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        if (!omitSet.has(index) && (omitSet.size > 0 || Math.random() > this.probability)) {
+          const circle = document.createElementNS(this.svgNS, "circle");
+          const cx = this.size + col * spacing;
+          const cy = this.size + row * spacing;
+  
           circle.setAttribute("cx", cx);
           circle.setAttribute("cy", cy);
-          circle.setAttribute("r", radius);
+          circle.setAttribute("r", this.size);
           circle.setAttribute("fill", "#93957B");
-
-          svg.appendChild(circle);
+  
+          this.svg.appendChild(circle);
         }
         index++;
       }
     }
-
-    return svg;
+  
+    return this.svg;
   }
 
   init() {
     this.setupIntersectionObserver();
-    this.wrap.appendChild(this.createSVG(2,10))
+    this.wrap.appendChild(this.createSVG())
+    this.dots = this.wrap.querySelectorAll('circle');
 
     this.wrap.addEventListener('mouseenter', () => {
       this.animateIn()

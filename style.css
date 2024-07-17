@@ -31,7 +31,11 @@ body {
   display: flex;
   align-items: start;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 5rem;
   margin-top: 2rem;
   margin-bottom: 5rem;
+}
+
+.blinking-dots {
+  display: flex;
 }
