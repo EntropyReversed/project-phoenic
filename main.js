@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       new BlinkingBoxes({
         container: box,
-        boxSize: +boxSize,
-        gap: +gap,
-        rows: +rows,
-        cols: +cols,
+        boxSize: +boxSize || 4,
+        gap: +gap || 2,
+        rows: +rows || 24,
+        cols: +cols || 8,
       });
     });
   }

@@ -23,6 +23,7 @@ body {
   min-height: 100vh;
   background-color: rgb(19, 14, 22);
   padding: 2rem;
+  padding-top: 100vh;
 }
 
 .blinking-boxes-wrap,
