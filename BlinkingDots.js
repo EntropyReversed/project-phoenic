@@ -5,12 +5,6 @@ export class BlinkingDots {
     this.init();
   }
 
-  init() {
-
-    this.setupIntersectionObserver();
-    this.animate();
-  }
-
   setupIntersectionObserver() {
     const options = {
       root: null,
@@ -18,16 +12,23 @@ export class BlinkingDots {
       threshold: 0
     };
 
-    // const observer = new IntersectionObserver((entries) => {
-    //   entries.forEach(entry => {
-    //     this.isVisible = entry.isIntersecting;
-    //   });
-    // }, options);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // run animation
+        }
+      });
+    }, options);
 
-    // observer.observe(this.container);
+    observer.observe(this.wrap);
   }
 
   animate() {
     console.log('animate', this.dots)
   };
+
+  init() {
+    this.setupIntersectionObserver();
+    this.animate();
+  }
 }

@@ -24,29 +24,6 @@ export class BlinkingBoxes {
     this.init();
   }
 
-  init() {
-    this.scene = new Scene();
-    this.camera = new OrthographicCamera(
-      -this.canvasSize.w / 2,
-      this.canvasSize.w / 2,
-      this.canvasSize.h / 2,
-      -this.canvasSize.h / 2,
-      0.01,
-      10
-    );
-
-    this.renderer = new WebGLRenderer({
-      alpha: true,
-      colorSpace: SRGBColorSpace,
-    });
-    this.renderer.setSize(this.canvasSize.w, this.canvasSize.h);
-    this.container.appendChild(this.renderer.domElement);
-
-    this.createBoxes();
-    this.setupIntersectionObserver();
-    this.animate();
-  }
-
   setupIntersectionObserver() {
     const options = {
       root: null,
@@ -125,4 +102,27 @@ export class BlinkingBoxes {
       this.renderer.render(this.scene, this.camera);
     }
   };
+
+  init() {
+    this.scene = new Scene();
+    this.camera = new OrthographicCamera(
+      -this.canvasSize.w / 2,
+      this.canvasSize.w / 2,
+      this.canvasSize.h / 2,
+      -this.canvasSize.h / 2,
+      0.01,
+      10
+    );
+
+    this.renderer = new WebGLRenderer({
+      alpha: true,
+      colorSpace: SRGBColorSpace,
+    });
+    this.renderer.setSize(this.canvasSize.w, this.canvasSize.h);
+    this.container.appendChild(this.renderer.domElement);
+
+    this.createBoxes();
+    this.setupIntersectionObserver();
+    this.animate();
+  }
 }
