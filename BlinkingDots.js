@@ -49,6 +49,7 @@ export class BlinkingDots {
       ease: 'none',
       stagger: {
         from: "random",
+        ease: "none",
         amount: 1,
       },
     });
