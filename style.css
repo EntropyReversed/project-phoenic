@@ -39,3 +39,53 @@ body {
 .blinking-dots {
   display: flex;
 }
+
+.trajectory-map {
+  position: relative;
+  display: flex;
+  width: 100%;
+  box-shadow: 0 0 0 1px white;
+}
+
+.trajectory-map svg {
+  width: 100%;
+  height: auto;
+}
+
+.trajectory-map .blinking-boxes {
+  position: absolute;
+}
+
+.blinking-bit {
+  display: flex;
+  margin: 2rem 0;
+}
+
+.blinking-bit .blinking-bit__signal {
+  animation: randomBlink 4s linear infinite;
+}
+
+@keyframes randomBlink {
+  0%, 
+  10%,
+  20%,
+  25%,
+  35%,
+  45%,
+  55%,
+  60%,
+  70%,
+  80%,
+  85%,
+  95% { opacity: 1; }
+  
+  5%,
+  15%,
+  30%,
+  40%,
+  50%,
+  65%,
+  75%,
+  90%,
+  100% { opacity: 0; }
+}

@@ -46,6 +46,7 @@ export class BlinkingDots {
       duration: 1,
       yoyo: !once,
       repeat: once ? 0 : -1,
+      ease: 'none',
       stagger: {
         from: "random",
         amount: 1,
