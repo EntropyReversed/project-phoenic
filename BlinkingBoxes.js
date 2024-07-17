@@ -1,3 +1,4 @@
+import { Color, SRGBColorSpace } from 'three';
 import {
   Scene,
   OrthographicCamera,
@@ -35,6 +36,7 @@ export class BlinkingBoxes {
 
     this.renderer = new WebGLRenderer({
       alpha: true,
+      colorSpace: SRGBColorSpace,
     });
     this.renderer.setSize(this.canvasSize.w, this.canvasSize.h);
     this.container.appendChild(this.renderer.domElement);
@@ -48,10 +50,10 @@ export class BlinkingBoxes {
     const material = new ShaderMaterial({
       uniforms: {
         uTime: { value: 0.0 },
-        gap: { value: this.gap },
-        rows: { value: this.rows },
-        cols: { value: this.cols },
-        canvasSize: {
+        uGap: { value: this.gap },
+        uCols: { value: this.cols },
+        uColor: { value: new Color("rgb(178, 169, 184)") },
+        uCanvasSize: {
           value: new Vector2(this.canvasSize.w, this.canvasSize.h),
         },
       },
@@ -64,10 +66,10 @@ export class BlinkingBoxes {
       `,
       fragmentShader: `
         uniform float uTime;
-        uniform float gap;
-        uniform float rows;
-        uniform float cols;
-        uniform vec2 canvasSize;
+        uniform float uGap;
+        uniform float uCols;
+        uniform vec3 uColor;
+        uniform vec2 uCanvasSize;
         varying vec2 vUv;
 
         float random(vec2 st) {
@@ -75,19 +77,19 @@ export class BlinkingBoxes {
         }
       
         void main() {
-          float boxSize = (canvasSize.x - gap * (cols - 1.0)) / cols;
-          vec2 gridSize = vec2((boxSize + gap) / canvasSize.x, (boxSize + gap) / canvasSize.y);
+          float boxSize = (uCanvasSize.x - uGap * (uCols - 1.0)) / uCols;
+          vec2 gridSize = vec2((boxSize + uGap) / uCanvasSize.x, (boxSize + uGap) / uCanvasSize.y);
           vec2 cell = floor(vUv / gridSize);
           vec2 cellUv = (vUv - cell * gridSize) / gridSize;
           
-          if (cellUv.x > boxSize / (boxSize + gap) || cellUv.y > boxSize / (boxSize + gap)) {
+          if (cellUv.x > boxSize / (boxSize + uGap) || cellUv.y > boxSize / (boxSize + uGap)) {
             discard;
           }
           
           float randomBase = random(cell);
           float opacity = sin(uTime * 2.0 + randomBase * 10.0) * 0.5 + 0.5;
           
-          gl_FragColor = vec4(vec3(1.0), opacity);
+          gl_FragColor = vec4(uColor, opacity);
         }
       `,
       transparent: true,
