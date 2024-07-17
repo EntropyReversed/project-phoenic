@@ -20,6 +20,7 @@ export class BlinkingBoxes {
       w: this.cols * (this.boxSize + this.gap) - this.gap,
       h: this.rows * (this.boxSize + this.gap) - this.gap,
     };
+    this.isVisible = false;
     this.init();
   }
 
@@ -42,7 +43,24 @@ export class BlinkingBoxes {
     this.container.appendChild(this.renderer.domElement);
 
     this.createBoxes();
+    this.setupIntersectionObserver();
     this.animate();
+  }
+
+  setupIntersectionObserver() {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        this.isVisible = entry.isIntersecting;
+      });
+    }, options);
+
+    observer.observe(this.container);
   }
 
   createBoxes() {
@@ -102,7 +120,9 @@ export class BlinkingBoxes {
 
   animate = () => {
     requestAnimationFrame(this.animate);
-    this.scene.children[0].material.uniforms.uTime.value += 0.03;
-    this.renderer.render(this.scene, this.camera);
+    if (this.isVisible) {
+      this.scene.children[0].material.uniforms.uTime.value += 0.03;
+      this.renderer.render(this.scene, this.camera);
+    }
   };
 }
