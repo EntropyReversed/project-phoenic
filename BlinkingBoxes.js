@@ -124,6 +124,7 @@ export class BlinkingBoxes {
       colorSpace: SRGBColorSpace,
     });
     this.renderer.setSize(this.canvasSize.w, this.canvasSize.h);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
     this.container.appendChild(this.renderer.domElement);
 
     this.createBoxes();
