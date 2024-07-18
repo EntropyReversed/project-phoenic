@@ -11,6 +11,7 @@ import {
 
 export class BlinkingBoxes {
   seed = Math.random();
+  startTime = Date.now();
   isVisible = false;
 
   constructor({ container, boxSize, gap, rows, cols }) {
@@ -85,8 +86,7 @@ export class BlinkingBoxes {
             discard;
           }
           
-          float randomBase = random(cell);
-          float opacity = sin(uTime * 2.0 + randomBase * 10.0) * 0.5 + 0.5;
+          float opacity = sin(uTime * 2.0 + random(cell) * 10.0) * 0.5 + 0.5;
           
           gl_FragColor = vec4(uColor, opacity);
         }
@@ -102,7 +102,8 @@ export class BlinkingBoxes {
   animate = () => {
     requestAnimationFrame(this.animate);
     if (this.isVisible) {
-      this.scene.children[0].material.uniforms.uTime.value += 0.03;
+      const elapsedTime = (Date.now() - this.startTime) / 1000;
+      this.scene.children[0].material.uniforms.uTime.value = elapsedTime;
       this.renderer.render(this.scene, this.camera);
     }
   };
