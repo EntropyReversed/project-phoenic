@@ -1,9 +1,11 @@
 import { BlinkingBoxes } from './BlinkingBoxes';
 import { BlinkingDots } from './BlinkingDots';
-
+import { TrajectoryMap } from './TrajectoryMap';
+console.clear()
 document.addEventListener('DOMContentLoaded', () => {
   const allBoxes = document.querySelectorAll('.blinking-boxes');
   const allDots = document.querySelectorAll('.blinking-dots');
+  const trajectoryMap = document.querySelector('.trajectory-map');
 
   if (allBoxes.length) {
     allBoxes.forEach((box) => {
@@ -30,6 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
         size: +size || 2.5,
         gap: +gap || 5,
       });
+    });
+  }
+
+  if (trajectoryMap) {
+    new TrajectoryMap({
+      wrap: trajectoryMap,
     });
   }
 });
