@@ -23,7 +23,7 @@ body {
   min-height: 100vh;
   background-color: rgb(19, 14, 22);
   padding: 2rem;
-  padding-top: 100vh;
+  /* padding-top: 100vh; */
 }
 
 .blinking-boxes-wrap,
@@ -45,7 +45,6 @@ body {
   display: flex;
   width: 100%;
   overflow: hidden;
-  box-shadow: 0 0 0 1px white;
 }
 
 .trajectory-map svg {
