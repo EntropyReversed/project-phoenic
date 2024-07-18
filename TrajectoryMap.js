@@ -9,6 +9,8 @@ export class TrajectoryMap {
     this.dots = this.svg.querySelectorAll('.dots circle');
     this.circles = this.svg.querySelectorAll('.circles > g');
     this.pathMain = this.svg.querySelector('.path-main');
+    this.pathBranch = this.svg.querySelector('.path-branch');
+    this.pathShip = this.svg.querySelector('.path-ship');
 
     this.timeline = gsap.timeline({paused: true});
     this.init();
@@ -38,7 +40,7 @@ export class TrajectoryMap {
           stagger: {
             amount: 1,
           }
-        }
+        }, 'start'
       )
       .to(this.circles,
         {
@@ -47,8 +49,25 @@ export class TrajectoryMap {
           ease: "power2.out",
           stagger: 0.1,
           duration: 1
-        }, '<'
+        }, 'start'
       )
+      .to(this.pathMain, {
+        strokeDashoffset: 0,
+        duration: 1,
+      }, 'start')
+      .to(this.pathBranch, {
+        strokeDashoffset: 0,
+        duration: 1,
+      }, 'start+=0.6')
+      .to(this.pathShip, {
+        keyframes: {
+          strokeDashoffset: [349.7682800292969,0,0],
+          opacity: [0,1,1,0]
+        },
+        // yoyo: true,
+        repeat: -1,
+        duration: 4,
+      }, 'start+=0.6')
   }
 
   setupIntersectionObserver() {
@@ -75,12 +94,12 @@ export class TrajectoryMap {
     this.createTimeline();
     this.setupIntersectionObserver();
 
-    this.wrap.addEventListener('mouseenter', () => {
-      this.timeline.play()
-    })
+    // this.wrap.addEventListener('mouseenter', () => {
+    //   this.timeline.play()
+    // })
 
-    this.wrap.addEventListener('mouseleave', () => {
-      this.timeline.reverse()
-    })
+    // this.wrap.addEventListener('mouseleave', () => {
+    //   this.timeline.reverse()
+    // })
   }
 }
