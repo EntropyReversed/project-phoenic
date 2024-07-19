@@ -27,7 +27,8 @@ body {
 }
 
 .blinking-boxes-wrap,
-.blinking-dots-wrap {
+.blinking-dots-wrap,
+.blinking-bit-wrap {
   display: flex;
   align-items: start;
   flex-wrap: wrap;
@@ -60,11 +61,6 @@ body {
   position: absolute;
   left: 2rem;
   top: 2rem;
-}
-
-.blinking-bit {
-  display: flex;
-  margin: 2rem 0;
 }
 
 .blinking-bit .blinking-bit__signal {

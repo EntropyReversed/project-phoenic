@@ -58,15 +58,17 @@
       fill="white" />
   </svg>
 
-  <svg class="blinking-bit" width="8" height="34" viewBox="0 0 8 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g opacity="0.25">
-      <rect x="0.5" y="0.5" width="7" height="7" stroke="white" />
-      <rect x="0.5" y="14.5" width="7" height="7" stroke="white" />
-      <rect class="blinking-bit__signal" x="2" y="30" width="4" height="4" fill="white" />
-      <line x1="0.646447" y1="6.64645" x2="6.64645" y2="0.646447" stroke="white" />
-      <line x1="0.646447" y1="20.6464" x2="6.64645" y2="14.6464" stroke="white" />
-    </g>
-  </svg>
+  <div class="blinking-bit-wrap">
+    <svg class="blinking-bit" width="8" height="34" viewBox="0 0 8 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity="0.25">
+        <rect x="0.5" y="0.5" width="7" height="7" stroke="white" />
+        <rect x="0.5" y="14.5" width="7" height="7" stroke="white" />
+        <rect class="blinking-bit__signal" x="2" y="30" width="4" height="4" fill="white" />
+        <line x1="0.646447" y1="6.64645" x2="6.64645" y2="0.646447" stroke="white" />
+        <line x1="0.646447" y1="20.6464" x2="6.64645" y2="14.6464" stroke="white" />
+      </g>
+    </svg>
+  </div>
 
 
 
@@ -83,32 +85,49 @@
     <div class="blinking-boxes" data-size="3" data-gap="1" data-cols="19" data-rows="8"></div>
     <svg width="100%" height="100%" viewBox="0 0 1191 130" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <style>
-        .grid path {
+        .trajectory-map {
+          --color-main: #4E4554;
+          --color-sec: #1B181D;
+        }
+
+        .trajectory-map .grid path {
           fill: none;
-          stroke: rgb(47 40 51);
+          stroke: var(--color-sec);
           stroke-width: 1px;
         }
 
-        .circles path:first-of-type {
+        .trajectory-map .circles path:first-of-type {
           fill: none;
-          stroke: rgb(47 40 51);
+          stroke: var(--color-sec);
           stroke-width: 1px;
           transform: scaleY(var(--offset));
         }
 
-        .circles circle:last-of-type {
-          fill: rgb(78, 69, 84);
+        .trajectory-map .circles circle:last-of-type {
+          fill: var(--color-main);
           transform: scale(var(--offset));
         }
 
-        .dots circle {
-          fill: rgb(78, 69, 84);
+        .trajectory-map .dots circle {
+          fill: var(--color-main);
           transform: translateY(10px);
           opacity: 0;
         }
 
-        .dots circle:nth-of-type(even) {
+        .trajectory-map .dots circle:nth-of-type(even) {
           transform: translateY(-10px);
+        }
+
+        .trajectory-map .path-main,
+        .trajectory-map .path-main-dash,
+        .trajectory-map .path-branch,
+        .trajectory-map .path-branch-dash,
+        .trajectory-map .path-ship {
+          stroke: var(--color-main);
+        }
+
+        .trajectory-map .ship {
+          fill: var(--color-main);
         }
       </style>
       <g class="grid">
@@ -241,41 +260,41 @@
       <g class="path">
         <path class="path-main-dash"
           d="M124.039,23.44C143.689,37.609 174.289,56.08 214.809,66.51C241.389,73.35 278.729,78.39 397.679,57.23C493.699,40.15 490.669,33.07 560.669,23.44C605.759,17.24 640.104,15.396 722.999,19.959C914.401,27.509 901.793,72.768 965.26,72.768C993.358,72.971 1008.26,65.038 1022.99,56.526"
-          style="fill:none;fill-rule:nonzero;stroke:rgb(0,12,244);stroke-width:1px;stroke-dasharray:2,2,0,0;" />
-        <path class="path-main" d="M124.039,23.44C143.689,37.609 174.289,56.08 214.809,66.51C241.389,73.35 278.729,78.39 397.679,57.23C434.185,50.736 454.246,46.212 471.574,41.92" style="fill:none;fill-rule:nonzero;stroke:rgb(255,69,84);stroke-width:1px;stroke-dasharray:360.926513671875;stroke-dashoffset:360.926513671875;"/>
+          style="fill:none;fill-rule:nonzero;stroke-width:1px;stroke-dasharray:2,2,0,0;" />
+        <path class="path-main" d="M124.039,23.44C143.689,37.609 174.289,56.08 214.809,66.51C241.389,73.35 278.729,78.39 397.679,57.23C434.185,50.736 454.246,46.212 471.574,41.92" style="fill:none;fill-rule:nonzero;stroke-width:1.5px;stroke-dasharray:360.926513671875;stroke-dashoffset:360.926513671875;"/>
         <path class="path-ship"
           d="M471.36,41.972C501.136,34.669 516.099,29.571 560.669,23.44C605.759,17.24 640.104,15.396 722.999,19.959C762.741,21.527 793.688,24.72 818.346,28.797"
-          style="fill:none;fill-rule:nonzero;stroke:rgb(11,255,23);stroke-width:1px;stroke-dasharray: 349.7682800292969; stroke-dashoffset: 349.7682800292969;" />
+          style="fill:none;fill-rule:nonzero;stroke-width:1.5px;stroke-dasharray: 349.7682800292969; stroke-dashoffset: 349.7682800292969;" />
         <path class="path-branch-dash" d="M397.68,57.23C466.314,45.317 495.72,63.06 506.99,81.97"
-          style="fill:none;fill-rule:nonzero;stroke:rgb(13,0,244);stroke-width:1px;stroke-dasharray:2,2,0,0;" />
+          style="fill:none;fill-rule:nonzero;stroke-width:1px;stroke-dasharray:2,2,0,0;" />
         <path class="path-branch" d="M397.68,57.23C466.314,45.317 495.72,63.06 506.99,81.97"
-          style="fill:none;fill-rule:nonzero;stroke:rgb(255,69,84);stroke-width:1px;stroke-dasharray: 118.67223358154297; stroke-dashoffset: 118.67223358154297;" />
+          style="fill:none;fill-rule:nonzero;stroke-width:1.5px;stroke-dasharray: 118.67223358154297; stroke-dashoffset: 118.67223358154297;" />
       </g>
-      <g class="bar-graph">
-        <rect x="505.68" y="81.34" width="4.42" height="5.71" style="fill:rgb(78,69,84);fill-rule:nonzero;" />
+      <g class="bar-graph" style="opacity: 0;">
+        <rect x="505.68" y="81.34" width="4.42" height="5.71" style="fill:var(--color-main);fill-rule:nonzero;" />
         <path class="bar-graph-pole" d="M509.141,85.961L509.141,47.961"
-          style="fill:none;fill-rule:nonzero;stroke:rgb(78,69,84);stroke-width:1px;" />
+          style="fill:none;fill-rule:nonzero;stroke:var(--color-main);stroke-width:1px;" />
         <g class="bar-graph-top">
           <g class="graph">
             <path
               d="M530.023,52.509L530.023,58.399C530.023,58.519 530.123,58.619 530.243,58.619L532.273,58.619C532.393,58.619 532.493,58.519 532.493,58.399L532.493,52.509C532.493,52.389 532.393,52.289 532.273,52.289L530.243,52.289C530.123,52.289 530.023,52.389 530.023,52.509Z"
-              style="fill:rgb(78,69,84);fill-rule:nonzero;" />
+              style="fill:var(--color-main);fill-rule:nonzero;" />
             <path
               d="M537.672,49.12L537.672,58.4C537.672,58.52 537.772,58.62 537.892,58.62L539.922,58.62C540.042,58.62 540.142,58.52 540.142,58.4L540.142,49.12C540.142,49 540.042,48.9 539.922,48.9L537.892,48.9C537.772,48.9 537.672,49 537.672,49.12Z"
-              style="fill:rgb(78,69,84);fill-rule:nonzero;" />
+              style="fill:var(--color-main);fill-rule:nonzero;" />
             <path
               d="M541.5,51.49L541.5,58.4C541.5,58.52 541.6,58.62 541.72,58.62L543.75,58.62C543.87,58.62 543.97,58.52 543.97,58.4L543.97,51.49C543.97,51.37 543.87,51.27 543.75,51.27L541.72,51.27C541.6,51.27 541.5,51.37 541.5,51.49Z"
-              style="fill:rgb(78,69,84);fill-rule:nonzero;" />
+              style="fill:var(--color-main);fill-rule:nonzero;" />
             <path
               d="M533.852,46.181L533.852,58.401C533.852,58.521 533.952,58.621 534.072,58.621L536.102,58.621C536.222,58.621 536.322,58.521 536.322,58.401L536.322,46.181C536.322,46.061 536.222,45.961 536.102,45.961L534.072,45.961C533.952,45.961 533.852,46.061 533.852,46.181Z"
-              style="fill:rgb(78,69,84);fill-rule:nonzero;" />
+              style="fill:var(--color-main);fill-rule:nonzero;" />
           </g>
           <path d="M524.451,58.611L518.541,48.381L512.641,58.611L524.451,58.611Z"
-            style="fill:none;fill-rule:nonzero;stroke:rgb(78,69,84);stroke-width:1px;" />
+            style="fill:none;fill-rule:nonzero;stroke:var(--color-main);stroke-width:1px;" />
         </g>
       </g>
       <path class="ship" d="M479.427,40.002L467.61,37.323L465.081,43.402L470.066,47.698L479.427,40.002Z"
-        style="fill:rgb(78,69,84);fill-rule:nonzero;" />
+      style="transform: scale(0);" />
     </svg>
   </div>
 

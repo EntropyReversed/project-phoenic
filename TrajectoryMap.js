@@ -1,4 +1,7 @@
 import gsap from "gsap";
+import { MotionPathPlugin } from "gsap/all";
+
+gsap.registerPlugin(MotionPathPlugin) 
 
 export class TrajectoryMap {
   constructor({ wrap }) {
@@ -11,6 +14,8 @@ export class TrajectoryMap {
     this.pathMain = this.svg.querySelector('.path-main');
     this.pathBranch = this.svg.querySelector('.path-branch');
     this.pathShip = this.svg.querySelector('.path-ship');
+    this.barGraph = this.svg.querySelector('.bar-graph');
+    this.barGraphTop = this.svg.querySelector('.bar-graph-top');
 
     this.timeline = gsap.timeline({paused: true});
     this.init();
@@ -30,6 +35,7 @@ export class TrajectoryMap {
 
   createTimeline() {
     this.timeline
+      .addLabel('shipStart', 'start+=0.9')
       .set(this.circles, { '--offset': 0 })
       .to(this.dots,
         {
@@ -59,15 +65,49 @@ export class TrajectoryMap {
         strokeDashoffset: 0,
         duration: 1,
       }, 'start+=0.6')
+      .to(this.barGraph, {
+        opacity: 1,
+        duration: 1,
+      }, 'start+=1.6')
+      .to(this.barGraphTop, {
+        y: 3,
+        repeat: -1,
+        yoyo: true,
+        duration: 1,
+        ease: "circ.in"
+      }, 'start+=2')
       .to(this.pathShip, {
         keyframes: {
-          strokeDashoffset: [349.7682800292969,0,0],
-          opacity: [0,1,1,0]
+          strokeDashoffset: [gsap.getProperty(this.pathShip, "strokeDashoffset"),0,0],
+          opacity: [1,1,1,0,0],
+          easeEach: 'none'
         },
-        // yoyo: true,
         repeat: -1,
-        duration: 4,
-      }, 'start+=0.6')
+        duration: 6,
+        ease: 'none',
+      }, 'shipStart')
+      .to(this.ship, {
+        duration: 6, 
+        repeat: -1,
+        keyframes: {
+          scale: [0,1,1,1,0,0,0,0],
+          easeEach: 'none'
+        },
+        ease: 'none',
+      }, 'shipStart')
+      .to(this.ship, {
+        duration: 3, 
+        repeat: -1,
+        motionPath:{
+          path: this.pathShip,
+          align: this.pathShip,
+          autoRotate: 10,
+          alignOrigin: [1, 0.3],
+        },
+        repeatDelay: 3,
+        ease: 'none',
+      }, 'shipStart');
+
   }
 
   setupIntersectionObserver() {
