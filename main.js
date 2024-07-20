@@ -1,7 +1,7 @@
-import { AnimatedGraph } from './AnimatedGraph';
-import { BlinkingBoxes } from './BlinkingBoxes';
-import { BlinkingDots } from './BlinkingDots';
-import { TrajectoryMap } from './TrajectoryMap';
+import { AnimatedGraph } from './AnimatedGraph.js';
+import { BlinkingBoxes } from './BlinkingBoxes.js';
+import { BlinkingDots } from './BlinkingDots.js';
+import { TrajectoryMap } from './TrajectoryMap.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const allBoxes = document.querySelectorAll('.blinking-boxes');
