@@ -28,7 +28,8 @@ body {
 
 .blinking-boxes-wrap,
 .blinking-dots-wrap,
-.blinking-bit-wrap {
+.blinking-bit-wrap,
+.animated-graph-wrap {
   display: flex;
   align-items: start;
   flex-wrap: wrap;

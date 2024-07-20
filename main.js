@@ -1,3 +1,5 @@
+import gsap from 'gsap';
+import { AnimatedGraph } from './AnimatedGraph';
 import { BlinkingBoxes } from './BlinkingBoxes';
 import { BlinkingDots } from './BlinkingDots';
 import { TrajectoryMap } from './TrajectoryMap';
@@ -5,6 +7,7 @@ console.clear()
 document.addEventListener('DOMContentLoaded', () => {
   const allBoxes = document.querySelectorAll('.blinking-boxes');
   const allDots = document.querySelectorAll('.blinking-dots');
+  const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
   const trajectoryMap = document.querySelector('.trajectory-map');
 
   if (allBoxes.length) {
@@ -40,4 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
       wrap: trajectoryMap,
     });
   }
+
+  if (allAnimatedGraphs.length) {
+    allAnimatedGraphs.forEach(wrap => {
+      new AnimatedGraph({wrap})
+    });
+  }
+
 });
