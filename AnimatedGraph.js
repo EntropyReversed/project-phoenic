@@ -4,12 +4,15 @@ export class AnimatedGraph {
   time = 0;
   lastTime = 0;
   deltaTime = 0;
+  lineResolution = 3;
   isVisible = false;
 
-  constructor({wrap, isVertical, amplitude}) {
+  constructor({ wrap, isVertical, amplitude, frequency, speed }) {
     this.wrap = wrap;
     this.isVertical = isVertical;
     this.amplitudeStrength = amplitude;
+    this.frequency = frequency;
+    this.speed = speed;
     this.canvas = document.createElement('canvas');
     this.wrap.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
@@ -30,9 +33,6 @@ export class AnimatedGraph {
     gradient.addColorStop(0.7, `rgba(${hexColor}, 0.2)`);
     gradient.addColorStop(0.9, `rgba(${hexColor}, 0)`);
     gradient.addColorStop(1, `rgba(${hexColor}, 0)`);
-
-    // gradient.addColorStop(0, color);
-    // gradient.addColorStop(1, color);
     return gradient;
   }
 
@@ -55,13 +55,13 @@ export class AnimatedGraph {
   
         if (this.isVertical) {
           this.ctx.moveTo(this.canvas.width, 0);
-          for (let y = 0; y < this.canvas.height; y += 4) {
+          for (let y = 0; y < this.canvas.height; y += this.lineResolution) {
             const x = this.calcLineOffset(y, params, this.canvas.height, this.canvas.width);
             this.ctx.lineTo(x, y);
           }
         } else {
           this.ctx.moveTo(0, this.canvas.height);
-          for (let x = 0; x < this.canvas.width; x += 4) {
+          for (let x = 0; x < this.canvas.width; x += this.lineResolution) {
             const y = this.calcLineOffset(x, params, this.canvas.width, this.canvas.height);
             this.ctx.lineTo(x, y);
           }
@@ -71,7 +71,7 @@ export class AnimatedGraph {
         this.ctx.stroke();
       });
       
-      this.time += (this.deltaTime * 0.1);
+      this.time += (this.deltaTime * 0.1 * this.speed);
     }
 
     requestAnimationFrame(this.draw.bind(this));
@@ -121,7 +121,7 @@ export class AnimatedGraph {
     this.linesParams = ['#D86EFE', '#D86EFE', '#FCDC34', '#FCDC34', '#39EED8', '#39EED8'].map(color => ({
       color,
       amplitude: (this.canvas.height * 0.5) * this.amplitudeStrength,
-      frequency: 0.01,
+      frequency: 0.01 * this.frequency,
       noiseOffset: Math.random() * 1000,
     }));
   }
