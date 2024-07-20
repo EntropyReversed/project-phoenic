@@ -1,6 +1,3 @@
-import gsap from "gsap";
-import { MotionPathPlugin } from "gsap/all";
-
 gsap.registerPlugin(MotionPathPlugin) 
 
 export class TrajectoryMap {

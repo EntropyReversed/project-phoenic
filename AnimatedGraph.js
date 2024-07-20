@@ -1,4 +1,4 @@
-import { createNoise2D } from 'simplex-noise';
+import { createNoise2D } from "https://unpkg.com/simplex-noise@4.0.2/dist/esm/simplex-noise.js";
 
 export class AnimatedGraph {
   time = 0;
@@ -6,9 +6,10 @@ export class AnimatedGraph {
   deltaTime = 0;
   isVisible = false;
 
-  constructor({wrap, isVertical}) {
+  constructor({wrap, isVertical, amplitude}) {
     this.wrap = wrap;
     this.isVertical = isVertical;
+    this.amplitudeStrength = amplitude;
     this.canvas = document.createElement('canvas');
     this.wrap.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
@@ -90,7 +91,7 @@ export class AnimatedGraph {
     const resizeObserver = new ResizeObserver(() => {
       this.canvas.width = this.wrap.offsetWidth;
       this.canvas.height = this.wrap.offsetHeight;
-      this.updateAmplitude(this.isVertical ? this.canvas.width * 0.5 : this.canvas.height * 0.5);
+      this.updateAmplitude(this.isVertical ? (this.canvas.width * 0.5) * this.amplitudeStrength : (this.canvas.height * 0.5) * this.amplitudeStrength);
     });
 
     resizeObserver.observe(this.wrap)
@@ -119,7 +120,7 @@ export class AnimatedGraph {
   setUpLines() {
     this.linesParams = ['#D86EFE', '#D86EFE', '#FCDC34', '#FCDC34', '#39EED8', '#39EED8'].map(color => ({
       color,
-      amplitude: this.canvas.height * 0.5,
+      amplitude: (this.canvas.height * 0.5) * this.amplitudeStrength,
       frequency: 0.01,
       noiseOffset: Math.random() * 1000,
     }));

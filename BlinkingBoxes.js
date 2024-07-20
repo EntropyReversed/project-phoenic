@@ -1,13 +1,4 @@
-import { Color, SRGBColorSpace } from 'three';
-import {
-  Scene,
-  OrthographicCamera,
-  WebGLRenderer,
-  PlaneGeometry,
-  ShaderMaterial,
-  Vector2,
-  Mesh,
-} from 'three';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.166.1/+esm'
 
 export class BlinkingBoxes {
   seed = Math.random();
@@ -44,16 +35,16 @@ export class BlinkingBoxes {
   }
 
   createBoxes() {
-    const geometry = new PlaneGeometry(this.canvasSize.w, this.canvasSize.h);
-    const material = new ShaderMaterial({
+    const geometry = new THREE.PlaneGeometry(this.canvasSize.w, this.canvasSize.h);
+    const material = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0.0 },
         uGap: { value: this.gap },
         uCols: { value: this.cols },
-        uColor: { value: new Color("rgb(178, 169, 184)") },
+        uColor: { value: new THREE.Color("rgb(178, 169, 184)") },
         uSeed: { value: this.seed },
         uCanvasSize: {
-          value: new Vector2(this.canvasSize.w, this.canvasSize.h),
+          value: new THREE.Vector2(this.canvasSize.w, this.canvasSize.h),
         },
       },
       vertexShader: `
@@ -94,7 +85,7 @@ export class BlinkingBoxes {
       transparent: true,
     });
 
-    const mesh = new Mesh(geometry, material);
+    const mesh = new THREE.Mesh(geometry, material);
     mesh.position.z = -0.01;
     this.scene.add(mesh);
   }
@@ -109,8 +100,8 @@ export class BlinkingBoxes {
   };
 
   init() {
-    this.scene = new Scene();
-    this.camera = new OrthographicCamera(
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.OrthographicCamera(
       -this.canvasSize.w / 2,
       this.canvasSize.w / 2,
       this.canvasSize.h / 2,
@@ -119,9 +110,9 @@ export class BlinkingBoxes {
       10
     );
 
-    this.renderer = new WebGLRenderer({
+    this.renderer = new THREE.WebGLRenderer({
       alpha: true,
-      colorSpace: SRGBColorSpace,
+      colorSpace: THREE.SRGBColorSpace,
     });
     this.renderer.setSize(this.canvasSize.w, this.canvasSize.h);
     this.renderer.setPixelRatio(window.devicePixelRatio);

@@ -10,8 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/simplex-noise/simplex-noise.min.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
+
   <title>Project Phoenix</title>
 </head>
 
@@ -303,11 +304,15 @@
   <!-- <div class="animated-graph-wrap">
     <div 
       class="animated-graph" 
-      data-is-vertical="true" 
+      data-is-vertical="true"
       style="width: 60px; height: 400px;"
     ></div>
   
-    <div class="animated-graph" style="width: 400px; height: 60px;"></div>
+    <div 
+      class="animated-graph"
+      data-amplitude="0.2" 
+      style="width: 400px; height: 60px;"
+    ></div>
 
     <div class="animated-graph" style="width: 400px; height: 60px;"></div>
   

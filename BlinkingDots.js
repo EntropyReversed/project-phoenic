@@ -1,4 +1,3 @@
-import gsap from 'gsap';
 
 export class BlinkingDots {
   svgNS = "http://www.w3.org/2000/svg";
