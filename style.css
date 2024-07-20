@@ -63,28 +63,6 @@ body {
   display: flex;
 }
 
-.trajectory-map {
-  position: relative;
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-}
-
-.trajectory-map svg {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  min-width: 800px;
-  height: auto;
-}
-
-.trajectory-map .blinking-boxes {
-  position: absolute;
-  left: 2rem;
-  top: 2rem;
-}
-
 .blinking-bit .blinking-bit__signal {
   animation: randomBlink 4s linear infinite;
 }
