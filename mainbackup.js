@@ -49,12 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       new AnimatedGraph({
         wrap,
-        vertical: Boolean(vertical),
+        vertical: vertical === 'true',
         amplitude: Number(amplitude ?? 1),
         frequency: Number(frequency ?? 1),
         attenuation: Number(attenuation ?? 2),
         speed: Number(speed ?? 1),
-        flip: Boolean(flip ?? false),
+        flip: flip === 'true',
       })
     });
   }
