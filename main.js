@@ -1,9 +1,8 @@
-import gsap from 'gsap';
 import { AnimatedGraph } from './AnimatedGraph';
 import { BlinkingBoxes } from './BlinkingBoxes';
 import { BlinkingDots } from './BlinkingDots';
 import { TrajectoryMap } from './TrajectoryMap';
-console.clear()
+
 document.addEventListener('DOMContentLoaded', () => {
   const allBoxes = document.querySelectorAll('.blinking-boxes');
   const allDots = document.querySelectorAll('.blinking-dots');
@@ -46,7 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (allAnimatedGraphs.length) {
     allAnimatedGraphs.forEach(wrap => {
-      new AnimatedGraph({wrap})
+      const { isVertical } = wrap.dataset;
+      console.log(Boolean(isVertical))
+      new AnimatedGraph({
+        wrap,
+        isVertical: Boolean(isVertical)
+      })
     });
   }
 

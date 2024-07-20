@@ -7,9 +7,11 @@ export class AnimatedGraph {
   deltaTime = 0;
   isVisible = false;
 
-  constructor({wrap}) {
+  constructor({wrap, isVertical}) {
     this.wrap = wrap;
-    this.canvas = wrap.querySelector('canvas');
+    this.isVertical = isVertical;
+    this.canvas = document.createElement('canvas');
+    this.wrap.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
 
     this.noise = createNoise2D();
@@ -18,16 +20,27 @@ export class AnimatedGraph {
 
   createGradient(color) {
     const hexColor = this.hexToRgb(color);
-    const gradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
+    const gradient = this.isVertical
+    ? this.ctx.createLinearGradient(0, 0, 0, this.canvas.height)
+    : this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
     gradient.addColorStop(0, `rgba(${hexColor}, 0)`);
     gradient.addColorStop(0.1, `rgba(${hexColor}, 0)`);
-    gradient.addColorStop(0.3, `rgba(${hexColor}, 0.075)`);
+    gradient.addColorStop(0.3, `rgba(${hexColor}, 0.2)`);
     gradient.addColorStop(0.5, color);
-    gradient.addColorStop(0.7, `rgba(${hexColor}, 0.075)`);
+    gradient.addColorStop(0.7, `rgba(${hexColor}, 0.2)`);
     gradient.addColorStop(0.9, `rgba(${hexColor}, 0)`);
     gradient.addColorStop(1, `rgba(${hexColor}, 0)`);
 
+    // gradient.addColorStop(0, color);
+    // gradient.addColorStop(1, color);
     return gradient;
+  }
+
+  calcLineOffset(value, params, attenuationBase, fullSize) {
+    const { amplitude, frequency, noiseOffset } = params;
+    const noiseValue = this.noise(value * frequency + noiseOffset, this.time) - 1;
+    const attenuation = Math.sin((value / attenuationBase) * Math.PI) ** 3;
+    return fullSize + noiseValue * amplitude * attenuation;
   }
 
   draw(currentTime) {
@@ -36,27 +49,29 @@ export class AnimatedGraph {
       this.lastTime = currentTime;
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   
-      this.linesParams.forEach(params => {
-        const { color, amplitude, frequency, noiseOffset } = params;
-  
-        const gradient = this.createGradient(color);
+      this.linesParams.forEach(params => {const gradient = this.createGradient(params.color);
   
         this.ctx.beginPath();
-        this.ctx.moveTo(0, this.canvas.height);
   
-        for (let x = 0; x < this.canvas.width; x += 4) {
-          const noiseValue = this.noise(x * frequency + noiseOffset, this.time) - 1;
-          const attenuation = Math.sin((x / this.canvas.width) * Math.PI) ** 2;
-          const y = this.canvas.height + noiseValue * amplitude * attenuation;
-  
-          this.ctx.lineTo(x, y);
+        if (this.isVertical) {
+          this.ctx.moveTo(this.canvas.width, 0);
+          for (let y = 0; y < this.canvas.height; y += 4) {
+            const x = this.calcLineOffset(y, params, this.canvas.height, this.canvas.width);
+            this.ctx.lineTo(x, y);
+          }
+        } else {
+          this.ctx.moveTo(0, this.canvas.height);
+          for (let x = 0; x < this.canvas.width; x += 4) {
+            const y = this.calcLineOffset(x, params, this.canvas.width, this.canvas.height);
+            this.ctx.lineTo(x, y);
+          }
         }
         this.ctx.strokeStyle = gradient;
         this.ctx.lineWidth = 1.5;
         this.ctx.stroke();
       });
       
-      this.time += (this.deltaTime * 0.25);
+      this.time += (this.deltaTime * 0.1);
     }
 
     requestAnimationFrame(this.draw.bind(this));
@@ -76,7 +91,7 @@ export class AnimatedGraph {
     const resizeObserver = new ResizeObserver(() => {
       this.canvas.width = this.wrap.offsetWidth;
       this.canvas.height = this.wrap.offsetHeight;
-      this.updateAmplitude(this.canvas.height * 0.5);
+      this.updateAmplitude(this.isVertical ? this.canvas.width * 0.5 : this.canvas.height * 0.5);
     });
 
     resizeObserver.observe(this.wrap)
