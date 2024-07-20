@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.166.1/+esm'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.166.1/+esm';
 
 export class BlinkingBoxes {
   seed = Math.random();

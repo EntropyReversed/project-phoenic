@@ -17,7 +17,7 @@ class AnimatedGraph {
     this.attenuationPower = attenuation;
     this.speed = speed;
     this.flip = flip;
-
+console.log({flipClass: this.flip})
     this.canvas = document.createElement('canvas');
     this.wrap.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
@@ -132,7 +132,7 @@ class AnimatedGraph {
     }));
 
     const { flip } = this.wrap.dataset;
-    if (flip === 'true') {
+    if (flip === "true") {
       this.canvas.style.transform = `scale${this.isVertical ? 'X' : 'Y'}(-1)`;
     }
   }
@@ -384,7 +384,7 @@ class BlinkingDots {
     })
   }
 }
-
+ 
 class TrajectoryMap {
   constructor({ wrap }) {
     this.wrap = wrap;

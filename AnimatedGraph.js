@@ -130,7 +130,7 @@ export class AnimatedGraph {
     }));
 
     const { flip } = this.wrap.dataset;
-    if (flip === 'true') {
+    if (flip === "true") {
       this.canvas.style.transform = `scale${this.isVertical ? 'X' : 'Y'}(-1)`;
     }
   }
