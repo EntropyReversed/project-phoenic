@@ -7,17 +7,20 @@ export class AnimatedGraph {
   lineResolution = 3;
   isVisible = false;
 
-  constructor({ wrap, isVertical, amplitude, frequency, speed }) {
+  constructor({ wrap, vertical, amplitude, frequency, attenuation, speed, flip }) {
     this.wrap = wrap;
-    this.isVertical = isVertical;
+    this.isVertical = vertical;
     this.amplitudeStrength = amplitude;
     this.frequency = frequency;
+    this.attenuationPower = attenuation;
     this.speed = speed;
+    this.flip = flip;
+
     this.canvas = document.createElement('canvas');
     this.wrap.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
-
     this.noise = createNoise2D();
+
     this.init()
   }
 
@@ -26,12 +29,13 @@ export class AnimatedGraph {
     const gradient = this.isVertical
     ? this.ctx.createLinearGradient(0, 0, 0, this.canvas.height)
     : this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
+    
     gradient.addColorStop(0, `rgba(${hexColor}, 0)`);
-    gradient.addColorStop(0.1, `rgba(${hexColor}, 0)`);
+    gradient.addColorStop(0.05, `rgba(${hexColor}, 0)`);
     gradient.addColorStop(0.3, `rgba(${hexColor}, 0.2)`);
-    gradient.addColorStop(0.5, color);
+    gradient.addColorStop(0.5, `rgba(${hexColor}, 1)`);
     gradient.addColorStop(0.7, `rgba(${hexColor}, 0.2)`);
-    gradient.addColorStop(0.9, `rgba(${hexColor}, 0)`);
+    gradient.addColorStop(0.95, `rgba(${hexColor}, 0)`);
     gradient.addColorStop(1, `rgba(${hexColor}, 0)`);
     return gradient;
   }
@@ -39,7 +43,7 @@ export class AnimatedGraph {
   calcLineOffset(value, params, attenuationBase, fullSize) {
     const { amplitude, frequency, noiseOffset } = params;
     const noiseValue = this.noise(value * frequency + noiseOffset, this.time) - 1;
-    const attenuation = Math.sin((value / attenuationBase) * Math.PI) ** 3;
+    const attenuation = Math.sin((value / attenuationBase) * Math.PI) ** this.attenuationPower;
     return fullSize + noiseValue * amplitude * attenuation;
   }
 
@@ -124,6 +128,11 @@ export class AnimatedGraph {
       frequency: 0.01 * this.frequency,
       noiseOffset: Math.random() * 1000,
     }));
+
+    const { flip } = this.wrap.dataset;
+    if (flip) {
+      this.canvas.style.transform = `scale${this.isVertical ? 'X' : 'Y'}(-1)`;
+    }
   }
 
   init() {

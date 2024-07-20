@@ -302,51 +302,119 @@
   </div>
 
   <div class="animated-graph-wrap">
-    <div class="animated-graph" style="width: 400px; height: 60px;"></div>
+    <div class="animated-graph" style="width: 400px; height: 60px;">
+      <div class="help">
+        <span>Default (just div with a class)</span>
+        <span>data-vertical="false"</span>
+        <span>data-amplitude="1"(max)</span>
+        <span>data-frequency="1"</span>
+        <span>data-attenuation="2"</span>
+        <span>data-speed="1"</span>
+        <span>data-flip="false"</span>
+      </div>
+    </div>
+
+    <div 
+      class="animated-graph"
+      data-flip="true"
+      style="width: 400px; height: 60px;"
+    >
+      <div class="help">
+        <span>data-flip="true"</span>
+      </div>
+    </div>
 
     <div 
       class="animated-graph" 
-      style="width: 400px; height: 60px;transform: scaleY(-1);"
-    ></div>
-
-    <div 
-      class="animated-graph" 
-      data-is-vertical="true"
+      data-vertical="true"
       style="width: 60px; height: 400px;"
-    ></div>
+    >
+      <div class="help">
+        <span>data-vertical="true"</span>
+      </div>
+    </div>
 
     <div 
       class="animated-graph" 
-      data-is-vertical="true"
-      style="width: 60px; height: 400px;transform: scaleX(-1);"
-    ></div>
+      data-vertical="true"
+      data-flip="true"
+      style="width: 60px; height: 400px;"
+    >
+      <div class="help">
+        <span>data-vertical="true"</span>
+        <span>data-flip="true"</span>
+      </div>
+    </div>
   
     <div 
       class="animated-graph"
       data-amplitude="0.5"
       style="width: 400px; height: 60px;"
-    ></div>
+    >
+      <div class="help">
+        <span>data-amplitude="0.5"</span>
+      </div>
+    </div>
+
+
+    <div 
+      class="animated-graph" 
+      data-speed="2"
+      style="width: 400px; height: 60px;"
+    >
+      <div class="help">
+        <span>data-speed="2"</span>
+      </div>
+    </div>
 
     <div 
       class="animated-graph"
-      data-frequency="1.5" 
-      data-speed="0.5"
+      data-frequency="1.5"
       style="width: 400px; height: 60px;"
-    ></div>
+    >
+      <div class="help">
+        <span>data-frequency="1.5"</span>
+      </div>
+    </div>
   
     <div 
       class="animated-graph"
-      data-frequency="0.5" 
+      data-frequency="0.5"
       style="width: 400px; height: 60px;"
-    ></div>
-  
-    <div class="animated-graph" style="width: 400px; height: 60px;"></div>
-  
-    <div class="animated-graph" style="width: 400px; height: 60px;"></div>
-  
-    <div class="animated-graph" style="width: 400px; height: 60px;"></div>
-  
-    <div class="animated-graph" style="width: 400px; height: 60px;"></div>
+    >
+      <div class="help">
+        <span>data-frequency="0.5"</span>
+      </div>
+    </div>
+
+    <div 
+      class="animated-graph"
+      data-attenuation="10"
+      style="width: 400px; height: 60px;"
+    >
+      <div class="help">
+        <span>data-attenuation="10"</span>
+      </div>
+    </div>
+
+    <div 
+      class="animated-graph"
+      data-attenuation="0"
+      style="width: 400px; height: 60px;"
+    >
+      <div class="help">
+        <span>data-attenuation="0"</span>
+      </div>
+    </div>
+
+    <div 
+      class="animated-graph" 
+      style="width: 400px; height: 160px;"
+    >
+      <div class="help">
+        <span>Default with bigger height</span>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="/main.js"></script>

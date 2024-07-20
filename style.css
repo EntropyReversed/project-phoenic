@@ -33,9 +33,30 @@ body {
   display: flex;
   align-items: start;
   flex-wrap: wrap;
-  gap: 5rem;
+  gap: 7rem;
   margin-top: 2rem;
   margin-bottom: 5rem;
+}
+
+.animated-graph {
+  position: relative;
+}
+
+.animated-graph-wrap .help {
+  position: absolute;
+  top: calc(100% + 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-family: "Red Hat Mono", monospace;
+}
+
+.animated-graph-wrap span {
+  white-space: nowrap;
+  font-size: 12px;
 }
 
 .blinking-dots {

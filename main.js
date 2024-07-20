@@ -45,14 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (allAnimatedGraphs.length) {
     allAnimatedGraphs.forEach(wrap => {
-      const { isVertical, amplitude, frequency, speed } = wrap.dataset;
+      const { vertical, amplitude, frequency, attenuation, speed, flip } = wrap.dataset;
 
       new AnimatedGraph({
         wrap,
-        isVertical: Boolean(isVertical),
+        vertical: Boolean(vertical),
         amplitude: Number(amplitude ?? 1),
         frequency: Number(frequency ?? 1),
+        attenuation: Number(attenuation ?? 2),
         speed: Number(speed ?? 1),
+        flip: Boolean(flip ?? false),
       })
     });
   }
