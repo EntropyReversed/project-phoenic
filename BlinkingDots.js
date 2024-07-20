@@ -1,5 +1,3 @@
-// import gsap from 'gsap';
-
 class BlinkingDots {
   svgNS = "http://www.w3.org/2000/svg";
   timeline = gsap.timeline();
