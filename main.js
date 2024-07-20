@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
   const trajectoryMap = document.querySelector('.trajectory-map');
 
+  console.log('log from github script')
+
   if (allBoxes.length) {
     allBoxes.forEach((box) => {
       const { size, gap, rows, cols } = box.dataset;
