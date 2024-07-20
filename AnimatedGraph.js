@@ -1,4 +1,3 @@
-import gsap from 'gsap';
 import { createNoise2D } from 'simplex-noise';
 
 export class AnimatedGraph {

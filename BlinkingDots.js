@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 
-
-export class BlinkingDots {
+class BlinkingDots {
   svgNS = "http://www.w3.org/2000/svg";
   timeline = gsap.timeline();
   omitIndexes = {
@@ -117,3 +116,4 @@ export class BlinkingDots {
   }
 }
 
+export default BlinkingDots;

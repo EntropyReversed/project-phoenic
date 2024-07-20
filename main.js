@@ -1,29 +1,29 @@
-import { AnimatedGraph } from './AnimatedGraph.js';
-import { BlinkingBoxes } from './BlinkingBoxes.js';
-import { BlinkingDots } from './BlinkingDots.js';
-import { TrajectoryMap } from './TrajectoryMap.js';
+// import { AnimatedGraph } from './AnimatedGraph.js';
+// import { BlinkingBoxes } from './BlinkingBoxes.js';
+import BlinkingDots from './BlinkingDots.js';
+// import { TrajectoryMap } from './TrajectoryMap.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const allBoxes = document.querySelectorAll('.blinking-boxes');
+  // const allBoxes = document.querySelectorAll('.blinking-boxes');
   const allDots = document.querySelectorAll('.blinking-dots');
-  const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
-  const trajectoryMap = document.querySelector('.trajectory-map');
+  // const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
+  // const trajectoryMap = document.querySelector('.trajectory-map');
 
   console.log('log from github script')
 
-  if (allBoxes.length) {
-    allBoxes.forEach((box) => {
-      const { size, gap, rows, cols } = box.dataset;
+  // if (allBoxes.length) {
+  //   allBoxes.forEach((box) => {
+  //     const { size, gap, rows, cols } = box.dataset;
 
-      new BlinkingBoxes({
-        container: box,
-        boxSize: +size || 4,
-        gap: +gap || 2,
-        rows: +rows || 24,
-        cols: +cols || 8,
-      });
-    });
-  }
+  //     new BlinkingBoxes({
+  //       container: box,
+  //       boxSize: +size || 4,
+  //       gap: +gap || 2,
+  //       rows: +rows || 24,
+  //       cols: +cols || 8,
+  //     });
+  //   });
+  // }
 
   if (allDots.length) {
     allDots.forEach((dot) => {
@@ -39,21 +39,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (trajectoryMap) {
-    new TrajectoryMap({
-      wrap: trajectoryMap,
-    });
-  }
+  // if (trajectoryMap) {
+  //   new TrajectoryMap({
+  //     wrap: trajectoryMap,
+  //   });
+  // }
 
-  if (allAnimatedGraphs.length) {
-    allAnimatedGraphs.forEach(wrap => {
-      const { isVertical } = wrap.dataset;
-      console.log(Boolean(isVertical))
-      new AnimatedGraph({
-        wrap,
-        isVertical: Boolean(isVertical)
-      })
-    });
-  }
+  // if (allAnimatedGraphs.length) {
+  //   allAnimatedGraphs.forEach(wrap => {
+  //     const { isVertical } = wrap.dataset;
+  //     console.log(Boolean(isVertical))
+  //     new AnimatedGraph({
+  //       wrap,
+  //       isVertical: Boolean(isVertical)
+  //     })
+  //   });
+  // }
 
 });
