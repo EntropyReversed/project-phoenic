@@ -56,21 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
         speed: Number(speed ?? 1),
         flip: flip === 'true',
       })
-
-      if (index === 4) {
-        console.log(graph)
-        wrap.addEventListener('click', () => {
-          gsap.to(graph.linesParams, {
-            amplitude: 1,
-          })
-        })
-        // wrap.addEventListener('mouseleave', () => {
-        //   console.log('leave')
-        //   gsap.to(graph.linesParams, {
-        //     amplitude: 1,
-        //   })
-        // })
-      }
     });
   }
 });
