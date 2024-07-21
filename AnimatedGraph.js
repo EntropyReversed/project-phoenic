@@ -21,7 +21,7 @@ export class AnimatedGraph {
     this.ctx = this.canvas.getContext('2d');
     this.noise = createNoise2D();
 
-    this.init()
+    this.init();
   }
 
   createGradient(color) {
@@ -54,7 +54,6 @@ export class AnimatedGraph {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   
       this.linesParams.forEach(params => {const gradient = this.createGradient(params.color);
-  
         this.ctx.beginPath();
   
         if (this.isVertical) {
@@ -89,16 +88,23 @@ export class AnimatedGraph {
   }
 
   setUpSize() {
-    this.canvas.width = this.wrap.offsetWidth;
-    this.canvas.height = this.wrap.offsetHeight;
+    this.scaleCanvas(this.wrap.offsetWidth, this.wrap.offsetHeight);
 
     const resizeObserver = new ResizeObserver(() => {
-      this.canvas.width = this.wrap.offsetWidth;
-      this.canvas.height = this.wrap.offsetHeight;
+      this.scaleCanvas(this.wrap.offsetWidth, this.wrap.offsetHeight);
       this.updateAmplitude(this.isVertical ? (this.canvas.width * 0.5) * this.amplitudeStrength : (this.canvas.height * 0.5) * this.amplitudeStrength);
     });
 
     resizeObserver.observe(this.wrap)
+  }
+
+  scaleCanvas(width, height) {
+    if (typeof window === undefined) return null;
+    this.ratio = window.devicePixelRatio || 1;
+    this.canvas.width = width * this.ratio;
+    this.canvas.height = height * this.ratio;
+    this.canvas.style.width = `${width}px`;
+    this.canvas.style.height = `${height}px`;
   }
 
   setupIntersectionObserver() {
@@ -124,8 +130,8 @@ export class AnimatedGraph {
   setUpLines() {
     this.linesParams = ['#D86EFE', '#D86EFE', '#FCDC34', '#FCDC34', '#39EED8', '#39EED8'].map(color => ({
       color,
-      amplitude: (this.canvas.height * 0.5) * this.amplitudeStrength,
-      frequency: 0.01 * this.frequency,
+      amplitude: 1,
+      frequency: 0.01 * this.frequency / this.ratio,
       noiseOffset: Math.random() * 1000,
     }));
 
@@ -137,8 +143,8 @@ export class AnimatedGraph {
 
   init() {
     this.setUpSize();
-    this.setupIntersectionObserver();
     this.setUpLines();
+    this.setupIntersectionObserver();
     this.draw(0);
   }
 }
