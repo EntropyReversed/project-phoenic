@@ -100,7 +100,7 @@ export class AnimatedGraph {
 
   scaleCanvas(width, height) {
     if (typeof window === undefined) return null;
-    this.ratio = window.devicePixelRatio || 1;
+    this.ratio = Math.max(1.5, window.devicePixelRatio);
     this.canvas.width = width * this.ratio;
     this.canvas.height = height * this.ratio;
     this.canvas.style.width = `${width}px`;
@@ -146,15 +146,33 @@ export class AnimatedGraph {
     return result;
   }
 
+  nameToHex(colorName) {
+    this.ctx.fillStyle = colorName;
+    return this.ctx.fillStyle;
+  }
+
   setUpLines() {
-    this.linesParams = this.spreadColors(['#D86EFE', '#FCDC34', '#39EED8'], 6).map(color => ({
+    const defaultColor = this.nameToHex('#39EED8');
+    const { flip, colorOne, colorTwo, colorThree, colorFour } = this.wrap.dataset;
+
+    const formatedColors = [
+      colorOne,
+      colorTwo,
+      colorThree,
+      colorFour
+    ].filter(Boolean).map(color => this.nameToHex(color));
+
+    if (formatedColors.length === 0) {
+      formatedColors.push(defaultColor);
+    }
+
+    this.linesParams = this.spreadColors(formatedColors, 6).map(color => ({
       color,
       amplitude: 1,
       frequency: 0.01 * this.frequency / this.ratio,
       noiseOffset: Math.random() * 1000,
     }));
 
-    const { flip } = this.wrap.dataset;
     if (flip === "true") {
       this.canvas.style.transform = `scale${this.isVertical ? 'X' : 'Y'}(-1)`;
     }
