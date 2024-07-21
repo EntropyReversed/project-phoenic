@@ -73,7 +73,7 @@ export class AnimatedGraph {
         this.ctx.strokeStyle = gradient;
         this.ctx.lineWidth = 1.5 * this.ratio;
         this.ctx.stroke();
-        params.time += (this.deltaTime * 0.1 * (this.speed + Math.random() * 0.2));
+        params.time += (this.deltaTime * 0.05 * (this.speed + Math.random() * 0.5));
       });
     }
 
@@ -153,7 +153,7 @@ export class AnimatedGraph {
 
   setUpLines() {
     const defaultColor = this.nameToHex('#39EED8');
-    const { flip, colorOne, colorTwo, colorThree, colorFour } = this.wrap.dataset;
+    const { colorOne, colorTwo, colorThree, colorFour } = this.wrap.dataset;
 
     const formatedColors = [
       colorOne,
@@ -169,12 +169,12 @@ export class AnimatedGraph {
     this.linesParams = this.spreadColors(formatedColors, 6).map(color => ({
       color,
       amplitude: 1,
-      frequency: 0.01 * this.frequency / this.ratio,
+      frequency: 0.01 * this.frequency / this.ratio + Math.random() * 0.001,
       noiseOffset: Math.random() * 1000,
       time: 0,
     }));
 
-    if (flip === "true") {
+    if (this.flip) {
       this.canvas.style.transform = `scale${this.isVertical ? 'X' : 'Y'}(-1)`;
     }
   }
