@@ -1,7 +1,6 @@
 import { createNoise2D } from "https://unpkg.com/simplex-noise@4.0.2/dist/esm/simplex-noise.js";
 
 export class AnimatedGraph {
-  // time = 0;
   lastTime = 0;
   deltaTime = 0;
   lineResolution = 3;
