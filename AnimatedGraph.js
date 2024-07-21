@@ -70,7 +70,7 @@ export class AnimatedGraph {
           }
         }
         this.ctx.strokeStyle = gradient;
-        this.ctx.lineWidth = 1.5;
+        this.ctx.lineWidth = 1.5 * this.ratio;
         this.ctx.stroke();
       });
       
@@ -127,8 +127,27 @@ export class AnimatedGraph {
     this.linesParams.forEach(param => param.amplitude = amp);
   }
 
+  spreadColors(colors, finalLength) {
+    const result = [];
+    const repetitions = Math.ceil(finalLength / colors.length);
+
+    if (colors.length === 4) {
+      return [colors[0],colors[0],colors[1],colors[1],colors[2],colors[3]]
+    }
+
+    let colorIndex = 0;
+    for (let i = 0; i < finalLength; i++) {
+      if (i % repetitions === 0 && i !== 0) {
+        colorIndex++;
+      }
+      result.push(colors[colorIndex % colors.length]);
+    }
+
+    return result;
+  }
+
   setUpLines() {
-    this.linesParams = ['#D86EFE', '#D86EFE', '#FCDC34', '#FCDC34', '#39EED8', '#39EED8'].map(color => ({
+    this.linesParams = this.spreadColors(['#D86EFE', '#FCDC34', '#39EED8'], 6).map(color => ({
       color,
       amplitude: 1,
       frequency: 0.01 * this.frequency / this.ratio,
