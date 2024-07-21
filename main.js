@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (allAnimatedGraphs.length) {
-    allAnimatedGraphs.forEach(wrap => {
+    allAnimatedGraphs.forEach((wrap, index) => {
       const { vertical, amplitude, frequency, attenuation, speed, flip } = wrap.dataset;
 
-      new AnimatedGraph({
+      const graph = new AnimatedGraph({
         wrap,
         vertical: vertical === 'true',
         amplitude: Number(amplitude ?? 1),
@@ -56,6 +56,21 @@ document.addEventListener('DOMContentLoaded', () => {
         speed: Number(speed ?? 1),
         flip: flip === 'true',
       })
+
+      if (index === 4) {
+        console.log(graph)
+        wrap.addEventListener('click', () => {
+          gsap.to(graph.linesParams, {
+            amplitude: 1,
+          })
+        })
+        // wrap.addEventListener('mouseleave', () => {
+        //   console.log('leave')
+        //   gsap.to(graph.linesParams, {
+        //     amplitude: 1,
+        //   })
+        // })
+      }
     });
   }
 });

@@ -1,7 +1,7 @@
 import { createNoise2D } from "https://unpkg.com/simplex-noise@4.0.2/dist/esm/simplex-noise.js";
 
 export class AnimatedGraph {
-  time = 0;
+  // time = 0;
   lastTime = 0;
   deltaTime = 0;
   lineResolution = 3;
@@ -41,8 +41,8 @@ export class AnimatedGraph {
   }
 
   calcLineOffset(value, params, attenuationBase, fullSize) {
-    const { amplitude, frequency, noiseOffset } = params;
-    const noiseValue = this.noise(value * frequency + noiseOffset, this.time) - 1;
+    const { amplitude, frequency, noiseOffset, time } = params;
+    const noiseValue = this.noise(value * frequency + noiseOffset, time) - 1;
     const attenuation = Math.sin((value / attenuationBase) * Math.PI) ** this.attenuationPower;
     return fullSize + noiseValue * amplitude * attenuation;
   }
@@ -53,7 +53,8 @@ export class AnimatedGraph {
       this.lastTime = currentTime;
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   
-      this.linesParams.forEach(params => {const gradient = this.createGradient(params.color);
+      this.linesParams.forEach(params => {
+        const gradient = this.createGradient(params.color);
         this.ctx.beginPath();
   
         if (this.isVertical) {
@@ -72,9 +73,8 @@ export class AnimatedGraph {
         this.ctx.strokeStyle = gradient;
         this.ctx.lineWidth = 1.5 * this.ratio;
         this.ctx.stroke();
+        params.time += (this.deltaTime * 0.1 * (this.speed + Math.random() * 0.2));
       });
-      
-      this.time += (this.deltaTime * 0.1 * this.speed);
     }
 
     requestAnimationFrame(this.draw.bind(this));
@@ -128,12 +128,12 @@ export class AnimatedGraph {
   }
 
   spreadColors(colors, finalLength) {
-    const result = [];
-    const repetitions = Math.ceil(finalLength / colors.length);
-
-    if (colors.length === 4) {
+    if (colors.length === 4 && finalLength === 6) {
       return [colors[0],colors[0],colors[1],colors[1],colors[2],colors[3]]
     }
+
+    const result = [];
+    const repetitions = Math.ceil(finalLength / colors.length);
 
     let colorIndex = 0;
     for (let i = 0; i < finalLength; i++) {
@@ -171,6 +171,7 @@ export class AnimatedGraph {
       amplitude: 1,
       frequency: 0.01 * this.frequency / this.ratio,
       noiseOffset: Math.random() * 1000,
+      time: 0,
     }));
 
     if (flip === "true") {
