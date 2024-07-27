@@ -1,13 +1,17 @@
 import { AnimatedGraph } from './AnimatedGraph';
 import { BlinkingBoxes } from './BlinkingBoxes';
 import { BlinkingDots } from './BlinkingDots';
+import { PathAnimation } from './PathAnimation';
 import { TrajectoryMap } from './TrajectoryMap';
+import { VerticalCardsAnimation } from './VerticalCardsAnimation';
 
 document.addEventListener('DOMContentLoaded', () => {
   const allBoxes = document.querySelectorAll('.blinking-boxes');
   const allDots = document.querySelectorAll('.blinking-dots');
   const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
   const trajectoryMap = document.querySelector('.trajectory-map');
+  const pathAnimation = document.querySelector('.path-animation');
+  const verticalCardsWrap = document.querySelector('.vertical-items');
 
   if (allBoxes.length) {
     allBoxes.forEach((box) => {
@@ -72,5 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // })
       }
     });
+
+    if (pathAnimation) {
+      new PathAnimation({
+        wrap: pathAnimation
+      })
+    }
+
+
+    if (verticalCardsWrap) {
+      new VerticalCardsAnimation('.vertical-item');
+    }
   }
 });

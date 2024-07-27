@@ -22,8 +22,12 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: rgb(19, 14, 22);
-  padding: 2rem;
+  padding-top: 2rem;
   /* padding-top: 100vh; */
+}
+
+body > svg {
+  padding: 0 2rem;
 }
 
 .blinking-boxes-wrap,
@@ -36,6 +40,7 @@ body {
   gap: 7rem;
   margin-top: 2rem;
   margin-bottom: 5rem;
+  padding: 0 2rem;
 }
 
 .animated-graph {
@@ -90,4 +95,30 @@ body {
   75%,
   90%,
   100% { opacity: 0; }
+}
+
+
+.vertical-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.vertical-item {
+  font-size: clamp(40px, 7.78vw, 112px);
+}
+
+.vertical-item .inner {
+  transform: scale(0.3);
+  opacity: 0.1;
+}
+
+.vertical-item.last {
+  width: 350px;
+  text-align: center;
+  font-size: 30px;
 }
