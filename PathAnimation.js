@@ -66,7 +66,5 @@ export class PathAnimation {
             scrub: 1,
             animation: this.timeline,
         })
-
-        console.log(this.svg)
     }
 }

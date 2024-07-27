@@ -1,7 +1,7 @@
 import { AnimatedGraph } from './AnimatedGraph';
 import { BlinkingBoxes } from './BlinkingBoxes';
 import { BlinkingDots } from './BlinkingDots';
-import { PathAnimation } from './PathAnimation';
+// import { PathAnimation } from './PathAnimation';
 import { TrajectoryMap } from './TrajectoryMap';
 import { VerticalCardsAnimation } from './VerticalCardsAnimation';
 
@@ -60,29 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
         speed: Number(speed ?? 1),
         flip: flip === 'true',
       })
-
-      if (index === 4) {
-        console.log(graph)
-        // wrap.addEventListener('click', () => {
-        //   gsap.to(graph, {
-        //     attenuation: 10,
-        //   })
-        // })
-        // wrap.addEventListener('mouseleave', () => {
-        //   console.log('leave')
-        //   gsap.to(graph.linesParams, {
-        //     amplitude: 1,
-        //   })
-        // })
-      }
     });
 
-    if (pathAnimation) {
-      new PathAnimation({
-        wrap: pathAnimation
-      })
-    }
-
+    // if (pathAnimation) {
+    //   new PathAnimation({
+    //     wrap: pathAnimation
+    //   })
+    // }
 
     if (verticalCardsWrap) {
       new VerticalCardsAnimation('.vertical-item');
