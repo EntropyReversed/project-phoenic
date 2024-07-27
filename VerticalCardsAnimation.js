@@ -27,6 +27,7 @@ export class VerticalCardsAnimation {
             `bottom+=${card.offsetHeight * 1} center-=${card.offsetHeight * 3}`,
           scrub: 1,
           invalidateOnRefresh: true,
+          markers: true,
         },
       });
       const cardInner = card.querySelector('.inner');
