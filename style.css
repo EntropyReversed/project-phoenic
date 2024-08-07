@@ -98,28 +98,68 @@ body > svg {
 }
 
 
-.vertical-items {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
+
+.vertical-cards {
+  position: relative;
   width: 100%;
-  padding: 10rem 0;
-  overflow: hidden;
+  /* margin-top: -50vh; */
 }
 
-.vertical-item {
+.vertical-cards__img {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 100px;
+  height: 200px;
+  background: #222222;
+  box-shadow: 0 0 0 1px white;
+  opacity: 0;
+}
+
+.vertical-cards__card {
   font-size: clamp(40px, 7.78vw, 112px);
 }
 
-.vertical-item .inner {
+.vertical-cards__card .vertical-cards__card-inner {
   transform: scale(0.3);
   opacity: 0.1;
 }
 
-.vertical-item.last {
+.vertical-cards__card.last {
   width: 350px;
   text-align: center;
   font-size: 30px;
 }
+
+.vertical-cards__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10rem;
+  width: 100%;
+  padding-bottom: 40dvh;
+  margin-top: -40dvh;
+  will-change: transform;
+}
+
+.graphs-and-images {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100dvh;
+  /* margin-bottom: -60vh; */
+}
+
+.graphs-and-images .animated-graph {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  max-width: 90vw;
+  transform: translateX(-50%) scale(0.8);
+  transform-origin: bottom;
+  opacity: 0;
+}
+
+
+

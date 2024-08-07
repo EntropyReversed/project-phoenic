@@ -1,19 +1,12 @@
-// import Lenis from 'lenis';
-
-// const lenis = new Lenis();
-
-// function raf(time) {
-//   lenis.raf(time);
-//   requestAnimationFrame(raf);
-// }
-
-// requestAnimationFrame(raf);
-
 gsap.registerPlugin(ScrollTrigger);
 
 export class VerticalCardsAnimation {
-  constructor(selector) {
-    this.cards = document.querySelectorAll(selector);
+  constructor({ wrapSelector, cardSelector, cardSelectorInner, graphSelector, imgSelector }) {
+    this.wrap = document.querySelector(wrapSelector);
+    this.cards = this.wrap.querySelectorAll(cardSelector);
+    this.graphs = this.wrap.querySelectorAll(graphSelector);
+    this.images = this.wrap.querySelectorAll(imgSelector);
+    this.cardSelectorInner = cardSelectorInner;
     this.initAnimation();
   }
 
@@ -22,28 +15,49 @@ export class VerticalCardsAnimation {
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: card,
-          start: () => `top-=${card.offsetHeight * 2} center`,
-          end: () =>
-            `bottom+=${card.offsetHeight * 1} center-=${card.offsetHeight * 3}`,
+          start: () => `top bottom-=20%`,
+          end: () => `top top`,
           scrub: 1,
           invalidateOnRefresh: true,
-          markers: true,
         },
       });
-      const cardInner = card.querySelector('.inner');
 
-      timeline.to(cardInner, {
-        scale: 1,
-        opacity: 1,
-        duration: 1.5,
-      });
+      const cardInner = card.querySelector(this.cardSelectorInner);
+
+      timeline
+        .to(cardInner, {
+          scale: 1,
+          opacity: 1,
+          duration: 1.5,
+        }, 'start')
+        .to(
+          this.graphs[index],
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 1.5,
+          },
+          'start'
+        )
+        .to(
+          this.images[index],
+          {
+            opacity: 1,
+            duration: 1.5,
+          },
+          'start'
+        )
+
 
       if (index !== this.cards.length - 1) {
         timeline
-          .to(cardInner, {
-            scale: 0.3,
-            duration: 2,
-          })
+          .to(
+            cardInner,
+            {
+              scale: 0.3,
+              duration: 2,
+            }
+          )
           .to(
             cardInner,
             {
@@ -51,9 +65,18 @@ export class VerticalCardsAnimation {
               duration: 1,
             },
             '<'
-          );
-      } else {
-        timeline.to({}, { duration: 2 });
+          )        
+          .to(this.graphs[index], {
+            opacity: 0,
+            scale: 0.8,
+            delay: 0.2,
+            duration: 1,
+          }, 'start+=1.5')
+          .to(this.images[index], {
+            opacity: 0,
+            delay: 0.2,
+            duration: 1,
+          }, 'start+=1.5');
       }
     });
   }

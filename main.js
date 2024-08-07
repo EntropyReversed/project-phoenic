@@ -11,7 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
   const trajectoryMap = document.querySelector('.trajectory-map');
   const pathAnimation = document.querySelector('.path-animation');
-  const verticalCardsWrap = document.querySelector('.vertical-items');
+
+  const selectors = {
+    cardsSelector: '.vertical-cards',
+    cardSelector: '.vertical-cards__card',
+    cardSelectorInner: '.vertical-cards__card-inner',
+    graphSelector: '.animated-graph',
+    imgSelector: '.vertical-cards__img',
+  };
+
+  const verticalCardsWrap = document.querySelector(selectors.cardsSelector);
 
   if (allBoxes.length) {
     allBoxes.forEach((box) => {
@@ -48,10 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (allAnimatedGraphs.length) {
-    allAnimatedGraphs.forEach((wrap, index) => {
-      const { vertical, amplitude, frequency, attenuation, speed, flip } = wrap.dataset;
+    allAnimatedGraphs.forEach((wrap) => {
+      const {
+        vertical,
+        amplitude,
+        frequency,
+        attenuation,
+        speed,
+        flip,
+        trackOpacity,
+      } = wrap.dataset;
 
-      const graph = new AnimatedGraph({
+      new AnimatedGraph({
         wrap,
         vertical: vertical === 'true',
         amplitude: Number(amplitude ?? 1),
@@ -59,17 +76,24 @@ document.addEventListener('DOMContentLoaded', () => {
         attenuation: Number(attenuation ?? 2),
         speed: Number(speed ?? 1),
         flip: flip === 'true',
-      })
+        trackOpacity: trackOpacity === 'true',
+      });
     });
+  }
 
-    // if (pathAnimation) {
-    //   new PathAnimation({
-    //     wrap: pathAnimation
-    //   })
-    // }
+  // if (pathAnimation) {
+  //   new PathAnimation({
+  //     wrap: pathAnimation
+  //   })
+  // }
 
-    if (verticalCardsWrap) {
-      new VerticalCardsAnimation('.vertical-item');
-    }
+  if (verticalCardsWrap) {
+    new VerticalCardsAnimation({
+      wrapSelector: selectors.cardsSelector,
+      cardSelector: selectors.cardSelector,
+      cardSelectorInner: selectors.cardSelectorInner,
+      graphSelector: selectors.graphSelector,
+      imgSelector: selectors.imgSelector,
+    });
   }
 });
