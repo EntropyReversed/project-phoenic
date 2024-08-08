@@ -151,7 +151,7 @@ body > svg {
   /* margin-bottom: -60vh; */
 }
 
-.graphs-and-images .animated-graph {
+.graphs-and-images .vertical-cards__graph-wrap {
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -159,6 +159,10 @@ body > svg {
   transform: translateX(-50%) scale(0.8);
   transform-origin: bottom;
   opacity: 0;
+}
+
+.graphs-and-images .animated-graph {
+  max-width: 100%;
 }
 
 

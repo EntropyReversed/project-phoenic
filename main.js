@@ -1,7 +1,7 @@
 import { AnimatedGraph } from './AnimatedGraph';
 import { BlinkingBoxes } from './BlinkingBoxes';
 import { BlinkingDots } from './BlinkingDots';
-// import { PathAnimation } from './PathAnimation';
+import { PathAnimation } from './PathAnimation';
 import { TrajectoryMap } from './TrajectoryMap';
 import { VerticalCardsAnimation } from './VerticalCardsAnimation';
 
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cardsSelector: '.vertical-cards',
     cardSelector: '.vertical-cards__card',
     cardSelectorInner: '.vertical-cards__card-inner',
-    graphSelector: '.animated-graph',
+    graphSelector: '.vertical-cards__graph-wrap',
     imgSelector: '.vertical-cards__img',
   };
 
@@ -81,11 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // if (pathAnimation) {
-  //   new PathAnimation({
-  //     wrap: pathAnimation
-  //   })
-  // }
+  if (pathAnimation) {
+    new PathAnimation({
+      wrap: pathAnimation
+    })
+  }
 
   if (verticalCardsWrap) {
     new VerticalCardsAnimation({

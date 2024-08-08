@@ -45,22 +45,35 @@ export class PathAnimation {
         }
     }
     init() {
-        this.setUpSVG();
+        // this.setUpSVG();
 
+        function getCenterOffset(fromEl, toEl) {
+            let b1 = fromEl.getBBox(),
+                b2 = toEl.getBBox(),
+                p1 = MotionPathPlugin.convertCoordinates(fromEl.ownerSVGElement, fromEl.parentNode, {x: b1.x + b1.width / 2, y: b1.y + b1.height / 2}),
+                p2 = MotionPathPlugin.convertCoordinates(toEl.ownerSVGElement, fromEl.parentNode, {x: b2.x + b2.width / 2, y: b2.y + b2.height / 2});
+            return {x: p2.x - p1.x, y: p2.y - p1.y};
+          }
+
+        const testDiv = document.querySelector('.test')
+        const c1a = document.getElementById('c1a');
+
+        // console.log({testDiv,c1a, getCenterOffset: getCenterOffset(c1a, testDiv)})
         this.timeline = gsap.timeline()
             .set(this.svgWrap, { 
-                yPercent: 10, 
-                rotateX: '70deg', 
+                // yPercent: 10, 
+                // rotateX: '70deg', 
                 transformOrigin: 'top', 
-                scale: 0.7, 
-                z: -130, 
+                // scale: 0.7, 
+                // z: -130, 
                 force3D: true 
             })
-            .to(this.svg, {yPercent: -80})
+            .to(this.svg, {y: () => -this.svgWrap.offsetHeight})
+            .to('.test', {y: () => -this.svgWrap.offsetHeight}, '<')
 
         ScrollTrigger.create({
             trigger: this.wrap,
-            start: 'top top',
+            start: 'top center',
             end: 'bottom bottom',
             markers: true,
             scrub: 1,
