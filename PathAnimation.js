@@ -4,6 +4,7 @@ export class PathAnimation {
     constructor({wrap}) {
         this.wrap = wrap;
         this.svgWrap = this.wrap.querySelector('.path-animation__svg-wrap');
+        this.scrollWrap = this.wrap.querySelector('.path-animation__scroll');
         this.svg = this.wrap.querySelector('svg');
         this.timeline = gsap.timeline();
 
@@ -39,9 +40,8 @@ export class PathAnimation {
     createTimeline() {
         this.timeline.clear()
         this.timeline
-            .set(this.wrap, {'--rotation': '60deg'})
-            .to(this.svg, {y: () => -this.svgWrap.offsetHeight, duration: 10, delay: 3, ease: 'none'}, 'start')
-            .to(this.cards, {y: () => -this.svgWrap.offsetHeight, duration: 10, delay: 3, ease: 'none'}, 'start')
+            .set(this.wrap, {'--rotation': '55deg'})
+            .to(this.scrollWrap, {y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 1, ease: 'none'}, 'start');
 
             this.segments.forEach((seg, i) => {
                 seg.style.strokeDasharray = seg.getTotalLength();
@@ -49,6 +49,17 @@ export class PathAnimation {
 
                 this.timeline.to(seg, { strokeDashoffset: 0, delay: i * 2, duration: 2, ease: 'none' }, 'start');
             })
+    }
+
+    resetAnimation() {
+        gsap.set(this.wrap, { '--rotation': '0deg' });
+        gsap.set(this.svg, { y: 0 });
+        gsap.set(this.cards, {
+            y: 0, 
+            xPercent: 0,
+            "--left": 0,
+            "--top": 0,
+        });
     }
 
     init() {
@@ -63,21 +74,14 @@ export class PathAnimation {
             trigger: this.wrap,
             start: 'top center',
             end: 'bottom bottom',
-            markers: true,
+            // markers: true,
             scrub: 1,
             animation: this.timeline,
             invalidateOnRefresh: true,
         })
 
         window.addEventListener('resize', () => {
-            gsap.set(this.wrap, { '--rotation': '0deg' });
-            gsap.set(this.svg, { y: 0 });
-            gsap.set(this.cards, {
-                y: 0, 
-                xPercent: 0,
-                "--left": 0,
-                "--top": 0,
-            });
+            this.resetAnimation();
             this.positionCards();
             this.createTimeline();
         })
