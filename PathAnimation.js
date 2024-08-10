@@ -1,6 +1,24 @@
 // gsap.registerPlugin(ScrollTrigger) 
 
+const createHTMLElement = (tag, props) => {
+	const element = document.createElement(tag);
+	Object.keys(props).forEach((key) => {
+		element[key] = props[key];
+	});
+	return element;
+};
+
+const createSVGElement = (tag, props) => {
+	const element = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    Object.keys(props).forEach((key) => {
+		element.setAttribute(key, props[key]);
+	});
+	return element;
+};
+
 export class PathAnimation {
+    angle = 70;
+
     constructor({wrap}) {
         this.wrap = wrap;
         this.svgWrap = this.wrap.querySelector('.path-animation__svg-wrap');
@@ -12,17 +30,20 @@ export class PathAnimation {
         this.init();
     }
 
-    positionCard(card, anchor, isLeft) {
-        const point = { x: 0, y: 0 }
-        const convertedPoint = MotionPathPlugin.convertCoordinates(
-            anchor,
-            card,
+    getPosition(item, target, point = { x: 0, y: 0 }) {
+        return MotionPathPlugin.convertCoordinates(
+            target,
+            item,
             point
         );
+    }
+
+    positionCard(card, anchor, isLeft) {
+        const { x, y } = this.getPosition(card, anchor);
 
         gsap.set(card, {
-            "--left": convertedPoint.x,
-            "--top": convertedPoint.y,
+            "--left": x,
+            "--top": y,
         })
 
         if (isLeft) {
@@ -38,27 +59,53 @@ export class PathAnimation {
         });
     }
 
-    createTimeline() {
-        // const path = this.svg.querySelector('#path-animation__main-test');
-        // path.style.strokeDasharray = `200 ${path.getTotalLength() - 370}`;
-        // path.style.strokeDashoffset = path.getTotalLength();
+    positionLines() {
+        this.lines.forEach((line, i) => {
+            const target = this.linesTargets[i];
+            const { x, y } = this.getPosition(line, target);
 
-        gsap.set(this.wrap, {'--rotation': '70deg'})
+            gsap.set(line, {
+                "--left": x,
+                "--top": y,
+            })
+        })
+    }
+
+    createLines() {
+        this.lines = [];
+        this.linesTargets = [];
+        this.linesPerSeg = 3;
+        this.segments.forEach((seg, i) => {
+            Array.from({length: this.linesPerSeg}).forEach((_, line) => {
+                const len = seg.getTotalLength() / this.linesPerSeg;
+                const isMain = len * line < len;
+                const pos = seg.getPointAtLength(len * line);
+
+                const target = createSVGElement('circle', {
+                    cx: pos.x,
+                    cy: pos.y+3,
+                    r: 1,
+                    fill: "transparent",
+                });
+                
+                const lineEl = createHTMLElement('div', {
+                    className: `path-animation__line ${isMain ? 'main' : ''}`
+                });
+
+                this.svg.appendChild(target);
+                this.scrollWrap.appendChild(lineEl);
+
+                this.linesTargets.push(target);
+                this.lines.push(lineEl);
+            })
+        })
+    }
+
+    createTimeline() {
+        gsap.set(this.wrap, {'--rotation': this.angle})
         this.timeline.clear()
             .to(this.scrollWrap, {y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 2, ease: 'none'}, 'start')
-            // .to(path, { strokeDashoffset: 0, duration: 10, ease: 'none' }, 'start')
-            // .to(this.ship, {
-            //     motionPath: {
-            //         path: '#path-animation__main',
-            //         align: '#path-animation__main',
-            //         alignOrigin: [1, 0.5],
-            //         autoRotate: 0,
-            //     },
-            //     transformOrigin: "50% 50%",
-            //     duration: 10,
-            //     ease: 'none'
-            // }, 'start')
-
+            // .fromTo(this.wrap, {'--rotation': 50}, {'--rotation': this.angle, duration: 1, delay: 0.5}, 'start')
             this.segments.forEach((seg, i) => {
                 seg.style.strokeDasharray = seg.getTotalLength();
                 seg.style.strokeDashoffset = seg.getTotalLength();
@@ -69,11 +116,13 @@ export class PathAnimation {
     }
 
     resetAnimation() {
-        gsap.set(this.wrap, { '--rotation': '0deg' });
-        gsap.set(this.svg, { y: 0 });
+        gsap.set(this.wrap, { '--rotation': this.angle });
+        gsap.set(this.scrollWrap, { y: 0 })
         gsap.set(this.cards, {
-            y: 0, 
-            xPercent: 0,
+            "--left": 0,
+            "--top": 0,
+        });
+        gsap.set(this.lines, {
             "--left": 0,
             "--top": 0,
         });
@@ -85,7 +134,9 @@ export class PathAnimation {
         this.anchors = this.svg.querySelectorAll('.path-animation__anchor');
         this.segments = this.svg.querySelectorAll('.path-animation__seg');
 
+        this.createLines();
         this.positionCards();
+        this.positionLines();
         this.createTimeline();
 
         this.scrollTrigger = ScrollTrigger.create({
@@ -101,6 +152,7 @@ export class PathAnimation {
         window.addEventListener('resize', () => {
             this.resetAnimation();
             this.positionCards();
+            this.positionLines();
             this.createTimeline();
         })
     }
