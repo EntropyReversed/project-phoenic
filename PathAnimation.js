@@ -134,7 +134,7 @@ export class PathAnimation {
 		this.isMobile = window.innerWidth < this.mobileBreak;
 
 		if (this.isMobile) {
-			this.angle = 50;
+			this.angle = 40;
 		} else {
 			this.angle = this.startAngle;
 		}
