@@ -114,7 +114,7 @@ export class PathAnimation {
 	createTimeline() {
 		gsap.set(this.wrap, { '--rotation': 0 })
 		this.timeline.clear()
-			.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 2.5, ease: 'none' }, 'start')
+			.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.25), duration: 10, delay: 2, ease: 'none' }, 'start')
 			.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
 			.to(this.lines, { opacity: 0.5, duration: 4 }, 'start');
 
