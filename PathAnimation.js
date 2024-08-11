@@ -116,7 +116,7 @@ export class PathAnimation {
 		this.timeline.clear()
 			.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.25), duration: 10, delay: 2, ease: 'none' }, 'start')
 			.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
-			.to(this.lines, { opacity: 0.5, duration: 4 }, 'start');
+			.to(this.lines, { opacity: 0.7, duration: 4, delay: 2 }, 'start');
 
 		this.segments.forEach((seg, i) => {
 			seg.style.strokeDasharray = seg.getTotalLength();
@@ -167,8 +167,8 @@ export class PathAnimation {
 			trigger: this.wrap,
 			start: 'top center',
 			end: 'bottom bottom',
-			markers: true,
-			scrub: 1,
+			// markers: true,
+			scrub: 0.75,
 			animation: this.timeline,
 			invalidateOnRefresh: true,
 		})
