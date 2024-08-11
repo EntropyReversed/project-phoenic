@@ -167,8 +167,11 @@ body > svg {
 
 .path-animation {
   --rotation: 0;
+  --color: #59565b;
+
   height: 300vh; 
   width: 100%;
+  opacity: 0;
 }
 
 .path-animation__wrap {
@@ -213,7 +216,9 @@ body > svg {
 }
 
 .path-animation__card {
-  --top: 0px; --left: 0px;
+  --top: 0px; 
+  --left: 0px;
+  --c-size: 10px;
   -webkit-transform-style: preserve-3d;
   position: absolute;
   top: var(--top);
@@ -224,29 +229,60 @@ body > svg {
   z-index: 1;
 }
 
+.path-animation__card::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  width: 1px;
+  height: 200px;
+  transform-origin: top;
+  background: linear-gradient(to bottom, var(--color), transparent);
+}
+
 .path-animation__card::before {
   position: absolute;
   content: '';
   top: 0;
-  right: -5px;
-  width: 10px;
-  height: 10px;
+  width: var(--c-size);
+  height: var(--c-size);
   border-radius: 9999px;
   background-color: #fff;
   transform-origin: top;
+  z-index: 2;
+  box-shadow: 0 0 0 calc(var(--c-size) * 0.5) #130e16;
+}
+
+.path-animation__card.isLeft::before {
+  right: calc(var(--c-size) * -0.5);
   transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(5px, -9px, 30px);
-  box-shadow: 0 0 0 6px #130e16;
+}
+
+.path-animation__card.isLeft::after {
+  right: 0px;
+  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(5px, 12px, 30px);
+}
+
+.path-animation__card:not(.isLeft)::before {
+  left: calc(var(--c-size) * -0.5);
+  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(-5px, -9px, 30px);
+}
+
+.path-animation__card:not(.isLeft)::after {
+  left: 0px;
+  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(-5px, 12px, 30px);
+}
+
+.path-animation__card.isLeft {
+  transform: translateX(-100%);
 }
 
 .path-animation__card-wrap {
   width: 100%;
   height: 100%;
-  /* padding: 20px; */
   transform-origin: top;
   transform: rotateX(calc(var(--rotation) * -1deg));
   opacity: 0;
-  /* box-shadow: inset 0 0 0 1px white; */
-
+  box-shadow: inset 0 0 0 1px white;
 }
 
 .path-animation svg {
@@ -260,8 +296,6 @@ body > svg {
 .path-animation__line {
   --top: 0px; 
   --left: 0px;
-  --color: #59565b;
-  /* -webkit-transform-style: preserve-3d; */
   position: absolute;
   top: var(--top);
   left: var(--left);
@@ -269,14 +303,10 @@ body > svg {
   height: calc(60px * var(--size-off));
   background: linear-gradient(to bottom, var(--color), transparent);
   transform-origin: top;
-  opacity: 0.5;
+  opacity: 0;
   transform: rotateX(calc(var(--rotation) * -1deg));
 }
 
-.path-animation__line.main {
-  opacity: 1;
-  height: 200px;
-}
 /* 
 .path-animation__line.main::before {
   position: absolute;
@@ -288,3 +318,11 @@ body > svg {
   border-radius: 9999px;
   background-color: #fff;
 } */
+
+
+@media (max-width: 991px) {
+
+  .path-animation__svg-wrap {
+    width: 100%;
+  }
+}
