@@ -179,7 +179,7 @@ body > svg {
   position: sticky;
   top: 0;
   overflow: hidden;
-  padding: 20dvh 0;
+  /* padding: 20dvh 0; */
   padding-bottom: 0;
   perspective-origin: center top;
   perspective: 2000px;
@@ -203,9 +203,10 @@ body > svg {
 .path-animation__svg-wrap {
   transform-origin: top;
   transform: rotateX(calc(var(--rotation) * 1deg));
-  width: 60%;
+  width: 35%;
   margin-left: auto;
   margin-right: auto;
+  /* box-shadow: 0 0 0 1px white; */
   -webkit-transform-style: preserve-3d;
 }
 
@@ -218,6 +219,7 @@ body > svg {
 .path-animation__card {
   --top: 0px; 
   --left: 0px;
+  --progress: 0;
   --c-size: 10px;
   -webkit-transform-style: preserve-3d;
   position: absolute;
@@ -281,7 +283,7 @@ body > svg {
   height: 100%;
   transform-origin: top;
   transform: rotateX(calc(var(--rotation) * -1deg));
-  opacity: 0;
+  opacity: var(--progress);
   box-shadow: inset 0 0 0 1px white;
 }
 
@@ -323,6 +325,6 @@ body > svg {
 @media (max-width: 991px) {
 
   .path-animation__svg-wrap {
-    width: 100%;
+    width: 70%;
   }
 }

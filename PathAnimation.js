@@ -114,7 +114,7 @@ export class PathAnimation {
 	createTimeline() {
 		gsap.set(this.wrap, { '--rotation': 0 })
 		this.timeline.clear()
-			.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 2, ease: 'none' }, 'start')
+			.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 2.5, ease: 'none' }, 'start')
 			.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
 			.to(this.lines, { opacity: 0.5, duration: 4 }, 'start');
 
@@ -124,8 +124,8 @@ export class PathAnimation {
 
 			this.timeline.to(seg, { strokeDashoffset: 0, delay: i * 2, duration: 2, ease: 'none' }, 'start')
 
-			if (this.cardsInner[i]) {
-				this.timeline.to(this.cardsInner[i], { opacity: 1, delay: 2, duration: 1, ease: 'none' }, '<')
+			if (this.cards[i]) {
+				this.timeline.to(this.cards[i], { '--progress': 1, delay: 2, duration: 1, ease: 'none' }, '<')
 			}
 		})
 	}
@@ -144,6 +144,7 @@ export class PathAnimation {
 		gsap.set(this.cards, {
 			"--left": 0,
 			"--top": 0,
+			"--progress": 0,
 		});
 		gsap.set(this.lines, {
 			"--left": 0,
