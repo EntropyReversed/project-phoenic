@@ -78,8 +78,12 @@ export class PathAnimation {
         this.segments.forEach((seg, i) => {
             Array.from({length: this.linesPerSeg}).forEach((_, line) => {
                 const len = seg.getTotalLength() / this.linesPerSeg;
-                const isMain = len * line < len;
-                const pos = seg.getPointAtLength(len * line);
+                const isMain = i !== 0 && len * line < len;
+                const offset = isMain ? 0 : (Math.random() - 1) * len * 0.1;
+                const sizeOffset = Math.random() * (1 - 0.5) + 0.5;
+                const pos = seg.getPointAtLength((len + offset) * line);
+
+                if (i === 0 && line === 0) return;
 
                 const target = createSVGElement('circle', {
                     cx: pos.x,
@@ -89,8 +93,10 @@ export class PathAnimation {
                 });
                 
                 const lineEl = createHTMLElement('div', {
-                    className: `path-animation__line ${isMain ? 'main' : ''}`
+                    className: `path-animation__line ${isMain ? 'main' : ''}`,
                 });
+
+                lineEl.style.setProperty('--size-off', sizeOffset)
 
                 this.svg.appendChild(target);
                 this.scrollWrap.appendChild(lineEl);
@@ -102,21 +108,24 @@ export class PathAnimation {
     }
 
     createTimeline() {
-        gsap.set(this.wrap, {'--rotation': this.angle})
+        gsap.set(this.wrap, {'--rotation': 0})
         this.timeline.clear()
             .to(this.scrollWrap, {y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 2, ease: 'none'}, 'start')
-            // .fromTo(this.wrap, {'--rotation': 50}, {'--rotation': this.angle, duration: 1, delay: 0.5}, 'start')
+            .to(this.wrap, {'--rotation': this.angle, duration: 4, delay: 0}, 'start')
             this.segments.forEach((seg, i) => {
                 seg.style.strokeDasharray = seg.getTotalLength();
                 seg.style.strokeDashoffset = seg.getTotalLength();
 
                 this.timeline.to(seg, { strokeDashoffset: 0, delay: i * 2, duration: 2, ease: 'none' }, 'start')
-                .to(this.cardsInner[i], {opacity: 1, delay: 2, duration: 1, ease: 'none'}, '<')
+
+                if (this.cardsInner[i]) {
+                    this.timeline.to(this.cardsInner[i], {opacity: 1, delay: 2, duration: 1, ease: 'none'}, '<')
+                }
             })
     }
 
     resetAnimation() {
-        gsap.set(this.wrap, { '--rotation': this.angle });
+        gsap.set(this.wrap, { '--rotation': 0 });
         gsap.set(this.scrollWrap, { y: 0 })
         gsap.set(this.cards, {
             "--left": 0,
