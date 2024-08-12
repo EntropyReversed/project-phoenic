@@ -185,6 +185,28 @@ body > svg {
   max-width: 100%;
 }
 
+.vertical-cards__graph-grad {
+  --grad-c: #fff;
+  --size: 200%;
+  position: absolute;
+  bottom: 0;
+  left: calc((100% - var(--size)) * 0.5);
+  width: var(--size);
+  height: var(--size);
+
+  /* background: radial-gradient(ellipse at bottom, var(--grad-c), transparent 50%); */
+  background-image: radial-gradient(ellipse at bottom, var(--grad-c) 0%, var(--grad-c) 1%, transparent 63%);
+  background-size: contain;
+  background-position: bottom;
+  background-repeat: no-repeat;
+
+  opacity: 0.1;
+}
+
+.vertical-cards__graph-grad svg {
+  width: 100%;
+}
+
 .path-animation {
   --rotation: 0;
   --color: #59565b;
