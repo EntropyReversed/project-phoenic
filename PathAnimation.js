@@ -25,8 +25,11 @@ export class PathAnimation {
 		this.scrollWrap = this.wrap.querySelector('.path-animation__scroll');
 		this.svg = this.wrap.querySelector('svg');
 		this.title = this.wrap.querySelector('h2');
-		this.ship = this.svg.querySelector('.path-animation__ship');
-		this.timeline = gsap.timeline();
+		this.ship = this.wrap.querySelector('.ship-test');
+		
+		this.timeline = gsap.timeline({
+			defaults: { ease: "none" },
+		});
 
 		this.isMobile = window.innerWidth < this.mobileBreak;
 
@@ -117,22 +120,47 @@ export class PathAnimation {
 		this.timeline.clear()
 		if(!this.isMobile) {
 			this.timeline
-				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 1.5, ease: 'none' }, 'start')
-				.to(this.title, { autoAlpha: 0,  duration: 2, delay: 2 }, 'start')
+				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 1.5 }, 'start')
+				.to(this.title, { autoAlpha: 0, duration: 2, delay: 2 }, 'start')
 		}
 
 		this.timeline
-			.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
-			.to(this.lines, { opacity: 0.7, duration: 4, delay: 2 }, 'start')
+		.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
+		.to(this.lines, { opacity: 0.7, duration: 4, delay: 2 }, 'start')
+		// .to(this.ship, {
+		// 	motionPath: {
+		// 		path: "#path-animation__main",
+		// 		align: "#path-animation__main",
+		// 		alignOrigin: [0.5, 0.5],
+		// 		autoRotate: true,
+		// 		fromCurrent: true,
+		// 	},
+		// 	duration: 8,
+		// 	ease: 'none',
+		// }, 'start')
 
 		this.segments.forEach((seg, i) => {
 			seg.style.strokeDasharray = seg.getTotalLength();
 			seg.style.strokeDashoffset = seg.getTotalLength();
 
-			this.timeline.to(seg, { strokeDashoffset: 0, delay: i * 2, duration: 2, ease: 'none' }, 'start')
+			this.timeline
+			.to(seg, { strokeDashoffset: 0, delay: i * 2, duration: 2 }, 'start')
+			
+			// .to(this.ship, {
+			// 	motionPath: {
+			// 		path: seg,
+			// 		align: seg,
+			// 		alignOrigin: [0.5, 0.5],
+			// 		autoRotate: true,
+			// 		fromCurrent: true,
+			// 	},
+			// 	delay: i * 2,
+			// 	duration: 2,
+			// 	ease: 'none',
+			// }, 'start')
 
 			if (this.cards[i]) {
-				this.timeline.to(this.cards[i], { '--progress': 1, delay: 2, duration: 1, ease: 'none' }, '<')
+				this.timeline.to(this.cards[i], { '--progress': 1, delay: 1.9, duration: 0.6 }, '<')
 			}
 		})
 	}

@@ -217,6 +217,11 @@ body > svg {
   opacity: 0;
 }
 
+.path-animation__seg {
+  -webkit-filter: drop-shadow( 0px 0px 12px rgba(255, 70, 85, 1));
+  filter: drop-shadow( 0px 0px 12px rgba(255, 70, 85, 1));
+}
+
 .path-animation h2 {
   font-size: clamp(40px, 3.89vw, 56px);
   max-width: clamp(300px, 51.6vw, 743px);
@@ -245,15 +250,15 @@ body > svg {
     to bottom, 
     transparent 0%,
     black 20%,
-    black 40%,
-    transparent 95%
+    black 60%,
+    transparent 100%
   );
   -webkit-mask-image: linear-gradient(
       to bottom, 
       transparent 0%, 
       black 20%, 
-      black 40%, 
-      transparent 95%
+      black 60%, 
+      transparent 100%
   );
 }
 
@@ -277,14 +282,14 @@ body > svg {
   --top: 0px; 
   --left: 0px;
   --progress: 0;
-  --c-size: 10px;
+  --c-size: 11px;
   -webkit-transform-style: preserve-3d;
   position: absolute;
   top: var(--top);
   left: var(--left);
   
-  width: 300px; 
-  height: 200px;
+  width: 290px; 
+  height: auto;
   z-index: 1;
 }
 
@@ -294,41 +299,41 @@ body > svg {
   top: 0;
   width: 1px;
   height: 200px;
-  transform-origin: top;
+  transform-origin: center top;
   background: linear-gradient(to bottom, var(--color), transparent);
+  transform: rotateX(calc(var(--rotation) * -1deg)) scaleY(calc(0.3 + (1 - 0.3) * var(--progress))) translateY(var(--c-size));
+  opacity: calc(0.1 + (1 - 0.1) * var(--progress));
 }
 
 .path-animation__card::before {
   position: absolute;
   content: '';
-  top: 0;
+  top: calc(var(--c-size) * -0.5);
   width: var(--c-size);
   height: var(--c-size);
   border-radius: 9999px;
   background-color: #fff;
-  transform-origin: top;
+  transform-origin: center;
   z-index: 2;
-  box-shadow: 0 0 0 calc(var(--c-size) * 0.5) #130e16;
+  transform: rotateX(calc(var(--rotation) * -1deg)) scale(calc(0.5 + (1 - 0.5) * var(--progress)));
+  opacity: calc(0.6 + (1 - 0.6) * var(--progress));
 }
 
 .path-animation__card.isLeft::before {
   right: calc(var(--c-size) * -0.5);
-  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(5px, -9px, 30px);
+  ;
 }
 
 .path-animation__card.isLeft::after {
   right: 0px;
-  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(5px, 12px, 30px) scaleY(var(--progress));
 }
 
 .path-animation__card:not(.isLeft)::before {
   left: calc(var(--c-size) * -0.5);
-  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(-5px, -9px, 30px);
 }
 
 .path-animation__card:not(.isLeft)::after {
   left: 0px;
-  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(-5px, 12px, 30px) scaleY(var(--progress));
 }
 
 .path-animation__card.isLeft {

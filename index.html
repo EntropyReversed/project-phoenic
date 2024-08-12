@@ -614,17 +614,41 @@
             </div>
           </div>
 
+          <!-- <div class="ship-test" style="position:absolute; top:0; left:0;width: 40px;height: 40px;border-radius: 9999px;background-color: blue;"></div> -->
           <svg width="100%" height="100%" viewBox="0 0 1084 3750" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
-            <path id="path-animation__main" d="M1032.28,25.924C1032.28,25.924 41.728,226.909 41.728,758.443C41.728,1203.11 1032.28,884.483 1032.28,1380.2C1032.28,1875.91 41.728,1862.43 41.728,2376.26C41.728,2839.53 1032.28,2508.3 1032.28,2998.02C1032.28,3487.73 41.728,3696.04 41.728,3696.04" style="fill:none;fill-rule:nonzero;stroke:#59565b;stroke-width:4px;"/>
-            <path class="path-animation__seg" d="M1032.28,25.924C1032.28,25.924 41.728,226.909 41.728,758.443" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
-            <path class="path-animation__seg" d="M41.728,758.443C41.728,1203.11 1032.28,884.483 1032.28,1380.2" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
-            <path class="path-animation__seg" d="M1032.28,1380.2C1032.28,1875.91 41.728,1862.43 41.728,2376.26" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
-            <path class="path-animation__seg" d="M41.728,2376.26C41.728,2839.53 1032.28,2508.3 1032.28,2998.02" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
-            <path class="path-animation__seg" d="M1032.28,2998.02C1032.28,3487.73 41.728,3696.04 41.728,3696.04" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
-            <circle class="path-animation__anchor" cx="41.718" cy="758.429" r="1" />
-            <circle class="path-animation__anchor" cx="1032.24" cy="1380.24" r="1" />
-            <circle class="path-animation__anchor" cx="41.684" cy="2376.38" r="1" />
-            <circle class="path-animation__anchor" cx="1032.25" cy="2998.28" r="1" />
+            <defs>
+              <radialGradient id="path-animation__grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:black; stop-opacity:1" />
+                <stop offset="30%" style="stop-color:black; stop-opacity:1" />
+                <stop offset="100%" style="stop-color:white; stop-opacity:1" />
+              </radialGradient>
+              <mask id="path-animation__clip">
+                <rect
+                  x="0"
+                  y="0"
+                  width="1084"
+                  height="3750"
+                  fill="white"
+                />
+                <circle cx="1032.29" cy="25.924" r="130" fill="url(#path-animation__grad)" />
+                <circle cx="41.718" cy="765.429" r="130" fill="url(#path-animation__grad)" />
+                <circle cx="1032.24" cy="1387.24" r="130" fill="url(#path-animation__grad)" />
+                <circle cx="41.684" cy="2383.38" r="130" fill="url(#path-animation__grad)" />
+                <circle cx="1032.25" cy="3005.28" r="130" fill="url(#path-animation__grad)" />
+                <circle cx="41.723" cy="3696.04" r="130" fill="url(#path-animation__grad)" />
+              </mask>
+            </defs>
+            
+            <path mask="url(#path-animation__clip)" id="path-animation__main" d="M1032.28,25.924C1032.28,25.924 41.728,226.909 41.728,758.443C41.728,1203.11 1032.28,884.483 1032.28,1380.2C1032.28,1875.91 41.728,1862.43 41.728,2376.26C41.728,2839.53 1032.28,2508.3 1032.28,2998.02C1032.28,3487.73 41.728,3696.04 41.728,3696.04" style="fill:none;fill-rule:nonzero;stroke:#59565b;stroke-width:4px;"/>
+            <path mask="url(#path-animation__clip)" class="path-animation__seg" d="M1032.28,25.924C1032.28,25.924 41.728,226.909 41.728,758.443" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
+            <path mask="url(#path-animation__clip)" class="path-animation__seg" d="M41.728,758.443C41.728,1203.11 1032.28,884.483 1032.28,1380.2" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
+            <path mask="url(#path-animation__clip)" class="path-animation__seg" d="M1032.28,1380.2C1032.28,1875.91 41.728,1862.43 41.728,2376.26" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
+            <path mask="url(#path-animation__clip)" class="path-animation__seg" d="M41.728,2376.26C41.728,2839.53 1032.28,2508.3 1032.28,2998.02" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
+            <path mask="url(#path-animation__clip)" class="path-animation__seg" d="M1032.28,2998.02C1032.28,3487.73 41.728,3696.04 41.728,3696.04" style="fill:none;fill-rule:nonzero;stroke:#FF4655;stroke-width:4px;"/>
+            <circle class="path-animation__anchor" fill="transparent" cx="41.718" cy="758.429" r="1" />
+            <circle class="path-animation__anchor" fill="transparent" cx="1032.24" cy="1380.24" r="1" />
+            <circle class="path-animation__anchor" fill="transparent" cx="41.684" cy="2376.38" r="1" />
+            <circle class="path-animation__anchor" fill="transparent" cx="1032.25" cy="2998.28" r="1" />
           </svg>
         
         </div>
