@@ -177,7 +177,7 @@ export class PathAnimation {
 			trigger: this.wrap,
 			start: 'top top',
 			end: 'bottom bottom',
-			markers: true,
+			// markers: true,
 			scrub: 0.75,
 			animation: this.timeline,
 			invalidateOnRefresh: true,

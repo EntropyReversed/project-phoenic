@@ -207,7 +207,7 @@ body > svg {
   margin-top: 0;
   transform-origin: center top;
   padding-top: clamp(120px, 10vw, 160px);
-  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(0,0,140px);
+  transform: rotateX(calc(var(--rotation) * -1deg));
   will-change: transform;
 }
 
