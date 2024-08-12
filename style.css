@@ -319,10 +319,6 @@ body > svg {
   opacity: calc(0.6 + (1 - 0.6) * var(--progress));
 }
 
-.path-animation__card:first-of-type.isLeft::after {
-  right: -1px;
-}
-
 .path-animation__card.isLeft::before {
   right: calc(var(--c-size) * -0.5);
 }
