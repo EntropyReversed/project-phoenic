@@ -336,7 +336,7 @@ body > svg {
 }
 
 .path-animation__card:not(.isLeft)::after {
-  left: -1px;
+  left: 0;
 }
 
 .path-animation__card.isLeft {
