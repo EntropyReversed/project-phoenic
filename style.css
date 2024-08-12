@@ -142,7 +142,7 @@ body > svg {
 
 .vertical-cards__card .vertical-cards__card-inner {
   transform: scale(0.3);
-  opacity: 0.1;
+  opacity: 0;
 }
 
 .vertical-cards__card.last {
@@ -156,10 +156,10 @@ body > svg {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10rem;
+  gap: 9rem;
   width: 100%;
-  padding-bottom: 40dvh;
-  margin-top: -40dvh;
+  padding-bottom: 40vh;
+  margin-top: -40vh;
   will-change: transform;
 }
 
@@ -167,7 +167,7 @@ body > svg {
   position: sticky;
   top: 0;
   width: 100%;
-  height: 100dvh;
+  height: 100vh;
   /* margin-bottom: -60vh; */
 }
 
@@ -176,7 +176,7 @@ body > svg {
   bottom: 0;
   left: 50%;
   max-width: 90vw;
-  transform: translateX(-50%) scale(0.8);
+  transform: translateX(-50%);
   transform-origin: bottom;
   opacity: 0;
 }
@@ -189,17 +189,33 @@ body > svg {
   --rotation: 0;
   --color: #59565b;
 
-  height: 300dvh; 
+  height: 300vh;
   width: 100%;
+  padding-top: 50vh;
   opacity: 0;
 }
 
+.path-animation h2 {
+  font-size: clamp(40px, 3.89vw, 56px);
+  max-width: clamp(300px, 51.6vw, 743px);
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  margin-top: 0;
+  transform-origin: center top;
+  padding-top: clamp(120px, 10vw, 160px);
+  transform: rotateX(calc(var(--rotation) * -1deg)) translate3d(0,0,140px);
+  will-change: transform;
+}
+
 .path-animation__wrap {
-  height: 100dvh;
+  height: 100vh;
   position: sticky;
   top: 0;
   overflow: hidden;
-  padding-top: 20dvh;
   perspective-origin: center top;
   perspective: 2000px;
 
@@ -208,14 +224,14 @@ body > svg {
     transparent 0%,
     black 20%,
     black 40%,
-    transparent 84%
+    transparent 95%
   );
   -webkit-mask-image: linear-gradient(
       to bottom, 
       transparent 0%, 
       black 20%, 
       black 40%, 
-      transparent 84%
+      transparent 95%
   );
 }
 
@@ -313,6 +329,8 @@ body > svg {
   font-size: 16px;
   margin-bottom: 0;
   margin-top: 0;
+  will-change: contents;
+
 }
 
 .path-animation__title-wrap {
@@ -361,10 +379,25 @@ body > svg {
 @media (max-width: 991px) {
 
   .path-animation {
-    height: 200dvh;
+    height: auto;
+  }
+
+  .path-animation__wrap {
+    height: auto;
+    top: auto;
+    position: relative;
+    mask-image: none;
   }
 
   .path-animation__svg-wrap {
     width: 70%;
+  }
+}
+
+@media (max-width: 767px) {
+
+  .path-animation h2 {
+    max-width: none;
+    padding: 0 1rem;
   }
 }

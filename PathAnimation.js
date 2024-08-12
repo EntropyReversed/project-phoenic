@@ -24,7 +24,8 @@ export class PathAnimation {
 		this.svgWrap = this.wrap.querySelector('.path-animation__svg-wrap');
 		this.scrollWrap = this.wrap.querySelector('.path-animation__scroll');
 		this.svg = this.wrap.querySelector('svg');
-		this.ship = this.svg.querySelector('.path-animation__ship')
+		this.title = this.wrap.querySelector('h2');
+		this.ship = this.svg.querySelector('.path-animation__ship');
 		this.timeline = gsap.timeline();
 
 		this.isMobile = window.innerWidth < this.mobileBreak;
@@ -114,9 +115,15 @@ export class PathAnimation {
 	createTimeline() {
 		gsap.set(this.wrap, { '--rotation': 0 })
 		this.timeline.clear()
-			.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.25), duration: 10, delay: 2, ease: 'none' }, 'start')
+		if(!this.isMobile) {
+			this.timeline
+				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 1.5, ease: 'none' }, 'start')
+				.to(this.title, { autoAlpha: 0,  duration: 2, delay: 2 }, 'start')
+		}
+
+		this.timeline
 			.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
-			.to(this.lines, { opacity: 0.7, duration: 4, delay: 2 }, 'start');
+			.to(this.lines, { opacity: 0.7, duration: 4, delay: 2 }, 'start')
 
 		this.segments.forEach((seg, i) => {
 			seg.style.strokeDasharray = seg.getTotalLength();
@@ -134,13 +141,16 @@ export class PathAnimation {
 		this.isMobile = window.innerWidth < this.mobileBreak;
 
 		if (this.isMobile) {
-			this.angle = 40;
+			this.angle = 0;
 		} else {
 			this.angle = this.startAngle;
 		}
 
 		gsap.set(this.wrap, { '--rotation': 0 });
 		gsap.set(this.scrollWrap, { y: 0 })
+		gsap.set(this.title, {
+			autoAlpha: 1
+		})
 		gsap.set(this.cards, {
 			"--left": 0,
 			"--top": 0,
@@ -165,9 +175,9 @@ export class PathAnimation {
 
 		this.scrollTrigger = ScrollTrigger.create({
 			trigger: this.wrap,
-			start: 'top center',
+			start: 'top top',
 			end: 'bottom bottom',
-			// markers: true,
+			markers: true,
 			scrub: 0.75,
 			animation: this.timeline,
 			invalidateOnRefresh: true,

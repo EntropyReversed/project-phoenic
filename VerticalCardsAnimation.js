@@ -15,8 +15,9 @@ export class VerticalCardsAnimation {
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: card,
-          start: () => `top bottom-=20%`,
-          end: () => `top top`,
+          start: () => `top center+=20%`,
+          end: () => `bottom top`,
+          // markers: true,
           scrub: 1,
           invalidateOnRefresh: true,
         },
@@ -34,7 +35,6 @@ export class VerticalCardsAnimation {
           this.graphs[index],
           {
             opacity: 1,
-            scale: 1,
             duration: 1.5,
           },
           'start'
@@ -55,20 +55,20 @@ export class VerticalCardsAnimation {
             cardInner,
             {
               scale: 0.3,
+              delay: 0.2,
               duration: 2,
             }
           )
           .to(
             cardInner,
             {
-              opacity: 0.1,
+              opacity: 0,
               duration: 1,
             },
             '<'
           )        
           .to(this.graphs[index], {
             opacity: 0,
-            scale: 0.8,
             delay: 0.2,
             duration: 1,
           }, 'start+=1.5')
