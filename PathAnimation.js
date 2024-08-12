@@ -25,6 +25,9 @@ export class PathAnimation {
 		this.scrollWrap = this.wrap.querySelector('.path-animation__scroll');
 		this.svg = this.wrap.querySelector('svg');
 		this.title = this.wrap.querySelector('h2');
+		this.textWrapNodes = this.wrap.querySelectorAll('.path-animation__text-wrap');
+		this.textWrap = this.wrap.querySelectorAll('.path-animation__text-wrap p');
+
 		this.ship = this.wrap.querySelector('.ship-test');
 		
 		this.timeline = gsap.timeline({
@@ -116,51 +119,29 @@ export class PathAnimation {
 	}
 
 	createTimeline() {
-		gsap.set(this.wrap, { '--rotation': 0 })
 		this.timeline.clear()
 		if(!this.isMobile) {
 			this.timeline
-				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 1.5 }, 'start')
-				.to(this.title, { autoAlpha: 0, duration: 2, delay: 2 }, 'start')
+				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 0.8 }, 'start')
+				.to(this.title, { autoAlpha: 0, duration: 2, delay: 2 }, 'start');
 		}
 
 		this.timeline
-		.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
-		.to(this.lines, { opacity: 0.7, duration: 4, delay: 2 }, 'start')
-		// .to(this.ship, {
-		// 	motionPath: {
-		// 		path: "#path-animation__main",
-		// 		align: "#path-animation__main",
-		// 		alignOrigin: [0.5, 0.5],
-		// 		autoRotate: true,
-		// 		fromCurrent: true,
-		// 	},
-		// 	duration: 8,
-		// 	ease: 'none',
-		// }, 'start')
+			.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
+			.to(this.lines, { opacity: 0.7, duration: 4, delay: 2 }, 'start');
 
 		this.segments.forEach((seg, i) => {
 			seg.style.strokeDasharray = seg.getTotalLength();
 			seg.style.strokeDashoffset = seg.getTotalLength();
 
-			this.timeline
-			.to(seg, { strokeDashoffset: 0, delay: i * 2, duration: 2 }, 'start')
-			
-			// .to(this.ship, {
-			// 	motionPath: {
-			// 		path: seg,
-			// 		align: seg,
-			// 		alignOrigin: [0.5, 0.5],
-			// 		autoRotate: true,
-			// 		fromCurrent: true,
-			// 	},
-			// 	delay: i * 2,
-			// 	duration: 2,
-			// 	ease: 'none',
-			// }, 'start')
+			this.timeline.to(seg, { strokeDashoffset: 0, delay: i * 2, duration: 2 }, 'start')
 
 			if (this.cards[i]) {
-				this.timeline.to(this.cards[i], { '--progress': 1, delay: 1.9, duration: 0.6 }, '<')
+				this.timeline
+					.to(this.cards[i], { '--progress': 1, delay: 1.8, duration: 0.5 }, '<')
+					.to(this.textWrapNodes[i], { opacity: 1, duration: 0.2 }, '<')
+					.to(this.textWrapNodes[i], { '--progress': 1, delay: 0.1, duration: 0.5 }, '<')
+					.to(this.textWrap[i], { opacity: 1, delay: 0.4, duration: 0.2 }, '<')
 			}
 		})
 	}
@@ -184,6 +165,13 @@ export class PathAnimation {
 			"--top": 0,
 			"--progress": 0,
 		});
+		gsap.set(this.textWrapNodes, {
+			"--progress": 0,
+			opacity: 0,
+		});
+		gsap.set(this.textWrap, {
+			opacity: 0,
+		});
 		gsap.set(this.lines, {
 			"--left": 0,
 			"--top": 0,
@@ -206,7 +194,7 @@ export class PathAnimation {
 			start: 'top top',
 			end: 'bottom bottom',
 			// markers: true,
-			scrub: 0.75,
+			scrub: true,
 			animation: this.timeline,
 			invalidateOnRefresh: true,
 		})
