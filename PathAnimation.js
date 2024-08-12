@@ -127,7 +127,7 @@ export class PathAnimation {
 		}
 
 		this.timeline
-			.to(this.wrap, { '--rotation': this.angle, duration: 4 }, 'start')
+			.to(this.wrap, { '--rotation': this.angle, duration: 3 }, 'start')
 			.to(this.lines, { opacity: 0.7, duration: 4, delay: 2 }, 'start');
 
 		this.segments.forEach((seg, i) => {
