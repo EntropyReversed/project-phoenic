@@ -1,4 +1,6 @@
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.normalizeScroll(true);
+
 export class VerticalCardsAnimation {
   constructor({ wrapSelector, cardSelector, cardSelectorInner, graphSelector, imgSelector }) {
     this.wrap = document.querySelector(wrapSelector);
@@ -7,10 +9,6 @@ export class VerticalCardsAnimation {
     this.images = this.wrap.querySelectorAll(imgSelector);
     this.cardSelectorInner = cardSelectorInner;
     this.initAnimation();
-
-    if (window.innerWidth < 991) {
-      ScrollTrigger.normalizeScroll(true);
-    }
   }
 
   initAnimation() {

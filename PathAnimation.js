@@ -119,22 +119,23 @@ export class PathAnimation {
 	}
 
 	createTimeline() {
+
 		this.timeline.clear()
 		if(!this.isMobile) {
 			this.timeline
-				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 0.8 }, 'start')
+				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.75), duration: 10, delay: 2 }, 'start')
 				.to(this.title, { autoAlpha: 0, duration: 2, delay: 2 }, 'start');
 		}
 
 		this.timeline
 			.to(this.wrap, { '--rotation': this.angle, duration: 3 }, 'start')
-			.to(this.lines, { opacity: 0.7, duration: 3, delay: 2 }, 'start');
+			.to(this.lines, { opacity: 0.7, duration: 3, delay: 1 }, 'start');
 
 		this.segments.forEach((seg, i) => {
 			seg.style.strokeDasharray = seg.getTotalLength();
 			seg.style.strokeDashoffset = seg.getTotalLength();
 
-			this.timeline.to(seg, { strokeDashoffset: 0, delay: i * 2, duration: 2 }, 'start')
+			this.timeline.to(seg, { strokeDashoffset: 0, duration: 2 }, i === 0 ? 'start+=1' : '<')
 
 			if (this.cards[i]) {
 				this.timeline
@@ -175,6 +176,7 @@ export class PathAnimation {
 		gsap.set(this.lines, {
 			"--left": 0,
 			"--top": 0,
+			opacity: 0
 		});
 	}
 
@@ -194,7 +196,7 @@ export class PathAnimation {
 			start: 'top top',
 			end: 'bottom bottom',
 			// markers: true,
-			scrub: true,
+			scrub: 0.5,
 			animation: this.timeline,
 			invalidateOnRefresh: true,
 		})
