@@ -21,6 +21,7 @@ export class PathAnimation {
 
 	constructor({ wrap }) {
 		this.wrap = wrap;
+		this.trigger = this.wrap.querySelector('.path-animation__trigger');
 		this.svgWrap = this.wrap.querySelector('.path-animation__svg-wrap');
 		this.scrollWrap = this.wrap.querySelector('.path-animation__scroll');
 		this.svg = this.wrap.querySelector('svg');
@@ -143,7 +144,7 @@ export class PathAnimation {
 	checkDirection() {
     const time = this.timeline.time();
     this.cardStates = this.cardStates || [false, false, false, false];
-    const thresholds = [4, 6, 8, 10];
+    const thresholds = this.isMobile ? [3, 5, 7, 9] : [4, 6, 8, 10];
 
     thresholds.forEach((threshold, index) => {
 			if (time >= threshold) {
@@ -165,12 +166,13 @@ export class PathAnimation {
 		if(!this.isMobile) {
 			this.timeline
 				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 3 }, 'start')
-				.to(this.title, { autoAlpha: 0, duration: 2, delay: 2 }, 'start');
-		}
+				.to(this.title, { autoAlpha: 0, duration: 2, delay: 2 }, 'start')
+			}
 
 		this.timeline
-			.to(this.wrap, { '--rotation': this.angle, duration: 3 }, 'start')
+			.to(this.wrap, { '--rotation': () => this.angle, duration: 3 }, 'start')
 			.to(this.lines, { opacity: 0.7, duration: 3, delay: 1 }, 'start')
+			.to(this.titleLast, { opacity: 1, duration: 1 }, '-=1.5')
 
 		this.segments.forEach((seg, i) => {
 			seg.style.strokeDasharray = seg.getTotalLength();
@@ -181,7 +183,7 @@ export class PathAnimation {
 				duration: 2,
 				delay: i * 2,
 				onUpdate: () => this.checkDirection()
-			}, `start+=2`)
+			}, `start+=${this.isMobile ? 1 : 2}`)
 		})
 	}
 
@@ -224,16 +226,21 @@ export class PathAnimation {
 		this.anchors = this.svg.querySelectorAll('.path-animation__anchor');
 		this.segments = this.svg.querySelectorAll('.path-animation__seg');
 
+		if (this.isMobile) {
+			this.angle = 0;
+		} else {
+			this.angle = this.startAngle;
+		}
+
 		this.createLines();
 		this.positionCards();
 		this.positionLines();
 		this.createTimeline();
 
 		this.scrollTrigger = ScrollTrigger.create({
-			trigger: this.wrap,
-			start: 'top top',
+			trigger: this.trigger,
+			start: 'top center',
 			end: 'bottom bottom',
-			// markers: true,
 			scrub: 0.5,
 			animation: this.timeline,
 			invalidateOnRefresh: true,
@@ -241,8 +248,8 @@ export class PathAnimation {
 
 		gsap.to(this.wrap, { opacity: 1 })
 
-		window.addEventListener('resize', () => {
-			this.resetAnimation();
+		const resizeObserver = new ResizeObserver(() => {
+      this.resetAnimation();
 			this.positionCards();
 			this.positionLines();
 			this.createTimeline();
@@ -250,6 +257,8 @@ export class PathAnimation {
 			requestAnimationFrame(() => {
 				this.checkDirection();
 			})
-		})
+    });
+
+    resizeObserver.observe(this.wrap);
 	}
 }

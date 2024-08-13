@@ -207,6 +207,12 @@ body > svg {
   width: 100%;
 }
 
+
+
+
+
+/* /////////////////////// */
+
 .path-animation {
   --rotation: 0;
   --color: #59565b;
@@ -216,6 +222,10 @@ body > svg {
   width: 100%;
   padding-top: 0vh;
   opacity: 0;
+}
+
+.path-animation__trigger {
+  -webkit-transform-style: preserve-3d;
 }
 
 .path-animation__seg {
@@ -245,7 +255,7 @@ body > svg {
   width: 100%;
   margin-top: 0;
   transform-origin: center top;
-  padding-top: clamp(120px, 10vw, 160px);
+  padding-top: 200px;
   transform: rotateX(calc(var(--rotation) * -1deg));
   will-change: transform;
 }
@@ -372,8 +382,8 @@ body > svg {
 
 .path-animation__card p {
   width: calc(var(--width) - var(--offset) * 2);
-  font-size: 16px;
-  line-height: 22px;
+  font-size: clamp(14px, 0.83vw, 16px);
+  line-height: 1.375;
   font-weight: 400;
   margin-bottom: 0;
   margin-top: 0;
@@ -495,6 +505,13 @@ body > svg {
 
 @media (max-width: 991px) {
 
+  .path-animation h3 {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+  }
+
   .path-animation {
     height: auto;
   }
@@ -507,7 +524,40 @@ body > svg {
   }
 
   .path-animation__svg-wrap {
-    width: 70%;
+    width: 80%;
+  }
+
+  .path-animation__title-wrap {
+    transform: translateY(calc(-14px * var(--progress)));
+  }
+
+  .path-animation__card:nth-of-type(1) .path-animation__title {
+    transform: translateX(39px);
+  }
+
+  .path-animation__card:nth-of-type(2) .path-animation__title {
+    transform: translateX(-42px);
+  }
+
+  .path-animation__card:nth-of-type(3) .path-animation__title {
+    transform: translateX(2px);
+  }
+
+  .path-animation__card:nth-of-type(4) .path-animation__title {
+    transform: translateX(-36px);
+  }
+
+  .path-animation__title-wrap-inner {
+    align-items: start;
+  }
+
+  .path-animation__card.isLeft .path-animation__title-wrap-inner {
+    align-items: end;
+  }
+
+  .path-animation__title-number,
+  .path-animation__text-wrap {
+    display: none;
   }
 }
 
