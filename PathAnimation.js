@@ -25,6 +25,7 @@ export class PathAnimation {
 		this.scrollWrap = this.wrap.querySelector('.path-animation__scroll');
 		this.svg = this.wrap.querySelector('svg');
 		this.title = this.wrap.querySelector('h2');
+		this.titleLast = this.wrap.querySelector('h3');
 		this.textWrapNodes = this.wrap.querySelectorAll('.path-animation__text-wrap');
 		this.textWrap = this.wrap.querySelectorAll('.path-animation__text-wrap p');
 
@@ -129,7 +130,8 @@ export class PathAnimation {
 
 		this.timeline
 			.to(this.wrap, { '--rotation': this.angle, duration: 3 }, 'start')
-			.to(this.lines, { opacity: 0.7, duration: 3, delay: 1 }, 'start');
+			.to(this.lines, { opacity: 0.7, duration: 3, delay: 1 }, 'start')
+			.to(this.titleLast, { opacity: 1, delay: 10, duration: 1 }, 'start')
 
 		this.segments.forEach((seg, i) => {
 			seg.style.strokeDasharray = seg.getTotalLength();

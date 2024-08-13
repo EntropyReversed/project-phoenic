@@ -211,6 +211,7 @@ body > svg {
   --rotation: 0;
   --color: #59565b;
 
+  position: relative;
   height: 300vh;
   width: 100%;
   padding-top: 0vh;
@@ -220,6 +221,17 @@ body > svg {
 .path-animation__seg {
   -webkit-filter: drop-shadow( 0px 0px 12px rgba(255, 70, 85, 1));
   filter: drop-shadow( 0px 0px 12px rgba(255, 70, 85, 1));
+}
+
+.path-animation h3 {
+  position: absolute;
+  bottom: 20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-weight: 700;
+  font-size: clamp(40px, 4.44vw, 64px);
+  opacity: 0;
 }
 
 .path-animation h2 {
@@ -415,14 +427,13 @@ body > svg {
   padding-right: 1rem;
   font-size: 14px;
   margin-bottom: 0.75rem;
-  margin-top: -0.5rem;
 }
 
 .path-animation__title-number::before {
   position: absolute;
   content: '';
   top: 2px;
-  right: 0;
+  right: 2px;
   width: 2px;
   height: calc(100% - 4px);
   background-color: #FF4655;
@@ -443,7 +454,7 @@ body > svg {
 
 .path-animation__card.isLeft .path-animation__title-number::before {
   right: auto;
-  left: 0;
+  left: 2px;
 }
 
 .path-animation svg {
