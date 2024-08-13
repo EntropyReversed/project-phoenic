@@ -29,11 +29,14 @@ export class PathAnimation {
 		this.textWrapNodes = this.wrap.querySelectorAll('.path-animation__text-wrap');
 		this.textWrap = this.wrap.querySelectorAll('.path-animation__text-wrap p');
 
-		this.ship = this.wrap.querySelector('.ship-test');
-		
 		this.timeline = gsap.timeline({
 			defaults: { ease: "none" },
 		});
+
+		this.lastTime = 0;
+		this.forward = true;
+
+		this.cardTimeline = gsap.timeline()
 
 		this.isMobile = window.innerWidth < this.mobileBreak;
 
@@ -119,33 +122,66 @@ export class PathAnimation {
 		})
 	}
 
-	createTimeline() {
+	cardOnTimeline(i) {
+		if (!this.cards[i]) return;
+		gsap.timeline()
+			.to(this.cards[i], { overwrite: 'all', '--progress': 1, duration: 0.3 })
+			.to(this.textWrapNodes[i], { overwrite: 'all', autoAlpha: 1, duration: 0.3 }, '<')
+			.to(this.textWrapNodes[i], { overwrite: 'all', '--progress': 1, delay: 0.2, duration: 0.6 }, '<')
+			.to(this.textWrap[i], { overwrite: 'all', autoAlpha: 1, delay: 0.3, duration: 0.4 }, '<')
+	}
 
+	cardOffTimeline(i) {
+		if (!this.cards[i]) return;
+		gsap.timeline()
+			.to(this.textWrap[i], { overwrite: 'all', autoAlpha: 0, duration: 0.3 })
+			.to(this.textWrapNodes[i], { overwrite: 'all', '--progress': 0, duration: 0.5 }, '<')
+			.to(this.textWrapNodes[i], { overwrite: 'all', autoAlpha: 0, duration: 0.3 }, '-=0.2')
+			.to(this.cards[i], { overwrite: 'all', '--progress': 0, duration: 0.3 }, '-=0.2');
+	}
+
+	checkDirection() {
+    const time = this.timeline.time();
+    this.cardStates = this.cardStates || [false, false, false, false];
+    const thresholds = [4, 6, 8, 10];
+
+    thresholds.forEach((threshold, index) => {
+			if (time >= threshold) {
+				if (!this.cardStates[index]) {
+					this.cardOnTimeline(index);
+					this.cardStates[index] = true;
+				}
+			} else {
+				if (this.cardStates[index]) {
+					this.cardOffTimeline(index);
+					this.cardStates[index] = false;
+				}
+			}
+    });
+	}
+
+	createTimeline() {
 		this.timeline.clear()
 		if(!this.isMobile) {
 			this.timeline
-				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.75), duration: 10, delay: 2 }, 'start')
+				.to(this.scrollWrap, { y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), duration: 10, delay: 3 }, 'start')
 				.to(this.title, { autoAlpha: 0, duration: 2, delay: 2 }, 'start');
 		}
 
 		this.timeline
 			.to(this.wrap, { '--rotation': this.angle, duration: 3 }, 'start')
 			.to(this.lines, { opacity: 0.7, duration: 3, delay: 1 }, 'start')
-			.to(this.titleLast, { opacity: 1, delay: 10, duration: 1 }, 'start')
 
 		this.segments.forEach((seg, i) => {
 			seg.style.strokeDasharray = seg.getTotalLength();
 			seg.style.strokeDashoffset = seg.getTotalLength();
 
-			this.timeline.to(seg, { strokeDashoffset: 0, duration: 2 }, i === 0 ? 'start+=1' : '<')
-
-			if (this.cards[i]) {
-				this.timeline
-					.to(this.cards[i], { '--progress': 1, delay: 1.8, duration: 0.5 }, '<')
-					.to(this.textWrapNodes[i], { opacity: 1, duration: 0.2 }, '<')
-					.to(this.textWrapNodes[i], { '--progress': 1, delay: 0.1, duration: 0.5 }, '<')
-					.to(this.textWrap[i], { opacity: 1, delay: 0.4, duration: 0.2 }, '<')
-			}
+			this.timeline.to(seg, { 
+				strokeDashoffset: 0, 
+				duration: 2,
+				delay: i * 2,
+				onUpdate: () => this.checkDirection()
+			}, `start+=2`)
 		})
 	}
 
