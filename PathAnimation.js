@@ -125,19 +125,19 @@ export class PathAnimation {
 	cardOnTimeline(i) {
 		if (!this.cards[i]) return;
 		gsap.timeline()
-			.to(this.cards[i], { overwrite: 'all', '--progress': 1, duration: 0.3 })
-			.to(this.textWrapNodes[i], { overwrite: 'all', autoAlpha: 1, duration: 0.3 }, '<')
-			.to(this.textWrapNodes[i], { overwrite: 'all', '--progress': 1, delay: 0.2, duration: 0.6 }, '<')
-			.to(this.textWrap[i], { overwrite: 'all', autoAlpha: 1, delay: 0.3, duration: 0.4 }, '<')
+			.to(this.cards[i], { '--progress': 1, duration: 0.3 })
+			.to(this.textWrapNodes[i], { autoAlpha: 1, duration: 0.3 }, '<')
+			.to(this.textWrapNodes[i], { '--progress': 1, delay: 0.2, duration: 0.6 }, '<')
+			.to(this.textWrap[i], { autoAlpha: 1, delay: 0.3, duration: 0.4 }, '<')
 	}
 
 	cardOffTimeline(i) {
 		if (!this.cards[i]) return;
 		gsap.timeline()
-			.to(this.textWrap[i], { overwrite: 'all', autoAlpha: 0, duration: 0.3 })
-			.to(this.textWrapNodes[i], { overwrite: 'all', '--progress': 0, duration: 0.5 }, '<')
-			.to(this.textWrapNodes[i], { overwrite: 'all', autoAlpha: 0, duration: 0.3 }, '-=0.2')
-			.to(this.cards[i], { overwrite: 'all', '--progress': 0, duration: 0.3 }, '-=0.2');
+			.to(this.textWrap[i], { autoAlpha: 0, duration: 0.3 })
+			.to(this.textWrapNodes[i], { '--progress': 0, duration: 0.5 }, '<')
+			.to(this.textWrapNodes[i], { autoAlpha: 0, duration: 0.3 }, '-=0.2')
+			.to(this.cards[i], { '--progress': 0, duration: 0.3 }, '-=0.2');
 	}
 
 	checkDirection() {
@@ -246,6 +246,10 @@ export class PathAnimation {
 			this.positionCards();
 			this.positionLines();
 			this.createTimeline();
+
+			requestAnimationFrame(() => {
+				this.checkDirection();
+			})
 		})
 	}
 }
