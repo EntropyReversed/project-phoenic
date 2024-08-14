@@ -34,8 +34,6 @@ export class PathAnimation {
 			defaults: { ease: "none" },
 		});
 
-		this.lastTime = 0;
-		this.forward = true;
 		this.cardStates = [false, false, false, false];
 
 		this.cardTimeline = gsap.timeline()
@@ -153,13 +151,11 @@ export class PathAnimation {
 				if (!this.cardStates[index]) {
 					this.cardOnTimeline(index);
 					this.cardStates[index] = true;
-					console.log('+', time, this.cardStates)
 				}
 			} else {
 				if (this.cardStates[index]) {
 					this.cardOffTimeline(index);
 					this.cardStates[index] = false;
-					console.log('-', time, this.cardStates)
 				}
 			}
     });

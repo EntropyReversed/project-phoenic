@@ -130,13 +130,5 @@ export class TrajectoryMap {
     this.trackSvgHeight();
     this.createTimeline();
     this.setupIntersectionObserver();
-
-    // this.wrap.addEventListener('mouseenter', () => {
-    //   this.timeline.play()
-    // })
-
-    // this.wrap.addEventListener('mouseleave', () => {
-    //   this.timeline.reverse()
-    // })
   }
 }

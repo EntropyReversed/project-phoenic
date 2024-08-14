@@ -1,6 +1,7 @@
 import { AnimatedGraph } from './AnimatedGraph';
 import { BlinkingBoxes } from './BlinkingBoxes';
 import { BlinkingDots } from './BlinkingDots';
+import { OrbitAnimation } from './OrbitAnimation';
 import { PathAnimation } from './PathAnimation';
 import { TrajectoryMap } from './TrajectoryMap';
 import { VerticalCardsAnimation } from './VerticalCardsAnimation';
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
   const trajectoryMap = document.querySelector('.trajectory-map');
   const pathAnimation = document.querySelector('.path-animation');
+  const orbitAnimation = document.querySelector('.orbit-animation');
 
   const selectors = {
     cardsSelector: '.vertical-cards',
@@ -105,5 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
       graphSelector: selectors.graphSelector,
       imgSelector: selectors.imgSelector,
     });
+  }
+
+  if (orbitAnimation) {
+    new OrbitAnimation({
+      wrap: orbitAnimation,
+    })
   }
 });
