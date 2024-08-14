@@ -36,6 +36,7 @@ export class PathAnimation {
 
 		this.lastTime = 0;
 		this.forward = true;
+		this.cardStates = [false, false, false, false];
 
 		this.cardTimeline = gsap.timeline()
 
@@ -143,19 +144,22 @@ export class PathAnimation {
 
 	checkDirection() {
     const time = this.timeline.time();
-    this.cardStates = this.cardStates || [false, false, false, false];
     const thresholds = this.isMobile ? [3, 5, 7, 9] : [4, 6, 8, 10];
+
+		if (time === 0) return;
 
     thresholds.forEach((threshold, index) => {
 			if (time >= threshold) {
 				if (!this.cardStates[index]) {
 					this.cardOnTimeline(index);
 					this.cardStates[index] = true;
+					console.log('+', time, this.cardStates)
 				}
 			} else {
 				if (this.cardStates[index]) {
 					this.cardOffTimeline(index);
 					this.cardStates[index] = false;
+					console.log('-', time, this.cardStates)
 				}
 			}
     });
@@ -182,7 +186,8 @@ export class PathAnimation {
 				strokeDashoffset: 0, 
 				duration: 2,
 				delay: i * 2,
-				onUpdate: () => this.checkDirection()
+				onStart: () => this.checkDirection(),
+				onUpdate: () => this.checkDirection(),
 			}, `start+=${this.isMobile ? 1 : 2}`)
 		})
 	}
@@ -241,6 +246,7 @@ export class PathAnimation {
 			trigger: this.trigger,
 			start: 'top center',
 			end: 'bottom bottom',
+			// markers: true,
 			scrub: 0.5,
 			animation: this.timeline,
 			invalidateOnRefresh: true,
@@ -249,13 +255,13 @@ export class PathAnimation {
 		gsap.to(this.wrap, { opacity: 1 })
 
 		const resizeObserver = new ResizeObserver(() => {
-      this.resetAnimation();
-			this.positionCards();
-			this.positionLines();
-			this.createTimeline();
-
-			requestAnimationFrame(() => {
-				this.checkDirection();
+      requestAnimationFrame(() => {
+				this.resetAnimation();
+				this.positionCards();
+				this.positionLines();
+				this.createTimeline();
+	
+				this.cardStates = [false, false, false, false];
 			})
     });
 

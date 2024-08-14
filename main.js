@@ -5,7 +5,7 @@ import { PathAnimation } from './PathAnimation';
 import { TrajectoryMap } from './TrajectoryMap';
 import { VerticalCardsAnimation } from './VerticalCardsAnimation';
 
-const lenis = new Lenis()
+const lenis = new Lenis({touchMultiplier: 0})
 
 function raf(time) {
   lenis.raf(time);

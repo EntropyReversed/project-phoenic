@@ -40,14 +40,17 @@ export class VerticalCardsAnimation {
           },
           'start'
         )
-        .to(
-          this.images[index],
-          {
-            opacity: 1,
-            duration: 1.5,
-          },
-          'start'
-        )
+
+        if (this.images[index]) {
+          timeline.to(
+            this.images[index],
+            {
+              opacity: 1,
+              duration: 1.5,
+            },
+            'start'
+          )
+        }
 
 
       if (index !== this.cards.length - 1) {
@@ -73,11 +76,14 @@ export class VerticalCardsAnimation {
             delay: 0.2,
             duration: 1,
           }, 'start+=1.5')
-          .to(this.images[index], {
-            opacity: 0,
-            delay: 0.2,
-            duration: 1,
-          }, 'start+=1.5');
+
+          if (this.images[index]) {
+            timeline.to(this.images[index], {
+              opacity: 0,
+              delay: 0.2,
+              duration: 1,
+            }, 'start+=1.5');
+          }
       }
     });
   }
