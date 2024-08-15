@@ -6,15 +6,29 @@ import { PathAnimation } from './PathAnimation';
 import { TrajectoryMap } from './TrajectoryMap';
 import { VerticalCardsAnimation } from './VerticalCardsAnimation';
 
-const lenis = new Lenis({touchMultiplier: 0})
-
-function raf(time) {
-  lenis.raf(time);
-  ScrollTrigger.update();
+function initializeLenis() {
+  const lenis = new Lenis({touchMultiplier: 0})
+ 
+  lenis.on("scroll", () => {
+    ScrollTrigger.update();
+  });
+ 
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+ 
   requestAnimationFrame(raf);
-}
-
-requestAnimationFrame(raf)
+ }
+ 
+ const checkScreenWidthAndInitialize = () => {
+  if (window.matchMedia("(min-width: 991px)").matches) {
+    initializeLenis();
+  }
+ }
+ 
+ checkScreenWidthAndInitialize();
+ window.addEventListener('resize', checkScreenWidthAndInitialize);
 
 document.addEventListener('DOMContentLoaded', () => {
   const allBoxes = document.querySelectorAll('.blinking-boxes');
