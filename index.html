@@ -573,12 +573,31 @@
 
   <div class="orbit-animation" style="margin-left: auto; max-width: 100vw;">
     <svg width="857" height="715" viewBox="0 0 857 715" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
-      <path class="orbit-animation__orbit" d="M1806.94 -193.716C1848.93 -76.5004 1566.82 131.783 1176.82 271.498C786.828 411.213 436.633 429.453 394.641 312.238C366.337 233.231 485.279 112.85 685.256 -0.0201286" stroke="#A0A0A0" stroke-width="1" stroke-miterlimit="10" opacity="0.5"/>
-      <path class="orbit-animation__orbit" d="M750.633 -141.94C332.694 44.9654 56.8723 275.929 106.822 415.356C165.931 580.351 658.865 554.681 1207.82 358.018C1756.77 161.356 2153.87 -131.826 2094.76 -296.821C2037.9 -455.551 1579.53 -437.821 1056.04 -261.148" stroke="#A0A0A0" stroke-width="1" stroke-miterlimit="10" opacity="0.5"/>
-      <path class="orbit-animation__orbit" d="M1569.84 -108.774C1597.73 -30.907 1410.35 107.449 1151.3 200.252C892.254 293.055 659.641 305.164 631.745 227.297C621.309 198.166 641.003 160.57 683.306 120.061" stroke="#A0A0A0" stroke-width="1" stroke-miterlimit="10" opacity="0.5"/>
-      <circle class="orbit-animation__planet" cx="0" cy="0" r="6" fill="#A0A0A0" style="transform: scale(0);"/>
-      <circle class="orbit-animation__planet" cx="0" cy="0" r="6" fill="#A0A0A0" style="transform: scale(0);"/>
-      <circle class="orbit-animation__planet" cx="0" cy="0" r="6" fill="#A0A0A0" style="transform: scale(0);"/>
+      <defs>
+        <radialGradient id="orbit-animation__grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+          <stop offset="0%" style="stop-color:black; stop-opacity:1" />
+          <stop offset="50%" style="stop-color:rgb(50, 50, 50); stop-opacity:1" />
+          <stop offset="100%" style="stop-color:white; stop-opacity:1" />
+        </radialGradient>
+        <mask id="orbit-animation__mask">
+          <rect
+            x="0"
+            y="0"
+            width="857"
+            height="715"
+            fill="white"
+          />
+          <circle cx="300" cy="400" r="430" fill="url(#orbit-animation__grad)" />
+        </mask>
+      </defs>
+      <g mask="url(#orbit-animation__mask)">
+        <path  class="orbit-animation__orbit" d="M1806.94 -193.716C1848.93 -76.5004 1566.82 131.783 1176.82 271.498C786.828 411.213 436.633 429.453 394.641 312.238C366.337 233.231 485.279 112.85 685.256 -0.0201286" stroke="#A0A0A0" stroke-width="1" stroke-miterlimit="10" opacity="0.5"/>
+        <path class="orbit-animation__orbit" d="M750.633 -141.94C332.694 44.9654 56.8723 275.929 106.822 415.356C165.931 580.351 658.865 554.681 1207.82 358.018C1756.77 161.356 2153.87 -131.826 2094.76 -296.821C2037.9 -455.551 1579.53 -437.821 1056.04 -261.148" stroke="#A0A0A0" stroke-width="1" stroke-miterlimit="10" opacity="0.5"/>
+        <path class="orbit-animation__orbit" d="M1569.84 -108.774C1597.73 -30.907 1410.35 107.449 1151.3 200.252C892.254 293.055 659.641 305.164 631.745 227.297C621.309 198.166 641.003 160.57 683.306 120.061" stroke="#A0A0A0" stroke-width="1" stroke-miterlimit="10" opacity="0.5"/>
+        <circle class="orbit-animation__planet" cx="0" cy="0" r="6" fill="#A0A0A0" style="transform: scale(0);"/>
+        <circle class="orbit-animation__planet" cx="0" cy="0" r="6" fill="#A0A0A0" style="transform: scale(0);"/>
+        <circle class="orbit-animation__planet" cx="0" cy="0" r="6" fill="#A0A0A0" style="transform: scale(0);"/>
+      </g>
     </svg>
   </div>
 
