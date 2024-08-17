@@ -1,5 +1,6 @@
 gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.normalizeScroll(true);
+// ScrollTrigger.normalizeScroll(true);
+ScrollTrigger.config({ ignoreMobileResize: true})
 
 export class VerticalCardsAnimation {
   constructor({ wrapSelector, cardSelector, cardSelectorInner, graphSelector, imgSelector }) {

@@ -1,34 +1,25 @@
 import { AnimatedGraph } from './AnimatedGraph';
 import { BlinkingBoxes } from './BlinkingBoxes';
 import { BlinkingDots } from './BlinkingDots';
-import { OrbitAnimation } from './OrbitAnimation';
 import { PathAnimation } from './PathAnimation';
 import { TrajectoryMap } from './TrajectoryMap';
 import { VerticalCardsAnimation } from './VerticalCardsAnimation';
 
-function initializeLenis() {
-  const lenis = new Lenis({touchMultiplier: 0})
- 
-  lenis.on("scroll", () => {
-    ScrollTrigger.update();
-  });
- 
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
- 
+const lenis = new Lenis({
+  touchMultiplier: 0,
+  touchMultiplier: 0.5
+})
+
+lenis.on("scroll", () => {
+  ScrollTrigger.update();
+});
+
+function raf(time) {
+  lenis.raf(time);
   requestAnimationFrame(raf);
- }
- 
- const checkScreenWidthAndInitialize = () => {
-  if (window.matchMedia("(min-width: 991px)").matches) {
-    initializeLenis();
-  }
- }
- 
- checkScreenWidthAndInitialize();
- window.addEventListener('resize', checkScreenWidthAndInitialize);
+}
+
+requestAnimationFrame(raf);
 
 document.addEventListener('DOMContentLoaded', () => {
   const allBoxes = document.querySelectorAll('.blinking-boxes');
@@ -36,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
   const trajectoryMap = document.querySelector('.trajectory-map');
   const pathAnimation = document.querySelector('.path-animation');
-  const orbitAnimation = document.querySelector('.orbit-animation');
 
   const selectors = {
     cardsSelector: '.vertical-cards',
@@ -121,11 +111,5 @@ document.addEventListener('DOMContentLoaded', () => {
       graphSelector: selectors.graphSelector,
       imgSelector: selectors.imgSelector,
     });
-  }
-
-  if (orbitAnimation) {
-    new OrbitAnimation({
-      wrap: orbitAnimation,
-    })
   }
 });

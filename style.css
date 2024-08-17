@@ -117,7 +117,37 @@ body > svg {
   100% { opacity: 0; }
 }
 
+@keyframes blink {
+  0%, 10% { opacity: 0; }
+  30%, 70% { opacity: 1; }
+  90%, 100% { opacity: 0; }
+}
 
+.system-status {
+  position: fixed;
+  top: 10rem;
+  left: 72px;
+  font-size: 8px;
+  letter-spacing: 0.4px;
+  line-height: 1.25;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  color: #E6E7D9;
+}
+
+.system-status.active {
+  opacity: 1;
+}
+
+.system-status::after {
+  position: absolute;
+  content: '';
+  width: 2px;
+  height: 1em;
+  transform: translate(3px, 0.5px);
+  background: #29D41A;
+  animation: blink 1s ease-out infinite;
+}
 
 .vertical-cards {
   position: relative;
@@ -159,8 +189,10 @@ body > svg {
   gap: 9rem;
   width: 100%;
   padding-bottom: 40vh;
-  margin-top: -40vh;
+  /* margin-top: -40vh; */
   will-change: transform;
+  box-shadow: 0 0 0 1px red;
+  overflow: hidden;
 }
 
 .graphs-and-images {
@@ -168,6 +200,7 @@ body > svg {
   top: 0;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
   /* margin-bottom: -60vh; */
 }
 
@@ -187,24 +220,28 @@ body > svg {
 
 .vertical-cards__graph-grad {
   --grad-c: #fff;
-  --size: 200%;
+  --size: 140%;
   position: absolute;
   bottom: 0;
   left: calc((100% - var(--size)) * 0.5);
   width: var(--size);
   height: var(--size);
 
-  /* background: radial-gradient(ellipse at bottom, var(--grad-c), transparent 50%); */
-  background-image: radial-gradient(ellipse at bottom, var(--grad-c) 0%, var(--grad-c) 1%, transparent 63%);
-  background-size: contain;
-  background-position: bottom;
-  background-repeat: no-repeat;
-
-  opacity: 0.1;
+  /* opacity: 0.1; */
 }
 
 .vertical-cards__graph-grad svg {
+  position: absolute;
+  bottom: 0;
   width: 100%;
+  height: auto;
+}
+
+.studios-section {
+  width: 100%;
+  height: 140vh;
+  margin-bottom: -100vh;
+  box-shadow: inset 0 0 0 2px blue;
 }
 
 
@@ -226,9 +263,10 @@ body > svg {
 
 .path-animation__trigger {
   -webkit-transform-style: preserve-3d;
+  height: 100%;
 }
 
-.path-animation__seg {
+#path-animation__main {
   -webkit-filter: drop-shadow( 0px 0px 12px rgba(255, 70, 85, 1));
   filter: drop-shadow( 0px 0px 12px rgba(255, 70, 85, 1));
 }
@@ -288,23 +326,25 @@ body > svg {
   width: 40%;
   margin-left: auto;
   margin-right: auto;
-  /* box-shadow: 0 0 0 1px white; */
   -webkit-transform-style: preserve-3d;
 }
 
 .path-animation__scroll {
   -webkit-transform-style: preserve-3d;
-  /* box-shadow: 0 0 0 1px white; */
-
 }
 
 .path-animation__card {
   --top: 0px; 
   --left: 0px;
-  --progress: 0;
+  --progressC: 0;
   --width: 290px;
   --offset: 16px;
   --c-size: 11px;
+  --c-off: 100px;
+  --dur: 0.7s;
+  --tr: cubic-bezier(0.33, 1, 0.68, 1);
+
+
   -webkit-transform-style: preserve-3d;
   position: absolute;
   top: var(--top);
@@ -313,6 +353,28 @@ body > svg {
   width: var(--width); 
   height: auto;
   z-index: 1;
+
+}
+
+.path-animation__card.active {
+  --progressC: 1;
+}
+
+.path-animation__card.active .path-animation__text-wrap {
+  --progress: 1;
+}
+.path-animation__card.active .path-animation__text-wrap::before,
+.path-animation__card.active .path-animation__text-wrap::after {
+  opacity: 1;
+  transition: all var(--dur) var(--tr) 0s, opacity calc(var(--dur) * 0.3) ease-in-out;
+}
+
+.path-animation__card.active p {
+  transition-delay: calc(var(--dur) * 0.4);
+}
+
+.path-animation__card.active .path-animation__title-wrap {
+  transition-delay: 0s;
 }
 
 .path-animation__card::after {
@@ -323,7 +385,8 @@ body > svg {
   height: clamp(100px, 8.33vw, 160px);
   transform-origin: center top;
   background: linear-gradient(to bottom, var(--color), transparent);
-  transform: rotateX(calc(var(--rotation) * -1deg)) scaleY(calc(0.3 + (1 - 0.3) * var(--progress))) translateY(var(--c-size));
+  transform: rotateX(calc(var(--rotation) * -1deg)) scaleY(calc(0.3 + (1 - 0.3) * var(--progressC))) translateY(var(--c-size));
+  transition: all var(--dur) var(--tr);
 }
 
 .path-animation__card::before {
@@ -335,8 +398,9 @@ body > svg {
   border-radius: 9999px;
   background-color: #fff;
   transform-origin: center;
-  transform: rotateX(calc(var(--rotation) * -1deg)) scale(calc(0.5 + (1 - 0.5) * var(--progress)));
-  opacity: calc(0.6 + (1 - 0.6) * var(--progress));
+  transform: rotateX(calc(var(--rotation) * -1deg)) scale(calc(0.5 + (1 - 0.5) * var(--progressC)));
+  opacity: calc(0.6 + (1 - 0.6) * var(--progressC));
+  transition: all var(--dur) var(--tr);
 }
 
 .path-animation__card.isLeft::before {
@@ -363,19 +427,16 @@ body > svg {
   width: 100%;
   height: 100%;
   transform-origin: top;
-  transform: rotateX(calc(var(--rotation) * -1deg)) translateX(calc(clamp(60px, 4.17vw, 80px) * -1));
-  /* opacity: var(--progress); */
-  /* box-shadow: inset 0 0 0 1px white; */
+  transform: rotateX(calc(var(--rotation) * -1deg)) translateX(calc(var(--c-off) * -1));
 }
 
 .path-animation__card.isLeft .path-animation__card-wrap {
-  transform: rotateX(calc(var(--rotation) * -1deg)) translateX(clamp(80px, 6.94vw, 100px));
+  transform: rotateX(calc(var(--rotation) * -1deg)) translateX(calc(var(--c-off) * 1));
 }
 
 .path-animation__text-wrap {
   position: relative;
   --progress: 0;
-  opacity: 0;
 }
 
 .path-animation__card p {
@@ -384,7 +445,11 @@ body > svg {
   font-weight: 400;
   margin-bottom: 0;
   margin-top: 0;
-  opacity: 0;
+
+  opacity: var(--progress);
+
+  transition: all calc(var(--dur) * 0.4) var(--tr);
+  transition-delay: 0s;
 }
 
 .path-animation__text-wrap::before,
@@ -395,6 +460,8 @@ body > svg {
   left: calc(var(--offset) * -1 + 1px);
   width: var(--offset);
   height: var(--offset);
+  opacity: 0;
+  transition: all var(--dur) var(--tr) calc(var(--dur) * 0.1), opacity calc(var(--dur) * 0.3) ease-in-out calc(var(--dur) * 0.7);
 }
 
 .path-animation__text-wrap::before {
@@ -417,9 +484,12 @@ body > svg {
 }
 
 .path-animation__title-wrap {
-  transform: translateY(calc(-20px * var(--progress)));
+  transform: translateY(calc(-20px * var(--progressC)));
   margin-bottom: clamp(60px, 4.17vw, 80px);
-  opacity: var(--progress);
+  opacity: var(--progressC);
+
+  transition: all var(--dur) var(--tr);
+  transition-delay: calc(var(--dur) * 0.1);
 }
 
 .path-animation__title-wrap-inner {
@@ -487,18 +557,11 @@ body > svg {
   transform: rotateX(calc(var(--rotation) * -1deg));
 }
 
-/* 
-.path-animation__line.main::before {
-  position: absolute;
-  content: '';
-  top: 0;
-  left: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 9999px;
-  background-color: #fff;
-} */
-
+@media (max-width: 1366px) {
+  .path-animation__card {
+    --c-off: 150px;
+  }
+}
 
 @media (max-width: 991px) {
 

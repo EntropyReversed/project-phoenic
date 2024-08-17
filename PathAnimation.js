@@ -1,19 +1,3 @@
-const createHTMLElement = (tag, props) => {
-	const element = document.createElement(tag);
-	Object.keys(props).forEach((key) => {
-		element[key] = props[key];
-	});
-	return element;
-};
-
-const createSVGElement = (tag, props) => {
-	const element = document.createElementNS("http://www.w3.org/2000/svg", tag);
-	Object.keys(props).forEach((key) => {
-		element.setAttribute(key, props[key]);
-	});
-	return element;
-};
-
 export class PathAnimation {
 	startAngle = 70;
 	angle = this.startAngle;
@@ -21,7 +5,6 @@ export class PathAnimation {
 
 	constructor({ wrap }) {
 		this.wrap = wrap;
-		this.trigger = this.wrap.querySelector('.path-animation__trigger');
 		this.svgWrap = this.wrap.querySelector('.path-animation__svg-wrap');
 		this.scrollWrap = this.wrap.querySelector('.path-animation__scroll');
 		this.svg = this.wrap.querySelector('svg');
@@ -29,14 +12,13 @@ export class PathAnimation {
 		this.titleLast = this.wrap.querySelector('h3');
 		this.textWrapNodes = this.wrap.querySelectorAll('.path-animation__text-wrap');
 		this.textWrap = this.wrap.querySelectorAll('.path-animation__text-wrap p');
+		this.pathMain = this.svg.querySelector('#path-animation__main');
 
 		this.timeline = gsap.timeline({
 			defaults: { ease: "none" },
 		});
 
 		this.cardStates = [false, false, false, false];
-
-		this.cardTimeline = gsap.timeline()
 
 		this.isMobile = window.innerWidth < this.mobileBreak;
 
@@ -100,17 +82,16 @@ export class PathAnimation {
 
 				if (isMain || (i === 0 && line === 0)) return;
 
-				const target = createSVGElement('circle', {
-					cx: pos.x,
-					cy: pos.y + 3,
-					r: 1,
-					fill: "transparent",
-				});
+				const target = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+				target.setAttribute('cx', pos.x);
+				target.setAttribute('cy', pos.y + 3);
+				target.setAttribute('r', 1);
+				target.setAttribute('fill', 'transparent');
 
-				const lineEl = createHTMLElement('div', {
-					className: `path-animation__line ${isMain ? 'main' : ''}`,
-				});
-
+				const lineEl = document.createElement('div');
+				lineEl.classList.add('path-animation__line');
+				if (isMain) lineEl.classList.add('main');
+			
 				lineEl.style.setProperty('--size-off', sizeOffset)
 
 				this.svg.appendChild(target);
@@ -122,46 +103,25 @@ export class PathAnimation {
 		})
 	}
 
-	cardOnTimeline(i) {
-		if (!this.cards[i]) return;
-		gsap.timeline()
-			.to(this.cards[i], { '--progress': 1, duration: 0.3 })
-			.to(this.textWrapNodes[i], { autoAlpha: 1, duration: 0.3 }, '<')
-			.to(this.textWrapNodes[i], { '--progress': 1, delay: 0.2, duration: 0.6 }, '<')
-			.to(this.textWrap[i], { autoAlpha: 1, delay: 0.3, duration: 0.4 }, '<')
-	}
-
-	cardOffTimeline(i) {
-		if (!this.cards[i]) return;
-		gsap.timeline()
-			.to(this.textWrap[i], { autoAlpha: 0, duration: 0.3 })
-			.to(this.textWrapNodes[i], { '--progress': 0, duration: 0.5 }, '<')
-			.to(this.textWrapNodes[i], { autoAlpha: 0, duration: 0.3 }, '-=0.2')
-			.to(this.cards[i], { '--progress': 0, duration: 0.3 }, '-=0.2');
-	}
-
 	checkDirection() {
     const time = this.timeline.time();
-    const thresholds = this.isMobile ? [3, 5, 7, 9] : [4, 6, 8, 10];
+    const thresholds = this.isMobile ? [3, 5, 7, 9] : [3.96, 5.9, 8.12, 10.05];
+
 
 		if (time === 0) return;
-
-    thresholds.forEach((threshold, index) => {
-			if (time >= threshold) {
-				if (!this.cardStates[index]) {
-					this.cardOnTimeline(index);
-					this.cardStates[index] = true;
-				}
-			} else {
-				if (this.cardStates[index]) {
-					this.cardOffTimeline(index);
-					this.cardStates[index] = false;
-				}
+		thresholds.forEach((threshold, index) => {
+			const shouldShow = time >= threshold;
+			if (this.cardStates[index] !== shouldShow) {
+				this.cards[index].classList.toggle('active', shouldShow)
+				this.cardStates[index] = shouldShow;
 			}
-    });
+		});
 	}
 
 	createTimeline() {
+		this.pathMain.style.strokeDasharray = this.pathMain.getTotalLength();
+		this.pathMain.style.strokeDashoffset = this.pathMain.getTotalLength();
+		
 		this.timeline.clear()
 		if(!this.isMobile) {
 			this.timeline
@@ -170,22 +130,15 @@ export class PathAnimation {
 			}
 
 		this.timeline
-			.to(this.wrap, { '--rotation': () => this.angle, duration: 3 }, 'start')
+			.to(this.wrap, { '--rotation': this.angle, duration: 3 }, 'start')
 			.to(this.lines, { opacity: 0.7, duration: 3, delay: 1 }, 'start')
 			.to(this.titleLast, { opacity: 1, duration: 1 }, '-=1.5')
-
-		this.segments.forEach((seg, i) => {
-			seg.style.strokeDasharray = seg.getTotalLength();
-			seg.style.strokeDashoffset = seg.getTotalLength();
-
-			this.timeline.to(seg, { 
+			.to(this.pathMain, {
 				strokeDashoffset: 0, 
-				duration: 2,
-				delay: i * 2,
-				onStart: () => this.checkDirection(),
+				duration: 10,
 				onUpdate: () => this.checkDirection(),
 			}, `start+=${this.isMobile ? 1 : 2}`)
-		})
+
 	}
 
 	resetAnimation() {
@@ -205,15 +158,15 @@ export class PathAnimation {
 		gsap.set(this.cards, {
 			"--left": 0,
 			"--top": 0,
-			"--progress": 0,
+			// "--progressC": 0,
 		});
-		gsap.set(this.textWrapNodes, {
-			"--progress": 0,
-			opacity: 0,
-		});
-		gsap.set(this.textWrap, {
-			opacity: 0,
-		});
+		// gsap.set(this.textWrapNodes, {
+			// "--progress": 0,
+			// opacity: 0,
+		// });
+		// gsap.set(this.textWrap, {
+		// 	opacity: 0,
+		// });
 		gsap.set(this.lines, {
 			"--left": 0,
 			"--top": 0,
@@ -239,10 +192,10 @@ export class PathAnimation {
 		this.createTimeline();
 
 		this.scrollTrigger = ScrollTrigger.create({
-			trigger: this.trigger,
+			trigger: this.wrap,
 			start: 'top center',
 			end: 'bottom bottom',
-			// markers: true,
+			markers: true,
 			scrub: 0.5,
 			animation: this.timeline,
 			invalidateOnRefresh: true,
@@ -258,6 +211,9 @@ export class PathAnimation {
 				this.createTimeline();
 	
 				this.cardStates = [false, false, false, false];
+				window.requestAnimationFrame(() => {
+					this.checkDirection();
+				})
 			})
     });
 
