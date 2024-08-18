@@ -27,16 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const allAnimatedGraphs = document.querySelectorAll('.animated-graph');
   const trajectoryMap = document.querySelector('.trajectory-map');
   const pathAnimation = document.querySelector('.path-animation');
+  const verticalCardsWrap = document.querySelector('.vertical-cards');
 
-  const selectors = {
-    cardsSelector: '.vertical-cards',
-    cardSelector: '.vertical-cards__card',
-    cardSelectorInner: '.vertical-cards__card-inner',
-    graphSelector: '.vertical-cards__graph-wrap',
-    imgSelector: '.vertical-cards__img',
-  };
 
-  const verticalCardsWrap = document.querySelector(selectors.cardsSelector);
+
 
   if (allBoxes.length) {
     allBoxes.forEach((box) => {
@@ -105,11 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (verticalCardsWrap) {
     new VerticalCardsAnimation({
-      wrapSelector: selectors.cardsSelector,
-      cardSelector: selectors.cardSelector,
-      cardSelectorInner: selectors.cardSelectorInner,
-      graphSelector: selectors.graphSelector,
-      imgSelector: selectors.imgSelector,
+      wrapSelector: '.vertical-cards',
     });
   }
 });

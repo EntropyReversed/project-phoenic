@@ -34,18 +34,18 @@ export class AnimatedGraph {
   }
 
   createGradient(color) {
-    const hexColor = this.hexToRgb(color);
+    const rgbPart = this.hexToRgb(this.nameToHex(this.rgbaToRgb(color)));
     const gradient = this.isVertical
       ? this.ctx.createLinearGradient(0, 0, 0, this.canvas.height)
       : this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
 
-    gradient.addColorStop(0, `rgba(${hexColor}, 0)`);
-    gradient.addColorStop(0.05, `rgba(${hexColor}, 0)`);
-    gradient.addColorStop(0.3, `rgba(${hexColor}, 0.2)`);
-    gradient.addColorStop(0.5, `rgba(${hexColor}, 1)`);
-    gradient.addColorStop(0.7, `rgba(${hexColor}, 0.2)`);
-    gradient.addColorStop(0.95, `rgba(${hexColor}, 0)`);
-    gradient.addColorStop(1, `rgba(${hexColor}, 0)`);
+    gradient.addColorStop(0, `rgba(${rgbPart}, 0)`);
+    gradient.addColorStop(0.05, `rgba(${rgbPart}, 0)`);
+    gradient.addColorStop(0.3, `rgba(${rgbPart}, 0.2)`);
+    gradient.addColorStop(0.5, `rgba(${rgbPart}, 1)`);
+    gradient.addColorStop(0.7, `rgba(${rgbPart}, 0.2)`);
+    gradient.addColorStop(0.95, `rgba(${rgbPart}, 0)`);
+    gradient.addColorStop(1, `rgba(${rgbPart}, 0)`);
     return gradient;
   }
 
@@ -99,6 +99,7 @@ export class AnimatedGraph {
           }
         }
         this.ctx.strokeStyle = gradient;
+
         this.ctx.lineWidth = 1.5 * this.ratio;
         this.ctx.stroke();
         params.time +=
@@ -107,6 +108,18 @@ export class AnimatedGraph {
     }
 
     requestAnimationFrame(this.draw.bind(this));
+  }
+
+  rgbaToRgb(rgbaString) {
+    const rgbaPattern = /^rgba\((\d+),\s*(\d+),\s*(\d+),\s*[\d.]+\)$/;
+    const match = rgbaString.match(rgbaPattern);
+    
+    if (match) {
+      const [, r, g, b] = match;
+      return `rgb(${r},${g},${b})`;
+    } else {
+      return rgbaString;
+    }
   }
 
   hexToRgb(hex) {
@@ -121,11 +134,7 @@ export class AnimatedGraph {
 
     const resizeObserver = new ResizeObserver(() => {
       this.scaleCanvas(this.wrap.offsetWidth, this.wrap.offsetHeight);
-      this.updateAmplitude(
-        this.isVertical
-          ? this.canvas.width * 0.5 * this.amplitudeStrength
-          : this.canvas.height * 0.5 * this.amplitudeStrength
-      );
+      this.updateAmplitude();
     });
 
     resizeObserver.observe(this.wrap);
@@ -156,8 +165,24 @@ export class AnimatedGraph {
     observer.observe(this.wrap);
   }
 
-  updateAmplitude(amp) {
+  updateAmplitude() {
+    const amp = this.getAmplitude();
     this.linesParams.forEach((param) => (param.amplitude = amp));
+  }
+
+  updateFrequency() {
+    const freq = this.getFrequency();
+    this.linesParams.forEach((param, i) => (param.frequency = freq  + this.linesRandom[i] * 0.001));
+  }
+
+  getAmplitude() {
+    return this.isVertical
+      ? this.canvas.width * 0.5 * this.amplitudeStrength
+      : this.canvas.height * 0.5 * this.amplitudeStrength;
+  }
+
+  getFrequency() {
+    return (0.01 * this.frequency) / this.ratio;
   }
 
   spreadColors(colors, finalLength) {
@@ -185,7 +210,9 @@ export class AnimatedGraph {
   }
 
   setUpLines() {
+    this.numberOfLines = 6;
     const defaultColor = this.nameToHex('#39EED8');
+
     const { colorOne, colorTwo, colorThree, colorFour } = this.wrap.dataset;
 
     const formatedColors = [colorOne, colorTwo, colorThree, colorFour]
@@ -196,10 +223,12 @@ export class AnimatedGraph {
       formatedColors.push(defaultColor);
     }
 
-    this.linesParams = this.spreadColors(formatedColors, 6).map((color) => ({
+    this.linesRandom = Array.from({length: this.numberOfLines}).map(() => Math.random())
+
+    this.linesParams = this.spreadColors(formatedColors, this.numberOfLines).map((color) => ({
       color,
-      amplitude: 1,
-      frequency: (0.01 * this.frequency) / this.ratio + Math.random() * 0.001,
+      amplitude: this.getAmplitude(),
+      frequency: this.getFrequency(),
       noiseOffset: Math.random() * 1000,
       time: 0,
     }));

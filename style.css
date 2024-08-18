@@ -152,7 +152,6 @@ body > svg {
 .vertical-cards {
   position: relative;
   width: 100%;
-  /* margin-top: -50vh; */
 }
 
 .vertical-cards__img {
@@ -168,10 +167,15 @@ body > svg {
 
 .vertical-cards__card {
   font-size: clamp(40px, 7.78vw, 112px);
+  line-height: 1;
 }
 
 .vertical-cards__card .vertical-cards__card-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transform: scale(0.3);
+  box-shadow: 0 0 0 1px var(--c-color);
   opacity: 0;
 }
 
@@ -189,7 +193,6 @@ body > svg {
   gap: 9rem;
   width: 100%;
   padding-bottom: 40vh;
-  /* margin-top: -40vh; */
   will-change: transform;
   box-shadow: 0 0 0 1px red;
   overflow: hidden;
@@ -201,13 +204,15 @@ body > svg {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  /* margin-bottom: -60vh; */
 }
 
-.graphs-and-images .vertical-cards__graph-wrap {
+.graphs-and-images .animated-graph {
   position: absolute;
   bottom: 0;
   left: 50%;
+  width: 700px;
+  height: 250px;
+  box-shadow: 0 0 0 1px white;
   max-width: 90vw;
   transform: translateX(-50%);
   transform-origin: bottom;
@@ -220,14 +225,12 @@ body > svg {
 
 .vertical-cards__graph-grad {
   --grad-c: #fff;
-  --size: 140%;
   position: absolute;
   bottom: 0;
-  left: calc((100% - var(--size)) * 0.5);
-  width: var(--size);
-  height: var(--size);
-
-  /* opacity: 0.1; */
+  left: 0;
+  width: 100vw;
+  height: 50vh;
+  box-shadow: 0 0 0 1px white;
 }
 
 .vertical-cards__graph-grad svg {
@@ -240,7 +243,7 @@ body > svg {
 .studios-section {
   width: 100%;
   height: 140vh;
-  margin-bottom: -100vh;
+  /* margin-bottom: -100vh; */
   box-shadow: inset 0 0 0 2px blue;
 }
 
