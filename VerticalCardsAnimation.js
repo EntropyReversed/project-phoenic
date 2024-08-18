@@ -10,13 +10,17 @@ export class VerticalCardsAnimation {
     this.graphAndImages = this.wrap.querySelector('.graphs-and-images');
     this.images = this.wrap.querySelectorAll('.vertical-cards__img');
     this.cardSelectorInner = '.vertical-cards__card-inner';
+    this.gradGroup = this.wrap.querySelectorAll('.vertical-cards__graph-grad g');
+    this.gradCircles = this.wrap.querySelectorAll('.vertical-cards__graph-grad ellipse');
+
+    this.cardOneColor = getComputedStyle(this.cards[0]).getPropertyValue('--c-color');
     this.initAnimation();
   }
 
-  initAnimation() {
+  createAnimatedGraph() {
     this.graphWrap = document.createElement('div');
     this.graphWrap.classList.add('animated-graph');
-    this.graphWrap.dataset.colorOne = getComputedStyle(this.cards[0]).getPropertyValue('--c-color');
+    this.graphWrap.dataset.colorOne = this.cardOneColor;
 
     this.graph = new AnimatedGraph({
       wrap: this.graphWrap,
@@ -30,40 +34,21 @@ export class VerticalCardsAnimation {
     });
 
     this.graphAndImages.appendChild(this.graphWrap);
+  }
 
-    // this.graphWrap.addEventListener('mouseenter', () => {
-    //   gsap.timeline().to(this.graph.linesParams, {
-    //     color: '#ffffff',
-    //     duration: 2,
-    //   }).to(this.graph, { amplitudeStrength: 1, onUpdate: () => {
-    //     this.graph.updateAmplitude()
-    //   } }, '<')
-    //   .to(this.graph, { frequency: 0.3, onUpdate: () => {
-    //     this.graph.updateFrequency()
-    //   } }, '<')
-    // })
-
-    // this.graphWrap.addEventListener('mouseleave', () => {
-    //   gsap.timeline().to(this.graph.linesParams, {
-    //     color: '#39EED8',
-    //     duration: 2,
-    //   }).to(this.graph, { amplitudeStrength: 0.5, onUpdate: () => {
-    //     this.graph.updateAmplitude()
-    //   } }, '<')
-    //   .to(this.graph, { frequency: 0.7, onUpdate: () => {
-    //     this.graph.updateFrequency()
-    //   } }, '<')
-    // })
+  initAnimation() {
+    this.createAnimatedGraph();
+    this.gradCircles.forEach(c => gsap.set(c, { fill: this.cardOneColor }))
 
     this.cards.forEach((card, index) => {
       const color = getComputedStyle(card).getPropertyValue('--c-color');
+      const isLast = index === this.cards.length - 1;
 
       const timeline = gsap.timeline({
         scrollTrigger: {
-          trigger: card,
-          start: () => `top bottom`,
-          end: () => `bottom top`,
-          markers: true,
+          trigger: isLast ? card.parentElement : card,
+          start: isLast ? 'top top' : 'top bottom',
+          end: 'bottom top',
           scrub: 1,
           invalidateOnRefresh: true,
         },
@@ -71,99 +56,96 @@ export class VerticalCardsAnimation {
 
       const cardInner = card.querySelector(this.cardSelectorInner);
 
-      timeline
-        .to(cardInner, {
-          keyframes: {
-            "0%": { scale: 0.3, opacity: 0},
-            "20%": { scale: 0.4, opacity: 0},
-            "45%": { scale: 1, opacity: 1},
-            "50%": { scale: 1, opacity: 1},
-            "55%": { scale: 1, opacity: 1},
-            "80%": { scale: 0.4, opacity: 0 },
-            "100%": { scale: 0.3, opacity: 0 },
-            easeEach: 'none',
-            ease: 'none',
+      if (index === 0) {
+        timeline.to(
+          this.graphWrap,
+          {
+            opacity: 1,
+            delay: 0.4,
+            duration: 1.5,
           },
-          duration: 2,
-        }, 'start')
+          'start'
+        )
+      }
 
-        if (index === 0) {
-          timeline.to(
-            this.graphWrap,
-            {
-              opacity: 1,
-              delay: 0.4,
-              duration: 1.5,
+      if (this.images[index]) {
+        timeline.to(
+          this.images[index],
+          {
+            opacity: 1,
+            duration: 2,
+          },
+          'start'
+        )
+      }
+
+      if (isLast) {
+        timeline
+          .to(cardInner, {
+            keyframes: {
+              "0%": { autoAlpha: 0},
+              "10%": { autoAlpha: 0},
+              "30%": { autoAlpha: 1},
+              "100%": { autoAlpha: 1 },
+              easeEach: 'none',
+              ease: 'none',
             },
-            'start'
-          )
-        }
-
-        if (this.images[index]) {
-          timeline.to(
-            this.images[index],
-            {
-              opacity: 1,
-              duration: 2,
+            duration: 2,
+          }, 'start')
+          .to(this.graph, { 
+            amplitudeStrength: 1,
+            delay: 0.2,
+            duration: 0.5,
+            onStart: () => {
+              this.graph.updateAmplitude()
             },
-            'start'
-          )
-        }
+            onUpdate: () => {
+              this.graph.updateAmplitude()
+            }
+          }, 'start')
+          .to(this.gradGroup, { y: 0, delay: 0.2, duration: 0.6 }, 'start')
 
-      if (index === this.cards.length - 1) {
-        timeline.to(this.graph, { 
-          amplitudeStrength: 1,
-          delay: 0.6,
-          duration: 0.5,
-          onUpdate: () => {
-            this.graph.updateAmplitude()
-          }
-        }, 'start')
         for (let i = 0; i < this.cards.length; i++) {
           const color = getComputedStyle(this.cards[i]).getPropertyValue('--c-color');
           if (!this.graph.linesParams[i]) return;
           timeline.to(this.graph.linesParams[i], {
             color,
-            delay: 0.6,
+            delay: 0.2,
+            duration: 0.5,
+          }, 'start')
+          .to(this.gradCircles[i], {
+            fill: color,
+            delay: 0.2,
             duration: 0.5,
           }, 'start')
         }
       } else {
-        timeline.to(this.graph.linesParams, {
-          color,
-          delay: 0.6,
-          duration: 0.5,
-        }, 'start')
+        timeline
+          .to(cardInner, {
+            keyframes: {
+              "0%": { scale: 0.3, opacity: 0},
+              "20%": { scale: 0.4, opacity: 0},
+              "45%": { scale: 1, opacity: 1},
+              "50%": { scale: 1, opacity: 1},
+              "55%": { scale: 1, opacity: 1},
+              "80%": { scale: 0.4, opacity: 0 },
+              "100%": { scale: 0.3, opacity: 0 },
+              easeEach: 'none',
+              ease: 'none',
+            },
+            duration: 2,
+          }, 'start')
+          .to(this.graph.linesParams, {
+            color,
+            delay: 0.6,
+            duration: 0.5,
+          }, 'start')
+          .to(this.gradCircles, {
+            fill: color,
+            delay: 0.6,
+            duration: 0.5,
+          }, 'start')
       }
-
-
-      // if (index !== this.cards.length - 1) {
-      //   timeline
-      //     .to(
-      //       cardInner,
-      //       {
-      //         scale: 0.3,
-      //         delay: 0.2,
-      //         duration: 2,
-      //       }
-      //     )
-      //     .to(
-      //       cardInner,
-      //       {
-      //         opacity: 0,
-      //         duration: 1,
-      //       },
-      //       '<'
-      //     )        
-
-      //     if (this.images[index]) {
-      //       timeline.to(this.images[index], {
-      //         opacity: 0,
-      //         delay: 0.2,
-      //         duration: 1,
-      //       }, 'start+=1.5');
-      //     }
-      // }
     });
   }
 }
