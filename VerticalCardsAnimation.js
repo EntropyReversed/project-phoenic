@@ -14,7 +14,11 @@ export class VerticalCardsAnimation {
     this.gradCircles = this.wrap.querySelectorAll('.vertical-cards__graph-grad ellipse');
 
     this.cardOneColor = getComputedStyle(this.cards[0]).getPropertyValue('--c-color');
-    this.initAnimation();
+    this.init();
+  }
+
+  trackVH() {
+    document.body.style.setProperty('--vh', window.innerHeight * 0.01 || 0)
   }
 
   createAnimatedGraph() {
@@ -147,5 +151,12 @@ export class VerticalCardsAnimation {
           }, 'start')
       }
     });
+  }
+
+  init() {
+    this.trackVH();
+    window.addEventListener('resize', () => this.trackVH());
+
+    this.initAnimation();
   }
 }
