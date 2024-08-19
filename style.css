@@ -168,8 +168,6 @@ body > svg {
 .vertical-cards__card {
   font-size: clamp(40px, 7.78vw, 112px);
   line-height: 1;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
 }
 
 .vertical-cards__card:hover {
@@ -203,9 +201,7 @@ body > svg {
   align-items: center;
   gap: 9rem;
   width: 100%;
-  /* padding-bottom: 40vh; */
   will-change: transform;
-  overflow: hidden;
 }
 
 .graphs-and-images {
@@ -222,14 +218,10 @@ body > svg {
   left: 50%;
   width: 700px;
   height: 250px;
-  max-width: 90vw;
+  max-width: 100%;
   transform: translateX(-50%);
   transform-origin: bottom;
   opacity: 0;
-}
-
-.graphs-and-images .animated-graph {
-  max-width: 100%;
 }
 
 .vertical-cards__graph-grad {
@@ -239,7 +231,6 @@ body > svg {
   left: 0;
   width: 100vw;
   height: calc(var(--vh) * 50px);
-  transition: all 0.3s ease-in-out;
 }
 
 .vertical-cards__graph-grad svg {
@@ -293,16 +284,24 @@ body > svg {
 
 .path-animation h2 {
   font-size: clamp(40px, 3.89vw, 56px);
-  max-width: clamp(300px, 51.6vw, 743px);
   text-align: center;
   margin-right: auto;
   margin-left: auto;
-  width: 100%;
   margin-top: 0;
   transform-origin: center top;
   padding-top: 200px;
-  transform: rotateX(calc(var(--rotation) * -1deg));
   will-change: transform;
+  transform: translateX(0);
+  flex-shrink: 0;
+}
+
+.path-animation__main-title {
+  -webkit-transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center top;
+  transform: rotateX(calc(var(--rotation) * -1deg));
 }
 
 .path-animation__wrap {
@@ -573,6 +572,9 @@ body > svg {
 }
 
 @media (max-width: 991px) {
+  .path-animation__card {
+    --c-off: 0px;
+  }
 
   .path-animation h3 {
     position: relative;
@@ -597,23 +599,23 @@ body > svg {
   }
 
   .path-animation__title-wrap {
-    transform: translateY(calc(-14px * var(--progress)));
+    transform: translateY(calc(-10px * var(--progressC)));
   }
 
-  .path-animation__card:nth-of-type(1) .path-animation__title {
-    transform: translateX(39px);
+  .path-animation__card.first .path-animation__title {
+    transform: translate(119px, -2px);
   }
 
-  .path-animation__card:nth-of-type(2) .path-animation__title {
-    transform: translateX(-42px);
+  .path-animation__card.second .path-animation__title {
+    transform:translate(-102px, -4px);
   }
 
-  .path-animation__card:nth-of-type(3) .path-animation__title {
-    transform: translateX(2px);
+  .path-animation__card.third .path-animation__title {
+    transform: translate(82px, -2px);
   }
 
-  .path-animation__card:nth-of-type(4) .path-animation__title {
-    transform: translateX(-36px);
+  .path-animation__card.fourth .path-animation__title {
+    transform:translate(-98px, -4px);
   }
 
   .path-animation__title-wrap-inner {

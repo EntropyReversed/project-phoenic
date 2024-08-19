@@ -48,7 +48,7 @@ export class VerticalCardsAnimation {
       const color = getComputedStyle(card).getPropertyValue('--c-color');
       const isLast = index === this.cards.length - 1;
 
-      const timeline = gsap.timeline({
+      this.timeline = gsap.timeline({
         scrollTrigger: {
           trigger: isLast ? card.parentElement : card,
           start: isLast ? 'top top' : 'top bottom',
@@ -61,22 +61,40 @@ export class VerticalCardsAnimation {
       const cardInner = card.querySelector(this.cardSelectorInner);
 
       if (index === 0) {
-        timeline.to(
+        this.timeline.to(
           this.graphWrap,
           {
             opacity: 1,
-            delay: 0.4,
+            delay: 0.3,
             duration: 1.5,
+          },
+          'start'
+        )
+        .to(this.gradGroup, 
+          {
+            opacity: 1,
+            delay: 0.3,
+            duration: 1,
           },
           'start'
         )
       }
 
       if (this.images[index]) {
-        timeline.to(
+        this.timeline.to(
           this.images[index],
           {
-            opacity: 1,
+            keyframes: {
+              "0%": { autoAlpha: 0},
+              "20%": { autoAlpha: 0},
+              "45%": { autoAlpha: 1},
+              "50%": { autoAlpha: 1},
+              "55%": { autoAlpha: 1},
+              "80%": { autoAlpha: 0 },
+              "100%": { autoAlpha: 0 },
+              easeEach: 'none',
+              ease: 'none',
+            },
             duration: 2,
           },
           'start'
@@ -84,7 +102,7 @@ export class VerticalCardsAnimation {
       }
 
       if (isLast) {
-        timeline
+        this.timeline
           .to(cardInner, {
             keyframes: {
               "0%": { autoAlpha: 0},
@@ -100,19 +118,16 @@ export class VerticalCardsAnimation {
             amplitudeStrength: 1,
             delay: 0.2,
             duration: 0.5,
-            onStart: () => {
-              this.graph.updateAmplitude()
-            },
             onUpdate: () => {
               this.graph.updateAmplitude()
-            }
+            },
           }, 'start')
           .to(this.gradGroup, { y: 0, delay: 0.2, duration: 0.6 }, 'start')
 
         for (let i = 0; i < this.cards.length; i++) {
           const color = getComputedStyle(this.cards[i]).getPropertyValue('--c-color');
           if (!this.graph.linesParams[i]) return;
-          timeline.to(this.graph.linesParams[i], {
+          this.timeline.to(this.graph.linesParams[i], {
             color,
             delay: 0.2,
             duration: 0.5,
@@ -124,16 +139,16 @@ export class VerticalCardsAnimation {
           }, 'start')
         }
       } else {
-        timeline
+        this.timeline
           .to(cardInner, {
             keyframes: {
-              "0%": { scale: 0.3, opacity: 0},
-              "20%": { scale: 0.4, opacity: 0},
-              "45%": { scale: 1, opacity: 1},
-              "50%": { scale: 1, opacity: 1},
-              "55%": { scale: 1, opacity: 1},
-              "80%": { scale: 0.4, opacity: 0 },
-              "100%": { scale: 0.3, opacity: 0 },
+              "0%": { scale: 0.3, autoAlpha: 0},
+              "20%": { scale: 0.4, autoAlpha: 0},
+              "45%": { scale: 1, autoAlpha: 1},
+              "50%": { scale: 1, autoAlpha: 1},
+              "55%": { scale: 1, autoAlpha: 1},
+              "80%": { scale: 0.4, autoAlpha: 0 },
+              "100%": { scale: 0.3, autoAlpha: 0 },
               easeEach: 'none',
               ease: 'none',
             },

@@ -105,8 +105,7 @@ export class PathAnimation {
 
 	checkDirection() {
     const time = this.timeline.time();
-    const thresholds = this.isMobile ? [3, 5, 7, 9] : [3.96, 5.9, 8.12, 10.05];
-
+    const thresholds = this.isMobile ? [2, 4, 6, 8] : [3.96, 5.9, 8.12, 10.05];
 
 		if (time === 0) return;
 		thresholds.forEach((threshold, index) => {
@@ -137,7 +136,7 @@ export class PathAnimation {
 				strokeDashoffset: 0, 
 				duration: 10,
 				onUpdate: () => this.checkDirection(),
-			}, `start+=${this.isMobile ? 1 : 2}`)
+			}, `start+=${this.isMobile ? 0 : 2}`)
 
 	}
 
@@ -158,15 +157,7 @@ export class PathAnimation {
 		gsap.set(this.cards, {
 			"--left": 0,
 			"--top": 0,
-			// "--progressC": 0,
 		});
-		// gsap.set(this.textWrapNodes, {
-			// "--progress": 0,
-			// opacity: 0,
-		// });
-		// gsap.set(this.textWrap, {
-		// 	opacity: 0,
-		// });
 		gsap.set(this.lines, {
 			"--left": 0,
 			"--top": 0,
@@ -193,7 +184,7 @@ export class PathAnimation {
 
 		this.scrollTrigger = ScrollTrigger.create({
 			trigger: this.wrap,
-			start: 'top center',
+			start: () => this.isMobile ? 'top top' : 'top center',
 			end: 'bottom bottom',
 			scrub: 0.5,
 			animation: this.timeline,
@@ -210,9 +201,6 @@ export class PathAnimation {
 				this.createTimeline();
 	
 				this.cardStates = [false, false, false, false];
-				window.requestAnimationFrame(() => {
-					this.checkDirection();
-				})
 			})
     });
 

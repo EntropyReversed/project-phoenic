@@ -10,9 +10,6 @@ const lenis = new Lenis({
   touchMultiplier: 0.5
 })
 
-lenis.on("scroll", () => {
-  ScrollTrigger.update();
-});
 
 function raf(time) {
   lenis.raf(time);
@@ -28,9 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const trajectoryMap = document.querySelector('.trajectory-map');
   const pathAnimation = document.querySelector('.path-animation');
   const verticalCardsWrap = document.querySelector('.vertical-cards');
-
-
-
 
   if (allBoxes.length) {
     allBoxes.forEach((box) => {
