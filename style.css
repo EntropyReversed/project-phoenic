@@ -179,7 +179,7 @@ body > svg {
   justify-content: center;
   align-items: center;
   transform: scale(0.3);
-  opacity: 0;
+  /* opacity: 0; */
 }
 
 .vertical-cards__card.last {
@@ -257,7 +257,8 @@ body > svg {
   position: relative;
   height: 300vh;
   width: 100%;
-  padding-top: 0vh;
+
+  /* padding-top: 0vh; */
   opacity: 0;
 }
 
@@ -289,7 +290,6 @@ body > svg {
   margin-left: auto;
   margin-top: 0;
   transform-origin: center top;
-  padding-top: 200px;
   will-change: transform;
   transform: translateX(0);
   flex-shrink: 0;
@@ -310,6 +310,7 @@ body > svg {
   top: 0;
   overflow: hidden;
   perspective-origin: center top;
+  padding-top: 150px;
   perspective: 2000px;
 
   mask-image: linear-gradient(
@@ -352,7 +353,6 @@ body > svg {
   --dur: 0.7s;
   --tr: cubic-bezier(0.33, 1, 0.68, 1);
 
-
   -webkit-transform-style: preserve-3d;
   position: absolute;
   top: var(--top);
@@ -361,7 +361,6 @@ body > svg {
   width: var(--width); 
   height: auto;
   z-index: 1;
-
 }
 
 .path-animation__card.active {

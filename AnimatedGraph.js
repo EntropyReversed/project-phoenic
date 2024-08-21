@@ -5,6 +5,16 @@ export class AnimatedGraph {
   deltaTime = 0;
   lineResolution = 3;
   isVisible = false;
+  _amplitudeStrength = 0.5;
+
+  get amplitudeStrength() {
+    return this._amplitudeStrength;
+  }
+
+  set amplitudeStrength(value) {
+    this._amplitudeStrength = value;
+    this.updateAmplitude();
+  }
 
   constructor({
     wrap,
@@ -166,23 +176,17 @@ export class AnimatedGraph {
   }
 
   updateAmplitude() {
+    if (!this.linesParams) return;
+
     const amp = this.getAmplitude();
     this.linesParams.forEach((param) => (param.amplitude = amp));
   }
 
-  updateFrequency() {
-    const freq = this.getFrequency();
-    this.linesParams.forEach((param, i) => (param.frequency = freq  + this.linesRandom[i] * 0.001));
-  }
-
   getAmplitude() {
+    if (!this.canvas) return;
     return this.isVertical
       ? this.canvas.width * 0.5 * this.amplitudeStrength
       : this.canvas.height * 0.5 * this.amplitudeStrength;
-  }
-
-  getFrequency() {
-    return (0.01 * this.frequency) / this.ratio;
   }
 
   spreadColors(colors, finalLength) {
@@ -228,7 +232,7 @@ export class AnimatedGraph {
     this.linesParams = this.spreadColors(formatedColors, this.numberOfLines).map((color) => ({
       color,
       amplitude: this.getAmplitude(),
-      frequency: this.getFrequency(),
+      frequency: (0.01 * this.frequency) / this.ratio,
       noiseOffset: Math.random() * 1000,
       time: 0,
     }));

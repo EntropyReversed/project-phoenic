@@ -18,7 +18,7 @@ export class VerticalCardsAnimation {
   }
 
   trackVH() {
-    document.body.style.setProperty('--vh', window.innerHeight * 0.01 || 0)
+    document.body.style.setProperty('--vh', window.innerHeight * 0.01 || 0);
   }
 
   createAnimatedGraph() {
@@ -45,7 +45,8 @@ export class VerticalCardsAnimation {
     this.gradCircles.forEach(c => gsap.set(c, { fill: this.cardOneColor }))
 
     this.cards.forEach((card, index) => {
-      const color = getComputedStyle(card).getPropertyValue('--c-color');
+      const color = card.dataset.color;
+      card.style.setProperty('--c-color', color);
       const isLast = index === this.cards.length - 1;
 
       this.timeline = gsap.timeline({
@@ -118,14 +119,11 @@ export class VerticalCardsAnimation {
             amplitudeStrength: 1,
             delay: 0.2,
             duration: 0.5,
-            onUpdate: () => {
-              this.graph.updateAmplitude()
-            },
           }, 'start')
           .to(this.gradGroup, { y: 0, delay: 0.2, duration: 0.6 }, 'start')
 
         for (let i = 0; i < this.cards.length; i++) {
-          const color = getComputedStyle(this.cards[i]).getPropertyValue('--c-color');
+          const color = this.cards[i].dataset.color;
           if (!this.graph.linesParams[i]) return;
           this.timeline.to(this.graph.linesParams[i], {
             color,
