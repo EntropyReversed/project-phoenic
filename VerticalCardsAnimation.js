@@ -1,7 +1,9 @@
 import { AnimatedGraph } from "./AnimatedGraph";
 
 gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.config({ ignoreMobileResize: true})
+if (ScrollTrigger.isTouch) {
+  ScrollTrigger.normalizeScroll(true)
+}
 
 export class VerticalCardsAnimation {
   constructor({ wrapSelector }) {
