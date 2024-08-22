@@ -119,7 +119,7 @@ export class PathAnimation {
 
 	checkDirection() {
     const time = this.timeline.time();
-    const thresholds = [3.96, 5.9, 8.12, 10.05];
+    const thresholds = this.isMobile ? [2,4,6,8] : [3.96, 5.9, 8.12, 10.05];
 
 		if (time === 0) return;
 		thresholds.forEach((threshold, index) => {
