@@ -3,11 +3,19 @@ export class PathAnimation {
 	angle = this.startAngle;
 	mobileBreak = 991;
 
+	isMobileTimelineCreated = false;
+	isDesktopTimelineCreated = false;
+
 	constructor({ wrap }) {
 		this.wrap = wrap;
 		this.svgWrap = this.wrap.querySelector('.path-animation__svg-wrap');
 		this.scrollWrap = this.wrap.querySelector('.path-animation__scroll');
-		this.svg = this.wrap.querySelector('svg');
+		this.svg = this.wrap.querySelector('.path-animation__svg-main');
+
+		this.cards = this.wrap.querySelectorAll('.path-animation__card');
+		this.cardsInner = this.wrap.querySelectorAll('.path-animation__card-wrap');
+		this.anchors = this.svg.querySelectorAll('.path-animation__anchor');
+		this.segments = this.svg.querySelectorAll('.path-animation__seg');
 
 		this.cta = document.querySelector('.path-animation__cta');
 		this.ctaTitle = this.cta.querySelector('.path-animation__cta-title');
@@ -117,10 +125,10 @@ export class PathAnimation {
 		})
 	}
 
-	checkDirection() {
-    const time = this.timeline.time();
-    const thresholds = this.isMobile ? [2,4,6,8] : [3.96, 5.9, 8.12, 10.05];
-
+	checkDirection(time) {
+    // const time = this.timeline.time();
+    // const thresholds = this.isMobile ? [2,4,6,8] : [3.96, 5.9, 8.12, 10.05];
+		const thresholds = [19.7, 39, 61.3, 80.6];
 		if (time === 0) return;
 		thresholds.forEach((threshold, index) => {
 			const shouldShow = time >= threshold;
@@ -132,12 +140,15 @@ export class PathAnimation {
 	}
 
 	createTimeline() {
-		this.pathMain.style.strokeDasharray = this.pathMain.getTotalLength();
-		this.pathMain.style.strokeDashoffset = this.pathMain.getTotalLength();
+		this.pathMain.style.strokeDasharray = this.pathLength;
+		this.pathMain.style.strokeDashoffset = this.pathLength;
+
+		this.timeline.clear();
+		this.timelineCTA.clear();
 
 		this.timeline
 			.to(this.scrollWrap, { 
-				y: () => this.getIsMobile() ? 0 : -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), 
+				y: () => this.isMobile ? 0 : -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), 
 				duration: 10, 
 				delay: 3 
 			}, 'start')
@@ -146,8 +157,7 @@ export class PathAnimation {
 			.to(this.pathMain, {
 				strokeDashoffset: 0, 
 				duration: 10,
-				onUpdate: () => this.checkDirection(),
-			}, `start+=${this.getIsMobile() ? 0 : 2}`)
+			}, 'start+=2')
 
 		this.timelineCTA
 			.to({}, { duration: 0.2 })
@@ -171,7 +181,6 @@ export class PathAnimation {
 	}
 
 	resetAnimation() {
-		this.isMobile = this.getIsMobile();
 		this.angle = this.isMobile ? 0 : this.startAngle;
 
 		gsap.set(this.wrap, { '--rotation': 0 });
@@ -187,13 +196,37 @@ export class PathAnimation {
 		});
 	}
 
-	init() {
-		this.cards = this.wrap.querySelectorAll('.path-animation__card');
-		this.cardsInner = this.wrap.querySelectorAll('.path-animation__card-wrap');
-		this.anchors = this.svg.querySelectorAll('.path-animation__anchor');
-		this.segments = this.svg.querySelectorAll('.path-animation__seg');
+	observers() {
+		const mutationObserver = new MutationObserver(() => {
+			this.checkDirection(100 - (parseFloat(getComputedStyle(this.pathMain).strokeDashoffset) / this.pathLength) * 100)
+		});
+		mutationObserver.observe(this.pathMain, { attributes: true, childList: false, subtree: false });
 
+		const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(() => {
+				this.isMobile = this.getIsMobile();
+				this.resetAnimation();
+				this.positionCards();
+				this.positionLines();
+
+				// if (this.isMobile && !this.isMobileTimelineCreated) {
+				// 	this.createTimeline();
+				// 	this.isMobileTimelineCreated = true;
+				// } else if (!this.isMobile && !this.isDesktopTimelineCreated) {
+				// 	this.createTimeline();
+				// 	this.isDesktopTimelineCreated = true;
+				// }
+
+				this.cards.forEach((card) => card.classList.remove('active'));
+				this.cardStates = [false, false, false, false];
+			})
+    });
+    resizeObserver.observe(this.wrap);
+	}
+
+	init() {
 		this.angle = this.isMobile ? 0 : this.startAngle;
+		this.pathLength = this.pathMain.getTotalLength()
 
 		this.createLines();
 		this.createTimeline();
@@ -203,7 +236,6 @@ export class PathAnimation {
 			start: 'top top',
 			end: 'bottom bottom',
 			scrub: 0.5,
-			markers: true,
 			animation: this.timelineCTA,
 			invalidateOnRefresh: true,
 		})
@@ -219,18 +251,6 @@ export class PathAnimation {
 
 		gsap.to(this.wrap, { opacity: 1 })
 
-		const resizeObserver = new ResizeObserver(() => {
-      requestAnimationFrame(() => {
-				this.resetAnimation();
-				this.positionCards();
-				this.positionLines();
-
-				this.cards.forEach((card) => card.classList.remove('active'));
-	
-				this.cardStates = [false, false, false, false];
-			})
-    });
-
-    resizeObserver.observe(this.wrap);
+		this.observers();
 	}
 }

@@ -68,7 +68,7 @@ export class AnimatedGraph {
   }
 
   updateVisibilityBasedOnOpacity() {
-    this.isVisible = parseFloat(window.getComputedStyle(this.wrap.parentElement).opacity) > 0;
+    this.isVisible = parseFloat(window.getComputedStyle(this.wrap.parentElement).opacity || 1) > 0;
   }
 
   draw(currentTime) {

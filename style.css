@@ -311,6 +311,7 @@ body > svg {
   overflow: hidden;
   perspective-origin: center top;
   padding-top: 150px;
+  /* padding-top: 50vh; */
   perspective: 2000px;
 
   mask-image: linear-gradient(
@@ -333,6 +334,7 @@ body > svg {
   transform-origin: top;
   transform: rotateX(calc(var(--rotation) * 1deg));
   width: 40%;
+  /* width: 50%; */
   margin-left: auto;
   margin-right: auto;
   -webkit-transform-style: preserve-3d;
@@ -340,6 +342,7 @@ body > svg {
 
 .path-animation__scroll {
   -webkit-transform-style: preserve-3d;
+  transform: translateY(0);
 }
 
 .path-animation__card {
@@ -541,13 +544,28 @@ body > svg {
   left: 2px;
 }
 
-.path-animation svg {
+.path-animation .path-animation__svg-main {
   width: 100%;
   height: auto;
   display: block;
   margin-left: auto;
   margin-right: auto;
   pointer-events: none;
+}
+
+.path-animation .path-animation__svg-ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  transform-origin: center top;
+  transform: rotateX(calc(var(--rotation)* -1deg));
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px red;
 }
 
 .path-animation__line {

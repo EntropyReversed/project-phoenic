@@ -53,11 +53,20 @@ export class VerticalCardsAnimation {
 
       this.timeline = gsap.timeline({
         scrollTrigger: {
-          trigger: isLast ? card.parentElement : card,
+          trigger: isLast ? card.parentElement.parentElement : card,
           start: isLast ? 'top top' : 'top bottom',
           end: 'bottom top',
           scrub: 1,
           invalidateOnRefresh: true,
+          markers: isLast,
+          onLeave: () => {
+            if (!isLast) return;
+            gsap.set(this.graphWrap, { opacity: 0 })
+          },
+          onEnterBack: () => {
+            if (!isLast) return;
+            gsap.set(this.graphWrap, { opacity: 1 })
+          }
         },
       });
 
