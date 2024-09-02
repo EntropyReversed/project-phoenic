@@ -21,7 +21,6 @@ export class OrbitAnimation {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         this.isVisible = entry.isIntersecting;
-        console.log(this.isVisible)
         if (this.isVisible) {
           this.timeline.play();
         } else {

@@ -154,6 +154,18 @@ body > svg {
   width: 100%;
 }
 
+.vertical-cards__mobile-msg {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (max-width: 767px) {
+  .vertical-cards__mobile-msg {
+    display: block;
+  }
+}
+
 .vertical-cards__img {
   position: absolute;
   top: 1rem;
@@ -216,8 +228,8 @@ body > svg {
   position: absolute;
   bottom: 0;
   left: 50%;
-  width: 700px;
-  height: 250px;
+  width: clamp(550px, 36.46vw, 700px);
+  height: clamp(150px, 13.02vw, 250px);
   max-width: 100%;
   transform: translateX(-50%);
   transform-origin: bottom;
@@ -310,7 +322,7 @@ body > svg {
   top: 0;
   overflow: hidden;
   perspective-origin: center top;
-  padding-top: 150px;
+  /* padding-top: 150px; */
   /* padding-top: 50vh; */
   perspective: 2000px;
 

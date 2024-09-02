@@ -10,7 +10,6 @@ const lenis = new Lenis({
   touchMultiplier: 0.5
 })
 
-
 function raf(time) {
   lenis.raf(time);
   requestAnimationFrame(raf);
@@ -25,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const trajectoryMap = document.querySelector('.trajectory-map');
   const pathAnimation = document.querySelector('.path-animation');
   const verticalCardsWrap = document.querySelector('.vertical-cards');
+
+  if (verticalCardsWrap) {
+    new VerticalCardsAnimation({
+      wrapSelector: '.vertical-cards',
+    });
+  }
 
   if (allBoxes.length) {
     allBoxes.forEach((box) => {
@@ -89,11 +94,5 @@ document.addEventListener('DOMContentLoaded', () => {
     new PathAnimation({
       wrap: pathAnimation
     })
-  }
-
-  if (verticalCardsWrap) {
-    new VerticalCardsAnimation({
-      wrapSelector: '.vertical-cards',
-    });
   }
 });

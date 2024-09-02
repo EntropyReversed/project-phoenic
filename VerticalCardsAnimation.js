@@ -1,9 +1,9 @@
 import { AnimatedGraph } from "./AnimatedGraph";
 
 gsap.registerPlugin(ScrollTrigger);
-if (ScrollTrigger.isTouch) {
-  ScrollTrigger.normalizeScroll(true)
-}
+ScrollTrigger.config({
+  ignoreMobileResize: true
+});
 
 export class VerticalCardsAnimation {
   constructor({ wrapSelector }) {
@@ -14,6 +14,7 @@ export class VerticalCardsAnimation {
     this.cardSelectorInner = '.vertical-cards__card-inner';
     this.gradGroup = this.wrap.querySelectorAll('.vertical-cards__graph-grad g');
     this.gradCircles = this.wrap.querySelectorAll('.vertical-cards__graph-grad ellipse');
+    this.mobileMsg = this.wrap.querySelector('.vertical-cards__mobile-msg');
 
     this.cardOneColor = getComputedStyle(this.cards[0]).getPropertyValue('--c-color');
     this.init();
@@ -58,7 +59,6 @@ export class VerticalCardsAnimation {
           end: 'bottom top',
           scrub: 1,
           invalidateOnRefresh: true,
-          markers: isLast,
           onLeave: () => {
             if (!isLast) return;
             gsap.set(this.graphWrap, { opacity: 0 })
@@ -90,6 +90,11 @@ export class VerticalCardsAnimation {
           },
           'start'
         )
+        .to(this.mobileMsg, {
+          autoAlpha: 1,
+          delay: 0.6,
+          duration: 1,
+        }, 'start')
       }
 
       if (this.images[index]) {
