@@ -1,6 +1,7 @@
 import { AnimatedGraph } from "./AnimatedGraph";
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.config({ force3D: true });
 ScrollTrigger.config({
   ignoreMobileResize: true
 });

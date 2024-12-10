@@ -142,7 +142,7 @@ export class PathAnimation {
 
 		this.timeline
 			.to(this.scrollWrap, { 
-				y: () => this.isMobile ? 0 : -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), 
+				y: () => -(this.svgWrap.offsetHeight - window.innerHeight * 0.5), 
 				duration: 10, 
 				delay: 3 
 			}, 'start')

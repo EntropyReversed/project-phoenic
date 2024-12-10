@@ -605,7 +605,7 @@ body > svg {
     --c-off: 0px;
   }
 
-  .path-animation h3 {
+  /* .path-animation h3 {
     position: relative;
     bottom: auto;
     left: auto;
@@ -621,7 +621,7 @@ body > svg {
     top: auto;
     position: relative;
     mask-image: none;
-  }
+  } */
 
   .path-animation__svg-wrap {
     width: 80%;

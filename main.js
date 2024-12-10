@@ -5,17 +5,19 @@ import { PathAnimation } from './PathAnimation';
 import { TrajectoryMap } from './TrajectoryMap';
 import { VerticalCardsAnimation } from './VerticalCardsAnimation';
 
-const lenis = new Lenis({
-  touchMultiplier: 0,
-  touchMultiplier: 0.5
-})
-
-function raf(time) {
-  lenis.raf(time);
+if (document.body.classList.contains('homepage') && window.innerWidth >= 991) {
+  const lenis = new Lenis({
+    touchMultiplier: 0,
+    touchMultiplier: 0.5
+  })
+  
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  
   requestAnimationFrame(raf);
 }
-
-requestAnimationFrame(raf);
 
 document.addEventListener('DOMContentLoaded', () => {
   const allBoxes = document.querySelectorAll('.blinking-boxes');
